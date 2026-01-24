@@ -35,9 +35,11 @@ public class CompareDataFormatData {
     private String startTrigger0;
     private String startTrigger1;
     private String startTrigger2;
+    private String endTrigger0;
     private String startline;
     private String delimiter;
     private Integer posDate;
+    private Integer posInvoiceDate;
     private Integer posPartner;
     private Integer posAmount;
     private Integer posComment;

@@ -74,6 +74,10 @@ awk '
 	sub(/ COLLATE [^ ]*[ ,]/," ")
 }
 
+/ CHARACTER SET / {
+	sub(/ CHARACTER SET [^ ]*[ ,]/," ")
+}
+
 / float\(/ {
 	sub(/ float\(/," decimal(")
 }

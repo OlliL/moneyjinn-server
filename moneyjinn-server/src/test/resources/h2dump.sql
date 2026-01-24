@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 9.0.1, for FreeBSD13.3 (amd64)
+-- MySQL dump 10.13  Distrib 9.1.0, for FreeBSD14.3 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	9.0.1
+-- Server version	9.1.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,9 +24,9 @@ DROP TABLE IF EXISTS `access_users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `access_users` (
   `userid` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) CHARACTER SET utf8mb3 NOT NULL,
-  `password` char(60) CHARACTER SET latin1 NOT NULL,
-  `role` char(8) CHARACTER SET utf8mb3 NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `password` char(60) NOT NULL,
+  `role` char(8) NOT NULL,
   `change_password` tinyint unsigned NOT NULL,
   PRIMARY KEY (`userid`),
   UNIQUE KEY `mau_i_01` (`name`)
@@ -42,7 +42,7 @@ DROP TABLE IF EXISTS `access_groups`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `access_groups` (
   `groupid` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) CHARACTER SET utf8mb3 NOT NULL,
+  `name` varchar(20) NOT NULL,
   PRIMARY KEY (`groupid`),
   UNIQUE KEY `mag_i_01` (`name`)
 );
@@ -545,9 +545,11 @@ CREATE TABLE `cmp_data_formats` (
   `start_trigger_0` varchar(30) DEFAULT NULL,
   `start_trigger_1` varchar(30) DEFAULT NULL,
   `start_trigger_2` varchar(30) DEFAULT NULL,
+  `end_trigger_0` varchar(30) DEFAULT NULL,
   `startline` varchar(255) NOT NULL,
   `delimiter` varchar(1) NOT NULL,
   `pos_date` tinyint NOT NULL,
+  `pos_invoicedate` tinyint DEFAULT NULL,
   `pos_partner` tinyint DEFAULT NULL,
   `pos_amount` tinyint NOT NULL,
   `pos_comment` tinyint DEFAULT NULL,

@@ -63,7 +63,10 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -341,13 +344,18 @@ public class CompareDataService extends AbstractService implements ICompareDataS
 
             for (final String[] cmpDataRaw : cvsLines) {
                 if (cmpDataRaw.length >= 3) {
-                    final List<String> startLine = Arrays.asList(cmpDataRaw[0], cmpDataRaw[1], cmpDataRaw[2]);
+                    final List<String> startLine = List.of(cmpDataRaw[0], cmpDataRaw[1], cmpDataRaw[2]);
                     if (startLine.equals(startTrigger)) {
                         match = true;
                         continue;
                     }
                 }
-                if (match && cmpDataRaw.length <= compareDataFormat.getPositionAmount()) {
+                if (match && compareDataFormat.getEndTrigger() != null) {
+                    final List<String> endLine = List.of(cmpDataRaw[0]);
+                    if (endLine.equals(compareDataFormat.getEndTrigger())) {
+                        break;
+                    }
+                } else if (match && cmpDataRaw.length <= compareDataFormat.getPositionAmount()) {
                     // main section in CSV is done skip the rest
                     break;
                 }
@@ -373,6 +381,14 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         final String dateString = cmpDataRaw[compareDataFormat.getPositionDate() - 1];
         final LocalDate date = LocalDate.parse(dateString, dateFormat);
         data.setBookingDate(date);
+        /*
+         * Invoice Date
+         */
+        if (compareDataFormat.getPositionInvoicedate() != null) {
+            final String invoicedateString = cmpDataRaw[compareDataFormat.getPositionInvoicedate() - 1];
+            final LocalDate invoicedate = LocalDate.parse(invoicedateString, dateFormat);
+            data.setInvoiceDate(invoicedate);
+        }
         /*
          * Amount
          */

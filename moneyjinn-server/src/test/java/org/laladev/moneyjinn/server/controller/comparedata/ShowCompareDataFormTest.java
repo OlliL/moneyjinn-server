@@ -38,6 +38,7 @@ class ShowCompareDataFormTest extends AbstractWebUserControllerTest {
         compareDataFormatTransports.add(new CompareDataFormatTransportBuilder().forCompareDataFormat4().build());
         compareDataFormatTransports.add(new CompareDataFormatTransportBuilder().forCompareDataFormat5().build());
         compareDataFormatTransports.add(new CompareDataFormatTransportBuilder().forCompareDataFormat6().build());
+        compareDataFormatTransports.add(new CompareDataFormatTransportBuilder().forCompareDataFormat7().build());
         expected.setCompareDataFormatTransports(compareDataFormatTransports);
         return expected;
     }

@@ -44,8 +44,10 @@ public class CompareDataFormat extends AbstractEntity<CompareDataFormatID> {
     private CompareDataFormatType type;
     private String name;
     private List<String> startTrigger;
+    private List<String> endTrigger;
     private Character delimiter;
     private Integer positionDate;
+    private Integer positionInvoicedate;
     private Integer positionPartner;
     private Integer positionAmount;
     private Integer positionComment;

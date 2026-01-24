@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 9.0.1, for FreeBSD13.3 (amd64)
+-- MySQL dump 10.13  Distrib 9.1.0, for FreeBSD14.3 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	9.0.1
+-- Server version	9.1.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -545,9 +545,11 @@ CREATE TABLE `cmp_data_formats` (
   `start_trigger_0` varchar(30) COLLATE utf8mb3_bin DEFAULT NULL,
   `start_trigger_1` varchar(30) COLLATE utf8mb3_bin DEFAULT NULL,
   `start_trigger_2` varchar(30) COLLATE utf8mb3_bin DEFAULT NULL,
+  `end_trigger_0` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
   `startline` varchar(255) COLLATE utf8mb3_bin NOT NULL,
   `delimiter` varchar(1) COLLATE utf8mb3_bin NOT NULL,
   `pos_date` tinyint NOT NULL,
+  `pos_invoicedate` tinyint DEFAULT NULL,
   `pos_partner` tinyint DEFAULT NULL,
   `pos_amount` tinyint NOT NULL,
   `pos_comment` tinyint DEFAULT NULL,
@@ -573,12 +575,13 @@ CREATE TABLE `cmp_data_formats` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-08 12:44:03
-INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck','/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
-INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart','/^Buchungstag;Wert;Umsatzart/',';',2,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
-INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,'camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO cmp_data_formats VALUES (5,'Sparkasse','Buchungstag','Wertstellung','Zahlungsgegner','/^\"Buchungstag\";\"Wertstellung\";\"Zahlungsgegner\"/',';',1,3,7,6,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
-INSERT INTO cmp_data_formats VALUES (6,'Volksbank','Buchungstag','Valuta','Auftraggeber/Zahlungsempfänger','',';',1,4,12,9,'DD.MM.YYYY',',',NULL,NULL,NULL,NULL,13,'S');
+-- Dump completed on 2026-01-24 10:15:52
+INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','Buchungstag','Wertstellungstag','Verwendungszweck',NULL,'/^\"Buchungstag\";\"Wertstellungstag\";\"Verwendungszweck\"/',';',1,NULL,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','Buchungstag','Wert','Umsatzart',NULL,'/^Buchungstag;Wert;Umsatzart/',';',2,NULL,4,12,5,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03',NULL,NULL,NULL,NULL,'camt','',0,NULL,NULL,0,NULL,'','',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO cmp_data_formats VALUES (5,'Sparkasse','Buchungstag','Wertstellung','Zahlungsgegner',NULL,'/^\"Buchungstag\";\"Wertstellung\";\"Zahlungsgegner\"/',';',1,NULL,3,7,6,'DD.MM.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO cmp_data_formats VALUES (6,'Volksbank','Buchungstag','Valuta','Auftraggeber/Zahlungsempfänger',NULL,'',';',1,NULL,4,12,9,'DD.MM.YYYY',',',NULL,NULL,NULL,NULL,13,'S');
+INSERT INTO cmp_data_formats VALUES (7,'Postbank Kreditkarte','Belegdatum','Eingangstag','Verwendungszweck','Saldo:','',';',2,1,NULL,7,7,'d.M.YYYY',',','.',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO access_users (name,password,role,change_password) VALUES ('admin','$2a$10$DeePZ05m1PYHOK0lii2crOsPaCiaaDkd5lJWiAm2eiXTKua5lF9dW','ADMIN',1);
 INSERT INTO access_groups (name) VALUES ('admingroup');
 UPDATE access_users SET userid=0 WHERE name='admin';

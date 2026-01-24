@@ -8,6 +8,7 @@ public class CompareDataFormatTransportBuilder extends CompareDataFormatTranspor
     public static final Long COMPARE_DATA_FORMAT4_ID = 4L;
     public static final Long COMPARE_DATA_FORMAT5_ID = 5L;
     public static final Long COMPARE_DATA_FORMAT6_ID = 6L;
+    public static final Long COMPARE_DATA_FORMAT7_ID = 7L;
 
     public CompareDataFormatTransportBuilder forCompareDataFormat2() {
         super.setFormatId(COMPARE_DATA_FORMAT2_ID);
@@ -36,6 +37,12 @@ public class CompareDataFormatTransportBuilder extends CompareDataFormatTranspor
     public CompareDataFormatTransportBuilder forCompareDataFormat6() {
         super.setFormatId(COMPARE_DATA_FORMAT6_ID);
         super.setName("Volksbank");
+        return this;
+    }
+
+    public CompareDataFormatTransportBuilder forCompareDataFormat7() {
+        super.setFormatId(COMPARE_DATA_FORMAT7_ID);
+        super.setName("Postbank Kreditkarte");
         return this;
     }
 

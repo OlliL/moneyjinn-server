@@ -53,11 +53,17 @@ public class CompareDataFormatDataMapper implements IMapper<CompareDataFormat, C
             startTrigger.add(compareDataFormatData.getStartTrigger1());
             startTrigger.add(compareDataFormatData.getStartTrigger2());
             compareDataFormat.setStartTrigger(startTrigger);
+            if (compareDataFormatData.getEndTrigger0() != null) {
+                final List<String> endTrigger = new ArrayList<>(1);
+                endTrigger.add(compareDataFormatData.getEndTrigger0());
+                compareDataFormat.setEndTrigger(endTrigger);
+            }
             final String delimiter = compareDataFormatData.getDelimiter();
             if (delimiter != null) {
                 compareDataFormat.setDelimiter(delimiter.charAt(0));
             }
             compareDataFormat.setPositionDate(compareDataFormatData.getPosDate());
+            compareDataFormat.setPositionInvoicedate(compareDataFormatData.getPosInvoiceDate());
             compareDataFormat.setPositionPartner(compareDataFormatData.getPosPartner());
             compareDataFormat.setPositionAmount(compareDataFormatData.getPosAmount());
             compareDataFormat.setPositionComment(compareDataFormatData.getPosComment());
