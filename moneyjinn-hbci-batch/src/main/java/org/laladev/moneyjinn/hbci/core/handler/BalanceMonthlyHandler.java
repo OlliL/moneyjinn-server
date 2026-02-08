@@ -73,10 +73,8 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			+ "      , ? "
 			+ "      , ? "
 			+ "      ) "
-			+ " ON DUPLICATE KEY UPDATE "
-                       // if the balance_value is the same, trigger a Column-cannot-be-NULL error and execute
-			           // no update at all - to prevent notifying any Observers
-			+ "        balance_value  = IF(VALUES(balance_value) = balance_value, NULL, VALUES(balance_value)) ";
+			+ " ON CONFLICT ON CONSTRAINT hbci_i_02 DO UPDATE "
+			+ " SET balance_value = EXCLUDED.balance_value WHERE balance_value != EXCLUDED.balance_value";
 
 	
 	private static final String SELECT_STATEMENT =
@@ -88,7 +86,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			+ "    AND my_bankcode      = ?"
 			+ "    AND balance_year     = ?"
 			+ "    AND balance_month    = ?"
-			+ "  LIMIT 1";	
+			+ "  FETCH FIRST 1 ROW ONLY";
 	// @formatter:on
 
     private final BalanceDaily balanceDaily;
@@ -242,10 +240,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
             con.commit();
 
         } catch (final SQLException e) {
-            // ignore: Column 'balance_value' cannot be null
-            if (e.getErrorCode() != 1048) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
     }
 }

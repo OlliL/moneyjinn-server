@@ -47,8 +47,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.9</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
