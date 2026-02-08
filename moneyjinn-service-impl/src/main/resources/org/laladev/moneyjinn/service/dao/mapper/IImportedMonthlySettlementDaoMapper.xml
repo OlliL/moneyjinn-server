@@ -4,8 +4,8 @@
 
     <sql id="importedMonthlySettlementsColumns">
         impmonthlysettlementid AS id
-        ,`year`
-        ,`month`
+        ,"year"
+        ,"month"
         ,amount
         ,mcs_capitalsourceid AS mcsCapitalsourceId
         ,externalid AS externalId
@@ -16,8 +16,8 @@
         SELECT
         <include refid="importedMonthlySettlementsColumns"/>
         FROM impmonthlysettlements
-        WHERE `month` = #{month}
-        AND `year` = #{year}
+        WHERE "month" = #{month}
+        AND "year" = #{year}
     </select>
 
     <insert id="upsertImportedMonthlySettlement"

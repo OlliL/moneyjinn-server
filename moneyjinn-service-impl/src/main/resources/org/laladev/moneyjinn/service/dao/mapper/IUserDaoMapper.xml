@@ -3,84 +3,81 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper">
 
     <sql id="userColumns">
-                 userid
-                ,name
-                ,password
-                ,role
-                ,change_password as changePassword
+        userid
+        ,name
+        ,password
+        ,role
+        ,change_password as changePassword
     </sql>
 
     <select id="getUserById" parameterType="java.lang.Long"
             resultType="org.laladev.moneyjinn.service.dao.data.UserData">
 
-                SELECT <include refid="userColumns" />
-                  FROM access_users
-                 WHERE userid = #{userid}
-                 LIMIT 1
+        SELECT
+        <include refid="userColumns"/>
+        FROM access_users
+        WHERE userid = #{userid}
     </select>
 
     <select id="getUserByName" parameterType="java.lang.String"
             resultType="org.laladev.moneyjinn.service.dao.data.UserData">
 
-                SELECT <include refid="userColumns" />
-                  FROM access_users
-                 WHERE name = #{name}
-                 LIMIT 1
+        SELECT
+        <include refid="userColumns"/>
+        FROM access_users
+        WHERE name = #{name}
     </select>
 
     <select id="getAllUsers"
             resultType="org.laladev.moneyjinn.service.dao.data.UserData">
-                SELECT <include refid="userColumns" />
-                  FROM access_users
+        SELECT
+        <include refid="userColumns"/>
+        FROM access_users
     </select>
 
     <insert id="createUser"
             parameterType="org.laladev.moneyjinn.service.dao.data.UserData"
             useGeneratedKeys="true" keyProperty="userid" keyColumn="userid">
-                INSERT
-                  INTO access_users
-                      (name
-                      ,password
-                      ,role
-                      ,change_password
-                      )
-                VALUES
-                      (#{name}
-                      ,#{password}
-                      ,#{role}
-                      ,1
-                      )
+        INSERT
+        INTO access_users
+        (name
+        ,password
+        ,role
+        ,change_password
+        )
+        VALUES
+        (#{name}
+        ,#{password}
+        ,#{role}
+        ,1
+        )
     </insert>
 
     <update id="updateUser" parameterType="org.laladev.moneyjinn.service.dao.data.UserData">
-                UPDATE access_users
-                   SET name            = #{name}
-					  ,role            = #{role}
-                      ,change_password = #{changePassword}
-                 WHERE userid          = #{userid}
-                 LIMIT 1
+        UPDATE access_users
+        SET name = #{name}
+        ,role = #{role}
+        ,change_password = #{changePassword}
+        WHERE userid = #{userid}
     </update>
 
     <update id="setPassword">
-                UPDATE access_users
-                   SET password        = #{password}
-                      ,change_password = 0
-                WHERE userid           = #{userid}
-                LIMIT 1
+        UPDATE access_users
+        SET password = #{password}
+        ,change_password = 0
+        WHERE userid = #{userid}
     </update>
 
     <update id="resetPassword">
-                UPDATE access_users
-                   SET password        = #{password}
-                      ,change_password = 1
-                 WHERE userid          = #{userid}
-                 LIMIT 1            
+        UPDATE access_users
+        SET password = #{password}
+        ,change_password = 1
+        WHERE userid = #{userid}
     </update>
 
     <delete id="deleteUser">
-                DELETE
-                  FROM access_users
-                 WHERE userid = #{userid}
-                 LIMIT 1
+        DELETE
+        FROM access_users
+        WHERE userid = #{userid}
     </delete>
 </mapper>

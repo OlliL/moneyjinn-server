@@ -43,5 +43,5 @@ public class MoneyflowData {
     private Long mcpContractpartnerId;
     private String comment;
     private Long mpaPostingAccountId;
-    private boolean privat;
+    private int privat;
 }

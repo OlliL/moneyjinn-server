@@ -3,58 +3,57 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IPostingAccountDaoMapper">
 
     <sql id="postingAccountColumns">
-                 postingaccountid    AS id
-                ,postingaccountname  AS name
+        postingaccountid AS id
+        ,postingaccountname AS name
     </sql>
 
     <select id="getPostingAccountById" parameterType="java.lang.Long"
             resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
-                SELECT <include refid="postingAccountColumns" />
-                  FROM postingaccounts
-                 WHERE postingaccountid = #{id}
-                 LIMIT 1
+        SELECT
+        <include refid="postingAccountColumns"/>
+        FROM postingaccounts
+        WHERE postingaccountid = #{id}
     </select>
 
     <select id="getPostingAccountByName" parameterType="java.lang.String"
             resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
 
-                SELECT <include refid="postingAccountColumns" />
-                  FROM postingaccounts
-                 WHERE postingaccountname = #{name}
-                 LIMIT 1
+        SELECT
+        <include refid="postingAccountColumns"/>
+        FROM postingaccounts
+        WHERE postingaccountname = #{name}
     </select>
 
     <select id="getAllPostingAccounts"
             resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
-                SELECT <include refid="postingAccountColumns" />
-                  FROM postingaccounts
-                 ORDER BY postingaccountname
+        SELECT
+        <include refid="postingAccountColumns"/>
+        FROM postingaccounts
+        ORDER BY postingaccountname
     </select>
 
     <insert id="createPostingAccount"
             parameterType="org.laladev.moneyjinn.service.dao.data.PostingAccountData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="postingaccountid">
-                INSERT
-                  INTO postingaccounts
-                      (postingaccountname
-                      )
-                VALUES
-                      (#{name}
-                      )
+        INSERT
+        INTO postingaccounts
+        (postingaccountname
+        )
+        VALUES
+        (#{name}
+        )
     </insert>
 
     <update id="updatePostingAccount" parameterType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
-                UPDATE postingaccounts
-                   SET postingaccountname = #{name}
-                 WHERE postingaccountid   = #{id}
-                 LIMIT 1
+        UPDATE postingaccounts
+        SET postingaccountname = #{name}
+        WHERE postingaccountid = #{id}
     </update>
 
 
     <delete id="deletePostingAccount">
-                DELETE
-                  FROM postingaccounts
-                 WHERE postingaccountid = #{id}
-                 LIMIT 1
+        DELETE
+        FROM postingaccounts
+        WHERE postingaccountid = #{id}
     </delete>
 </mapper>

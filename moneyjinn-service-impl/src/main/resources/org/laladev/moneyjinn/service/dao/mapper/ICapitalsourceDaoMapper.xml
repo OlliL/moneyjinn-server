@@ -2,157 +2,160 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.ICapitalsourceDaoMapper">
 
-	<sql id="capitalsourceColumns">
-                 mau_userid         AS mauUserId
-                ,mag_groupid        AS magGroupId
-                ,capitalsourceid    AS id
-                ,type
-                ,state
-                ,accountnumber      AS accountNumber
-                ,bankcode           AS bankCode
-                ,comment
-                ,validtil           AS validTil
-                ,validfrom          AS validFrom
-                ,att_group_use      AS attGroupUse
-                ,import_allowed     AS importAllowed
-	</sql>
+    <sql id="capitalsourceColumns">
+        mau_userid AS mauUserId
+        ,mag_groupid AS magGroupId
+        ,capitalsourceid AS id
+        ,type
+        ,state
+        ,accountnumber AS accountNumber
+        ,bankcode AS bankCode
+        ,comment
+        ,validtil AS validTil
+        ,validfrom AS validFrom
+        ,att_group_use AS attGroupUse
+        ,import_allowed AS importAllowed
+    </sql>
 
-	<select id="getCapitalsourceById"
-			resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-                SELECT <include refid="capitalsourceColumns" />
-                  FROM vw_capitalsources
-                 WHERE capitalsourceid = #{id}
-                   AND mar_mau_userid  = #{userId}
-                   AND mag_groupid     = #{magGroupId}
-                 LIMIT 1
-	</select>
+    <select id="getCapitalsourceById"
+            resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+        SELECT
+        <include refid="capitalsourceColumns"/>
+        FROM vw_capitalsources
+        WHERE capitalsourceid = #{id}
+        AND mar_mau_userid = #{userId}
+        AND mag_groupid = #{magGroupId}
+        FETCH FIRST 1 ROW ONLY
+    </select>
 
-	<select id="getCapitalsourceByComment"
-			resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+    <select id="getCapitalsourceByComment"
+            resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
 
-                SELECT <include refid="capitalsourceColumns" />
-                  FROM vw_capitalsources
-                 WHERE mau_userid = #{userId}
-                   AND comment    = #{comment}
-                   AND #{date}    BETWEEN validfrom AND validtil
-                 LIMIT 1
-	</select>
+        SELECT
+        <include refid="capitalsourceColumns"/>
+        FROM vw_capitalsources
+        WHERE mau_userid = #{userId}
+        AND comment = #{comment}
+        AND #{date} BETWEEN validfrom AND validtil
+        FETCH FIRST 1 ROW ONLY
+    </select>
 
-	<select id="getAllCapitalsources"
-			resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-                SELECT <include refid="capitalsourceColumns" />
-                  FROM vw_capitalsources
-                 WHERE mar_mau_userid = #{userId}
-                   AND NOW()          BETWEEN maf_validfrom AND maf_validtil
-                 ORDER BY CASE WHEN  mau_userid = #{userId} THEN 1 ELSE 2 END
-                      ,capitalsourceid
-	</select>
+    <select id="getAllCapitalsources"
+            resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+        SELECT
+        <include refid="capitalsourceColumns"/>
+        FROM vw_capitalsources
+        WHERE mar_mau_userid = #{userId}
+        AND NOW() BETWEEN maf_validfrom AND maf_validtil
+        ORDER BY CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
+        ,capitalsourceid
+    </select>
 
-	<select id="getAllCapitalsourcesByDateRange"
-			resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-                SELECT <include refid="capitalsourceColumns" />
-                  FROM vw_capitalsources
-                 WHERE mar_mau_userid = #{userId}
-                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-                   AND validfrom     <![CDATA[ <= ]]> #{validTil}
-                   AND validtil      <![CDATA[ >= ]]> #{validFrom}
-                 ORDER BY CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
-                      ,type
-                      ,capitalsourceid
-	</select>
+    <select id="getAllCapitalsourcesByDateRange"
+            resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+        SELECT
+        <include refid="capitalsourceColumns"/>
+        FROM vw_capitalsources
+        WHERE mar_mau_userid = #{userId}
+        AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
+        AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
+        AND validfrom     <![CDATA[ <= ]]> #{validTil}
+        AND validtil      <![CDATA[ >= ]]> #{validFrom}
+        ORDER BY CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
+        ,type
+        ,capitalsourceid
+    </select>
 
-	<insert id="createCapitalsource"
-			parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData"
-			useGeneratedKeys="true" keyProperty="id" keyColumn="capitalsourceid">
-                INSERT
-                  INTO capitalsources
-                      (mau_userid
-                      ,mag_groupid
-                      ,type
-                      ,state
-                      ,accountnumber
-                      ,bankcode
-                      ,comment
-                      ,validtil
-                      ,validfrom
-                      ,att_group_use
-                      ,import_allowed
-                      )
-                VALUES
-                      (#{mauUserId}
-                      ,#{magGroupId}
-                      ,#{type}
-                      ,#{state}
-                      ,#{accountNumber}
-                      ,#{bankCode}
-                      ,#{comment}
-                      ,#{validTil}
-                      ,#{validFrom}
-                      ,#{attGroupUse}
-                      ,#{importAllowed}
-                      )
-	</insert>
+    <insert id="createCapitalsource"
+            parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="capitalsourceid">
+        INSERT
+        INTO capitalsources
+        (mau_userid
+        ,mag_groupid
+        ,type
+        ,state
+        ,accountnumber
+        ,bankcode
+        ,comment
+        ,validtil
+        ,validfrom
+        ,att_group_use
+        ,import_allowed
+        )
+        VALUES
+        (#{mauUserId}
+        ,#{magGroupId}
+        ,#{type}
+        ,#{state}
+        ,#{accountNumber}
+        ,#{bankCode}
+        ,#{comment}
+        ,#{validTil}
+        ,#{validFrom}
+        ,#{attGroupUse}
+        ,#{importAllowed}
+        )
+    </insert>
 
-	<update id="updateCapitalsource"
-			parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-                UPDATE capitalsources
-                   SET type            = #{type}
-                      ,state           = #{state}
-                      ,accountnumber   = #{accountNumber}
-                      ,bankcode        = #{bankCode}
-                      ,comment         = #{comment}
-                      ,validtil        = #{validTil}
-                      ,validfrom       = #{validFrom}
-                      ,att_group_use   = #{attGroupUse}
-                      ,import_allowed  = #{importAllowed}
-                 WHERE capitalsourceid = #{id}
-                   AND mau_userid      = #{mauUserId}
-                   AND mag_groupid     = #{magGroupId}
-                 LIMIT 1
-	</update>
+    <update id="updateCapitalsource"
+            parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+        UPDATE capitalsources
+        SET type = #{type}
+        ,state = #{state}
+        ,accountnumber = #{accountNumber}
+        ,bankcode = #{bankCode}
+        ,comment = #{comment}
+        ,validtil = #{validTil}
+        ,validfrom = #{validFrom}
+        ,att_group_use = #{attGroupUse}
+        ,import_allowed = #{importAllowed}
+        WHERE capitalsourceid = #{id}
+        AND mau_userid = #{mauUserId}
+        AND mag_groupid = #{magGroupId}
+    </update>
 
-	<delete id="deleteCapitalsource">
-                DELETE
-                  FROM capitalsources
-                 WHERE mau_userid      = #{userId}
-                   AND mag_groupid     = #{magGroupId}
-                   AND capitalsourceid = #{id}
-                 LIMIT 1
-	</delete>
+    <delete id="deleteCapitalsource">
+        DELETE
+        FROM capitalsources
+        WHERE mau_userid = #{userId}
+        AND mag_groupid = #{magGroupId}
+        AND capitalsourceid = #{id}
+    </delete>
 
-	<select id="checkCapitalsourceInUseOutOfDate" resultType="java.lang.Boolean">
-                SELECT 1
-                  FROM moneyflows
-                 WHERE mcs_capitalsourceid = #{id}
-                   AND bookingdate         NOT BETWEEN #{validFrom} AND #{validTil}
-                 LIMIT 1
-	</select>
+    <select id="checkCapitalsourceInUseOutOfDate" resultType="java.lang.Boolean">
+        SELECT 1
+        FROM moneyflows
+        WHERE mcs_capitalsourceid = #{id}
+        AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
 
-	<select id="getGroupCapitalsourcesByDateRange"
-			resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-                SELECT <include refid="capitalsourceColumns" />
-                  FROM vw_capitalsources
-                 WHERE mar_mau_userid = #{userId}
-                   AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
-                   AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
-                   AND ( mau_userid = #{userId}
-                         OR
-                         att_group_use = 1
-                       )
-                   AND validfrom <![CDATA[ <= ]]> #{validTil}
-                   AND validtil  <![CDATA[ >= ]]> #{validFrom}
-                 ORDER BY CASE WHEN  mau_userid = #{userId} THEN 1 ELSE 2 END
-                      ,capitalsourceid
-	</select>
+    <select id="getGroupCapitalsourcesByDateRange"
+            resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+        SELECT
+        <include refid="capitalsourceColumns"/>
+        FROM vw_capitalsources
+        WHERE mar_mau_userid = #{userId}
+        AND maf_validfrom <![CDATA[ <= ]]> #{validTil}
+        AND maf_validtil  <![CDATA[ >= ]]> #{validFrom}
+        AND ( mau_userid = #{userId}
+        OR
+        att_group_use = 1
+        )
+        AND validfrom <![CDATA[ <= ]]> #{validTil}
+        AND validtil  <![CDATA[ >= ]]> #{validFrom}
+        ORDER BY CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
+        ,capitalsourceid
+    </select>
 
- 	<select id="getCapitalsourceByAccount"
-			resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
-                SELECT <include refid="capitalsourceColumns" />
-                  FROM capitalsources
-                 WHERE accountnumber = #{accountNumber}
-                   AND bankcode      = #{bankCode}
-                   AND #{date}       BETWEEN validfrom AND validtil
-                 LIMIT 1
-	</select>
+    <select id="getCapitalsourceByAccount"
+            resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
+        SELECT
+        <include refid="capitalsourceColumns"/>
+        FROM capitalsources
+        WHERE accountnumber = #{accountNumber}
+        AND bankcode = #{bankCode}
+        AND #{date} BETWEEN validfrom AND validtil
+    </select>
 </mapper>

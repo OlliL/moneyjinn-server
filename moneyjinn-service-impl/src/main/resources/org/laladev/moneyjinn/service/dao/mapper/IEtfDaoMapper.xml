@@ -71,7 +71,6 @@
         WHERE etfid = #{etfid}
         AND mar_mau_userid = #{mauUserId}
         AND NOW() BETWEEN maf_validfrom AND maf_validtil
-        LIMIT 1
     </select>
 
     <insert id="createEtf"
@@ -119,7 +118,6 @@
         ,part_tax_exempt = #{partTaxExempt}
         WHERE etfid = #{etfid}
         AND mag_groupid = #{magGroupId}
-        LIMIT 1
     </update>
 
     <delete id="deleteEtf">
@@ -127,7 +125,6 @@
         FROM etf
         WHERE etfid = #{etfid}
         AND mag_groupid = #{magGroupId}
-        LIMIT 1
     </delete>
 
     <select id="getAllFlowsUntil"
@@ -148,7 +145,7 @@
         WHERE isin = #{isin}
         AND date BETWEEN #{startDate} AND #{endDate}
         ORDER BY date DESC
-        LIMIT 1
+        FETCH FIRST 1 ROWS ONLY
     </select>
 
     <select id="getLatestEtfValue"
@@ -158,7 +155,7 @@
         FROM etfvalues
         WHERE isin = #{isin}
         ORDER BY date DESC
-        LIMIT 1
+        FETCH FIRST 1 ROWS ONLY
     </select>
 
     <select id="getEtfFlowById"
@@ -167,7 +164,6 @@
         <include refid="etfFlowsColumns"/>
         FROM etfflows
         WHERE etfflowid = #{id}
-        LIMIT 1
     </select>
 
     <insert id="createEtfFlow"
@@ -195,14 +191,12 @@
         ,amount = #{amount}
         ,price = #{price}
         WHERE etfflowid = #{etfflowid}
-        LIMIT 1
     </update>
 
     <delete id="deleteEtfFlow">
         DELETE
         FROM etfflows
         WHERE etfflowid = #{id}
-        LIMIT 1
     </delete>
 
     <select id="getAllPreliminaryLumpSum"
@@ -220,7 +214,6 @@
         <include refid="etfPreliminaryLumpSumColumns"/>
         FROM etfpreliminarylumpsum
         WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
-        LIMIT 1
     </select>
 
     <select id="getPreliminaryLumpSumId"
@@ -229,7 +222,6 @@
         FROM etfpreliminarylumpsum
         WHERE met_etfid = #{metEtfid}
         AND "year" = #{year}
-        LIMIT 1
     </select>
 
     <select id="getAllEtfPreliminaryLumpSum"
@@ -302,13 +294,11 @@
         ,amount11 = #{amountNovember}
         ,amount12 = #{amountDecember}
         WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
-        LIMIT 1
     </update>
 
     <delete id="deletePreliminaryLumpSum">
         DELETE
         FROM etfpreliminarylumpsum
         WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
-        LIMIT 1
     </delete>
 </mapper>

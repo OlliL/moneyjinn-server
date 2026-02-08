@@ -34,7 +34,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = {PreDefMoneyflowIdMapper.class, CapitalsourceIdMapper.class,
-        ContractpartnerIdMapper.class, PostingAccountIdMapper.class, UserIdMapper.class})
+        ContractpartnerIdMapper.class, PostingAccountIdMapper.class, UserIdMapper.class, BooleanToIntMapper.class})
 public interface PreDefMoneyflowDataMapper extends IMapstructMapper<PreDefMoneyflow, PreDefMoneyflowData> {
     @Override
     @Mapping(target = "capitalsource.id", source = "mcsCapitalsourceId")

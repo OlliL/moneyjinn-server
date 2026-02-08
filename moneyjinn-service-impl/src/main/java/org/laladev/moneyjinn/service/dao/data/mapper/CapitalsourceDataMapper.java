@@ -37,7 +37,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = {CapitalsourceIdMapper.class, CapitalsourceTypeMapper.class,
-        CapitalsourceStateMapper.class, CapitalsourceImportMapper.class, UserIdMapper.class, GroupIdMapper.class})
+        CapitalsourceStateMapper.class, CapitalsourceImportMapper.class, UserIdMapper.class, GroupIdMapper.class,
+        BooleanToIntMapper.class})
 public interface CapitalsourceDataMapper extends IMapstructMapper<Capitalsource, CapitalsourceData> {
 
     @Override

@@ -42,6 +42,6 @@ public class CapitalsourceData {
     private String comment;
     private LocalDate validTil;
     private LocalDate validFrom;
-    private boolean attGroupUse;
+    private int attGroupUse;
     private Integer importAllowed;
 }

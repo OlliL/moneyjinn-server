@@ -322,10 +322,10 @@ CREATE TRIGGER mib_trg_01 BEFORE UPDATE
     ON impbalance FOR EACH ROW EXECUTE PROCEDURE 
     upd_changedate();
 
-/* journalling on etfvalues */
-DROP TRIGGER IF EXISTS mev_trg_01 ON predefmoneyflows;
-CREATE TRIGGER mev_trg_01 BEFORE UPDATE
-    ON predefmoneyflows FOR EACH ROW EXECUTE PROCEDURE 
+/* journalling on impbalance */
+DROP TRIGGER IF EXISTS mib_trg_02 ON impbalance;
+CREATE TRIGGER mib_trg_02 BEFORE INSERT
+    ON impbalance FOR EACH ROW EXECUTE PROCEDURE
     upd_changedate();
 
 

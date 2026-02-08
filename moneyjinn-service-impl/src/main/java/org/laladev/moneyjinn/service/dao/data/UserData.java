@@ -34,5 +34,5 @@ public class UserData {
     private String name;
     private String password;
     private String role;
-    private boolean changePassword;
+    private int changePassword;
 }

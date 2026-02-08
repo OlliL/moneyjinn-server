@@ -16,7 +16,6 @@
         FROM settings
         WHERE mau_userid = #{mauUserId}
         AND name = #{name}
-        LIMIT 1
     </select>
 
     <insert id="setSetting">
@@ -54,6 +53,5 @@
         FROM settings
         WHERE mau_userid = #{mauUserId}
         AND name = #{name}
-        LIMIT 1
     </delete>
 </mapper>

@@ -2,84 +2,86 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IAccessRelationDaoMapper">
 
-	<sql id="accessRelationColumns">
-                 mau_userid  AS mauUserId
-                ,mag_groupid AS magGroupId
-                ,validfrom   AS validFrom
-                ,validtil    AS validTil
-	</sql>
+    <sql id="accessRelationColumns">
+        mau_userid AS mauUserId
+        ,mag_groupid AS magGroupId
+        ,validfrom AS validFrom
+        ,validtil AS validTil
+    </sql>
 
-	<select id="getAccessRelationById"
+    <select id="getAccessRelationById"
             resultType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
-                SELECT <include refid="accessRelationColumns" />
-                  FROM access_relation
-                 WHERE mau_userid = #{id}
-                   AND #{date} BETWEEN validfrom AND validtil
-                 LIMIT 1
-	</select>
+        SELECT
+        <include refid="accessRelationColumns"/>
+        FROM access_relation
+        WHERE mau_userid = #{id}
+        AND #{date} BETWEEN validfrom AND validtil
+    </select>
 
-	<select id="getAllAccessRelationsById"
-			resultType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
-                SELECT <include refid="accessRelationColumns" />
-                  FROM access_relation
-                 WHERE mau_userid = #{id}
-                 ORDER BY validfrom
-	</select>
+    <select id="getAllAccessRelationsById"
+            resultType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
+        SELECT
+        <include refid="accessRelationColumns"/>
+        FROM access_relation
+        WHERE mau_userid = #{id}
+        ORDER BY validfrom
+    </select>
 
-	<select id="getAllAccessRelationsByIdDate"
-			resultType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
-                SELECT <include refid="accessRelationColumns" />
-                  FROM access_relation
-                 WHERE mau_userid = #{id}
-                   AND validtil >= #{date}
-                 ORDER BY validfrom
-	</select>
+    <select id="getAllAccessRelationsByIdDate"
+            resultType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
+        SELECT
+        <include refid="accessRelationColumns"/>
+        FROM access_relation
+        WHERE mau_userid = #{id}
+        AND validtil >= #{date}
+        ORDER BY validfrom
+    </select>
 
-	<delete id="deleteAllAccessRelation">
-                DELETE
-                  FROM access_relation
-                 WHERE mau_userid = #{id}
-	</delete>
+    <delete id="deleteAllAccessRelation">
+        DELETE
+        FROM access_relation
+        WHERE mau_userid = #{id}
+    </delete>
 
-	<delete id="deleteAccessRelationByDate">
-                DELETE
-                  FROM access_relation
-                 WHERE mau_userid        = #{id}
-                   AND validfrom = #{date}
-	</delete>
+    <delete id="deleteAccessRelationByDate">
+        DELETE
+        FROM access_relation
+        WHERE mau_userid = #{id}
+        AND validfrom = #{date}
+    </delete>
 
-	<update id="updateAccessRelation">
-                UPDATE access_relation
-                   SET mag_groupid = #{accessRelationData.magGroupId}
-                      ,validfrom   = #{accessRelationData.validFrom}
-                      ,validtil    = #{accessRelationData.validTil}
-                 WHERE mau_userid  = #{id}
-                   AND validfrom   = #{date}
-	</update>
+    <update id="updateAccessRelation">
+        UPDATE access_relation
+        SET mag_groupid = #{accessRelationData.magGroupId}
+        ,validfrom = #{accessRelationData.validFrom}
+        ,validtil = #{accessRelationData.validTil}
+        WHERE mau_userid = #{id}
+        AND validfrom = #{date}
+    </update>
 
-	<insert id="createAccessRelation"
-			parameterType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
-                INSERT
-                  INTO access_relation
-                      (mau_userid
-                      ,mag_groupid
-                      ,validfrom
-                      ,validtil
-                      )
-                VALUES
-                      (#{mauUserId}
-                      ,#{magGroupId}
-                      ,#{validFrom}
-                      ,#{validTil}
-                      )
-	</insert>
+    <insert id="createAccessRelation"
+            parameterType="org.laladev.moneyjinn.service.dao.data.AccessRelationData">
+        INSERT
+        INTO access_relation
+        (mau_userid
+        ,mag_groupid
+        ,validfrom
+        ,validtil
+        )
+        VALUES
+        (#{mauUserId}
+        ,#{magGroupId}
+        ,#{validFrom}
+        ,#{validTil}
+        )
+    </insert>
 
-	<select id="getAllUserWithSameGroup" resultType="java.lang.Long">
-                SELECT mau_userid
-                  FROM access_relation
-                 WHERE mag_groupid IN (SELECT mag_groupid
-                                         FROM access_relation
-                                        WHERE mau_userid=#{id})
-                 GROUP BY mau_userid
-	</select>
+    <select id="getAllUserWithSameGroup" resultType="java.lang.Long">
+        SELECT mau_userid
+        FROM access_relation
+        WHERE mag_groupid IN (SELECT mag_groupid
+        FROM access_relation
+        WHERE mau_userid=#{id})
+        GROUP BY mau_userid
+    </select>
 </mapper>
