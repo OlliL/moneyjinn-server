@@ -3,131 +3,147 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMonthlySettlementDaoMapper">
 
     <sql id="monthlySettlementsColumns">
-                 monthlysettlementid       AS id
-                ,mau_userid                AS mauUserId
-                ,mag_groupid               AS magGroupId
-                ,`year`
-                ,`month`
-                ,amount
-                ,mcs_capitalsourceid       AS mcsCapitalsourceId
+        monthlysettlementid AS id
+        ,mau_userid AS mauUserId
+        ,mag_groupid AS magGroupId
+        ,`year`
+        ,`month`
+        ,amount
+        ,mcs_capitalsourceid AS mcsCapitalsourceId
     </sql>
 
     <select id="getAllYears" resultType="java.lang.Integer">
-                SELECT DISTINCT `year`
-                  FROM vw_monthlysettlements
-                 WHERE mar_mau_userid = #{userId}
-                 ORDER BY `year` ASC
+        SELECT DISTINCT `year`
+        FROM vw_monthlysettlements
+        WHERE mar_mau_userid = #{userId}
+        ORDER BY `year` ASC
     </select>
 
     <select id="getAllMonth" resultType="java.lang.Integer">
-                SELECT DISTINCT `month`
-                  FROM vw_monthlysettlements
-                 WHERE mar_mau_userid = #{userId}
-                   AND `year` = #{year}
-                 ORDER BY `month` ASC
+        SELECT DISTINCT `month`
+        FROM vw_monthlysettlements
+        WHERE mar_mau_userid = #{userId}
+        AND `year` = #{year}
+        ORDER BY `month` ASC
     </select>
 
     <select id="getAllMonthlySettlementsByYearMonth"
             resultType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData">
-                SELECT <include refid="monthlySettlementsColumns" />
-                  FROM vw_monthlysettlements
-                 WHERE `month`= #{month}
-                   AND `year` = #{year}
-                   AND mar_mau_userid = #{userId}
-                 ORDER BY CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
-                      ,mcs_capitalsourceid
+        SELECT
+        <include refid="monthlySettlementsColumns"/>
+        FROM vw_monthlysettlements
+        WHERE `month`= #{month}
+        AND `year` = #{year}
+        AND mar_mau_userid = #{userId}
+        ORDER BY CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
+        ,mcs_capitalsourceid
     </select>
 
     <select id="checkMonthlySettlementsExists" resultType="java.lang.Boolean">
-                SELECT 1
-                  FROM monthlysettlements
-                 WHERE mau_userid = #{userId}
-                   AND `year`     = #{year}
-                   AND `month`    = #{month}
-                 LIMIT 1
+        SELECT 1
+        FROM monthlysettlements
+        WHERE mau_userid = #{userId}
+        AND `year` = #{year}
+        AND `month` = #{month}
+        LIMIT 1
     </select>
 
     <select id="getMaxSettlementDate" resultType="java.time.LocalDate">
-                SELECT CONCAT(
-                              CONCAT(
-                                     CONCAT(`year`
-                                           ,'-')
-                                    ,LPAD(`month`,2,'0'))
-                             ,'-01')
+        SELECT CONCAT(
+        CONCAT(
+        CONCAT(`year`
+        ,'-')
+        ,LPAD(`month`,2,'0'))
+        ,'-01')
 
-                  FROM monthlysettlements
-                 WHERE mau_userid = #{userId}
-                 ORDER BY `year`  DESC
-                        , `month` DESC
-                 LIMIT 1
+        FROM monthlysettlements
+        WHERE mau_userid = #{userId}
+        ORDER BY `year` DESC
+        , `month` DESC
+        LIMIT 1
     </select>
 
     <select id="getMinSettlementDate" resultType="java.time.LocalDate">
-                SELECT CONCAT(
-                              CONCAT(
-                                     CONCAT(`year`
-                                           ,'-')
-                                    ,LPAD(`month`,2,'0'))
-                             ,'-01')
+        SELECT CONCAT(
+        CONCAT(
+        CONCAT(`year`
+        ,'-')
+        ,LPAD(`month`,2,'0'))
+        ,'-01')
 
-                  FROM monthlysettlements
-                 WHERE mau_userid = #{userId}
-                 ORDER BY `year`  ASC
-                        , `month` ASC
-                 LIMIT 1
+        FROM monthlysettlements
+        WHERE mau_userid = #{userId}
+        ORDER BY `year` ASC
+        , `month` ASC
+        LIMIT 1
     </select>
 
     <insert id="upsertMonthlySettlement"
             parameterType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="monthlysettlementid">
-                INSERT
-                  INTO monthlysettlements
-                      (mau_userid
-                      ,mag_groupid
-                      ,mcs_capitalsourceid
-                      ,`month`
-                      ,`year`
-                      ,amount
-                      )
-                VALUES
-                      (#{mauUserId}
-                      ,#{magGroupId}
-                      ,#{mcsCapitalsourceId}
-                      ,#{month}
-                      ,#{year}
-                      ,#{amount}
-                      )
-                    ON DUPLICATE KEY
-                UPDATE amount = VALUES(amount)
+        MERGE
+        INTO monthlysettlements
+        USING (
+        SELECT
+        CAST(#{mauUserId} as integer),
+        CAST(#{magGroupId} as integer),
+        CAST(#{mcsCapitalsourceId} as integer),
+        CAST(#{month} as smallint),
+        CAST(#{year} as smallint),
+        CAST(#{amount} as decimal)
+        ) AS source (source_mau_userid, source_mag_groupid, source_mcs_capitalsourceid, source_month, source_year,
+        source_amount)
+        ON (mcs_capitalsourceid = source.source_mcs_capitalsourceid AND "month" = source.source_month AND "year" =
+        source.source_year)
+        WHEN MATCHED THEN
+        UPDATE set amount = source.source_amount
+        WHEN NOT MATCHED THEN
+        INSERT
+        (mau_userid
+        ,mag_groupid
+        ,mcs_capitalsourceid
+        ,"month"
+        ,"year"
+        ,amount
+        )
+        VALUES
+        (source_mau_userid
+        ,source_mag_groupid
+        ,source_mcs_capitalsourceid
+        ,source_month
+        ,source_year
+        ,source_amount
+        )
     </insert>
 
     <delete id="deleteMonthlySettlement">
-                DELETE
-                  FROM monthlysettlements
-                 WHERE mau_userid = #{userId}
-                   AND `year`     = #{year}
-                   AND `month`    = #{month}
+        DELETE
+        FROM monthlysettlements
+        WHERE mau_userid = #{userId}
+        AND `year` = #{year}
+        AND `month` = #{month}
     </delete>
 
     <select id="getAllMonthlySettlementsByRangeAndCapitalsource"
             resultType="org.laladev.moneyjinn.service.dao.data.MonthlySettlementData">
-                SELECT <include refid="monthlySettlementsColumns" />
-                  FROM vw_monthlysettlements
-                 WHERE (
-                              `year` >  #{startYear} AND `year`   <![CDATA[ < ]]>  #{endYear}
-                           OR `year` =  #{startYear} AND `month`  <![CDATA[ >= ]]> #{startMonth} AND #{startYear} <![CDATA[ < ]]> #{endYear}
-                           OR `year` =  #{endYear}   AND `month`  <![CDATA[ <= ]]> #{endMonth}   AND #{startYear} <![CDATA[ < ]]> #{endYear}
-                           OR `year` =  #{startYear} AND `month` BETWEEN #{startMonth} AND #{endMonth} AND #{startYear} = #{endYear}
-                       )
-                   AND mcs_capitalsourceid IN
-                   <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
-                      open="(" separator="," close=")">
-                        #{mcsCapitalsourceId}
-                   </foreach>
-                   AND mar_mau_userid = #{userId}
-                 ORDER BY `year`
-                         ,`month`
-                         ,CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
-                         ,mcs_capitalsourceid
+        SELECT
+        <include refid="monthlySettlementsColumns"/>
+        FROM vw_monthlysettlements
+        WHERE (
+        `year` > #{startYear} AND `year`   <![CDATA[ < ]]>  #{endYear}
+        OR `year` = #{startYear} AND `month`  <![CDATA[ >= ]]> #{startMonth} AND #{startYear} <![CDATA[ < ]]> #{endYear}
+        OR `year` = #{endYear} AND `month`  <![CDATA[ <= ]]> #{endMonth} AND #{startYear} <![CDATA[ < ]]> #{endYear}
+        OR `year` = #{startYear} AND `month` BETWEEN #{startMonth} AND #{endMonth} AND #{startYear} = #{endYear}
+        )
+        AND mcs_capitalsourceid IN
+        <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
+                 open="(" separator="," close=")">
+            #{mcsCapitalsourceId}
+        </foreach>
+        AND mar_mau_userid = #{userId}
+        ORDER BY `year`
+        ,`month`
+        ,CASE WHEN mau_userid = #{userId} THEN 1 ELSE 2 END
+        ,mcs_capitalsourceid
     </select>
 </mapper>

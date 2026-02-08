@@ -15,8 +15,8 @@ import java.util.Objects;
 
 @SpringBootTest
 @ContextConfiguration(classes = {MoneyjinnTestConfiguration.class})
-@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:h2defaults.sql",
-        "classpath:testdata.sql"})
+@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD,
+        scripts = {"classpath:h2reinit.sql", "classpath:h2defaults.sql", "classpath:testdata.sql"})
 @ActiveProfiles("test")
 public abstract class AbstractTest {
     @Inject

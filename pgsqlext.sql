@@ -1,3 +1,5 @@
+SET search_path TO moneyjinn;
+
 /*
  * this view will show all data from moneyflows which is visible
  * to a user. Use mar_mau_userid in your SELECT for your userid. In
@@ -16,7 +18,7 @@ CREATE OR REPLACE VIEW vw_moneyflows (
   ,comment
   ,mpa_postingaccountid
   ,private
-  ) AS
+  ) WITH (SECURITY_INVOKER = 'true') AS
       SELECT mmf.mau_userid
             ,mar.mau_userid
             ,mmf.mag_groupid
@@ -45,22 +47,21 @@ CREATE OR REPLACE VIEW vw_monthlysettlements (
   ,mag_groupid
   ,monthlysettlementid
   ,mcs_capitalsourceid
-  ,`month`
-  ,`year`
+  ,month
+  ,year
   ,amount
-  ) AS
+  ) WITH (SECURITY_INVOKER = 'true') AS
       SELECT mms.mau_userid
             ,mar.mau_userid
             ,mms.mag_groupid
             ,mms.monthlysettlementid
             ,mms.mcs_capitalsourceid
-            ,mms.`month`
-            ,mms.`year`
+            ,mms.month
+            ,mms.year
             ,mms.amount
         FROM monthlysettlements mms
             ,access_relation    mar
-       WHERE TIMESTAMPADD(DAY,-1, TIMESTAMPADD(MONTH,1, CONCAT(`year`,'-',LPAD(`month`,2,'0'),'-01')))
-             /*LAST_DAY(STR_TO_DATE(CONCAT(year,'-',LPAD(month,2,'0'),'-01'),GET_FORMAT(DATE,'ISO'))) */
+       WHERE CONCAT(year,'-',LPAD(month::text,2,'0'),'-01')::date + INTERVAL '1 month' - INTERVAL '1 day'
                          BETWEEN mar.validfrom and mar.validtil
          AND mms.mag_groupid = mar.mag_groupid;
 
@@ -85,7 +86,7 @@ CREATE OR REPLACE VIEW vw_contractpartners (
   ,mpa_postingaccountid
   ,maf_validfrom
   ,maf_validtil
-  ) AS
+  ) WITH (SECURITY_INVOKER = 'true') AS
       SELECT mcp.mau_userid
             ,mar.mau_userid
             ,mcp.mag_groupid
@@ -126,7 +127,7 @@ CREATE OR REPLACE VIEW vw_capitalsources (
   ,import_allowed
   ,maf_validfrom
   ,maf_validtil
-  ) AS
+  ) WITH (SECURITY_INVOKER = 'true') AS
       SELECT mcs.mau_userid
             ,mar.mau_userid
             ,mcs.mag_groupid
@@ -167,7 +168,7 @@ CREATE OR REPLACE VIEW vw_etf (
   ,part_tax_exempt
   ,maf_validfrom
   ,maf_validtil
-  ) AS
+  ) WITH (SECURITY_INVOKER = 'true') AS
       SELECT met.mau_userid
             ,mar.mau_userid
             ,met.mag_groupid
@@ -188,4 +189,143 @@ CREATE OR REPLACE VIEW vw_etf (
        WHERE met.mag_groupid = mar.mag_groupid;
 
 -- FUNCTIONS
+
+-- PROCEDURES
+
+/*
+ * import data which is stored in table imp_data
+ * and try to map the capitalsource and the contractpartner
+ * if possible to the internal IDs (External data comes as
+ * text instead of IDs)
+ *
+ * FIXME: long time not tested.... it probably does NOT work without modification
+ *
+ */
+/*
+DROP PROCEDURE IF EXISTS imp_moneyflows$$
+CREATE PROCEDURE imp_moneyflows (IN pi_userid   INT(10) UNSIGNED
+                                ,IN pi_write    INT(1)  UNSIGNED
+                                )
+READS SQL DATA
+BEGIN
+  DECLARE l_found             BOOLEAN             DEFAULT 'true';
+  DECLARE l_insert            BOOLEAN             DEFAULT 'true';
+  DECLARE l_contractpartnerid INT(10);
+  DECLARE l_capitalsourceid   INT(10);
+  DECLARE l_dataid            INT(10);
+  DECLARE l_date              VARCHAR(100);
+  DECLARE l_amount            VARCHAR(100);
+  DECLARE l_comment           VARCHAR(100);
+
+  DECLARE c_mid CURSOR FOR
+    SELECT mcp.contractpartnerid
+          ,mcs.capitalsourceid
+          ,mid.dataid
+          ,mid.date
+          ,mid.amount
+          ,mid.comment
+      FROM                 imp_data            mid
+           LEFT OUTER JOIN imp_mapping_source  mis ON mid.source  LIKE mis.source_from
+           LEFT OUTER JOIN imp_mapping_partner mip ON mid.partner = mip.partner_from
+           LEFT OUTER JOIN capitalsources      mcs ON IFNULL(mis.source_to,mid.source)   = mcs.comment AND mcs.mau_userid = pi_userid
+           LEFT OUTER JOIN contractpartners    mcp ON IFNULL(mip.partner_to,mid.partner) = mcp.name    AND mcp.mau_userid = pi_userid
+     WHERE mid.status = 1;
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND        SET l_found  := FALSE;
+  DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SET l_insert := FALSE;
+
+  UPDATE imp_data SET status=1 WHERE status=3;
+
+  OPEN c_mid;
+  REPEAT
+    FETCH c_mid INTO l_contractpartnerid, l_capitalsourceid, l_dataid, l_date, l_amount, l_comment;
+    IF l_found THEN
+
+      START TRANSACTION;
+
+      SET l_insert := 'true';
+
+      INSERT INTO moneyflows
+            (mau_userid
+            ,mag_groupid
+            ,bookingdate
+            ,invoicedate
+            ,amount
+            ,mcs_capitalsourceid
+            ,mcp_contractpartnerid
+            ,comment
+            )
+              VALUES
+            (pi_userid
+            ,pi_userid
+            ,str_to_date(l_date,'%d.%m.%Y')
+            ,str_to_date(l_date,'%d.%m.%Y')
+            ,l_amount
+            ,l_capitalsourceid
+            ,l_contractpartnerid
+            ,l_comment
+            );
+
+      IF pi_write = 1 AND l_insert = 'true' THEN
+        COMMIT;
+      ELSE
+        ROLLBACK;
+      END IF;
+      
+      START TRANSACTION;
+      IF l_insert = FALSE THEN
+        UPDATE imp_data 
+           SET status = 3
+         WHERE dataid = l_dataid;
+      ELSE
+        UPDATE imp_data 
+           SET status = 2
+         WHERE dataid = l_dataid;
+      END IF;
+      COMMIT;
+
+    END IF;
+  UNTIL NOT l_found END REPEAT;
+  CLOSE c_mid;
+END;
+$$
+*/
+
+-- TRIGGERS
+
+CREATE OR REPLACE FUNCTION upd_createdate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.createdate = now(); 
+   RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE OR REPLACE FUNCTION upd_changedate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.changedate = now(); 
+   RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+
+/* journalling on predefmoneyflows */
+DROP TRIGGER IF EXISTS mpm_trg_01 ON predefmoneyflows;
+CREATE TRIGGER mpm_trg_01 BEFORE UPDATE
+    ON predefmoneyflows FOR EACH ROW EXECUTE PROCEDURE 
+    upd_createdate();
+
+/* journalling on impbalance */
+DROP TRIGGER IF EXISTS mib_trg_01 ON impbalance;
+CREATE TRIGGER mib_trg_01 BEFORE UPDATE
+    ON impbalance FOR EACH ROW EXECUTE PROCEDURE 
+    upd_changedate();
+
+/* journalling on etfvalues */
+DROP TRIGGER IF EXISTS mev_trg_01 ON predefmoneyflows;
+CREATE TRIGGER mev_trg_01 BEFORE UPDATE
+    ON predefmoneyflows FOR EACH ROW EXECUTE PROCEDURE 
+    upd_changedate();
+
 

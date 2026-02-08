@@ -99,7 +99,7 @@ class CreateImportedMoneyflowReceiptsTest extends AbstractWebUserControllerTest 
     @Override
     protected void callUsecaseEmptyDatabase() throws Exception {
         this.test_supportedFile_CreatedAndEmptyResponse(
-                new ImportedMoneyflowReceiptTransportBuilder().forReceipt1().build(), UserTransportBuilder.ADMIN_ID,
+                new ImportedMoneyflowReceiptTransportBuilder().forJpegReceipt().build(), UserTransportBuilder.ADMIN_ID,
                 GroupTransportBuilder.ADMINGROUP_ID);
     }
 }

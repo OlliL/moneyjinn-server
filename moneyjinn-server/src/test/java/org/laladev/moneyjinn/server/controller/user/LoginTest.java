@@ -104,7 +104,7 @@ class LoginTest extends AbstractControllerTest {
     }
 
     @Test
-    @Sql("classpath:h2defaults.sql")
+    @Sql(scripts = {"classpath:h2reinit.sql", "classpath:h2defaults.sql"})
     void test_emptyDatabase_noException() throws Exception {
         super.setUsername(UserTransportBuilder.ADMIN_NAME);
         super.setPassword(UserTransportBuilder.ADMIN_PASSWORD);
