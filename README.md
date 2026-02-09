@@ -28,8 +28,6 @@
    GRANT CONNECT ON DATABASE moneyjinn TO moneyjinn_hbci_app;
    ```
 - configure client (see <a href="https://github.com/OlliL/moneyjinn-client/blob/main/README.md">Client README</a>)
-- the initial username/password are admin/admin
-- the password must be changed on first login
 
 # Notes
 
