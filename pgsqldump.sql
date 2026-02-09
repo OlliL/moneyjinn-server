@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict EhXvAkveJZ0bc0PeOPPDZdOptn8MvaQdlmwIyD103gPyobEOaMbVWOe2z5feiaX
+\restrict Vf8hyfZwSZoOZzM634FQtyeI0Uuvs9HBK1HW9jLaa9jv9jaSIdYqke1tyMxXbE3
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -52,8 +52,8 @@ ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT mca_mcp_pk_01
 ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_mau_pk;
 ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_mag_pk;
 DROP TRIGGER mpm_trg_01 ON moneyjinn.predefmoneyflows;
+DROP TRIGGER mib_trg_02 ON moneyjinn.impbalance;
 DROP TRIGGER mib_trg_01 ON moneyjinn.impbalance;
-DROP TRIGGER mev_trg_01 ON moneyjinn.predefmoneyflows;
 DROP INDEX moneyjinn.mse_mpa_pk;
 DROP INDEX moneyjinn.mse_mmf_pk;
 DROP INDEX moneyjinn.mse_mau_pk;
@@ -85,6 +85,12 @@ DROP INDEX moneyjinn.mcp_mau_pk;
 DROP INDEX moneyjinn.mcp_mag_pk;
 DROP INDEX moneyjinn.mca_mcp_pk_01;
 DROP INDEX moneyjinn.mar_i_01;
+ALTER TABLE ONLY moneyjinn_hbci.balance_daily DROP CONSTRAINT hbci_i_04;
+ALTER TABLE ONLY moneyjinn_hbci.account_movements DROP CONSTRAINT hbci_i_03;
+ALTER TABLE ONLY moneyjinn_hbci.balance_monthly DROP CONSTRAINT hbci_i_02;
+ALTER TABLE ONLY moneyjinn_hbci.balance_monthly DROP CONSTRAINT balance_monthly_pkey;
+ALTER TABLE ONLY moneyjinn_hbci.balance_daily DROP CONSTRAINT balance_daily_pkey;
+ALTER TABLE ONLY moneyjinn_hbci.account_movements DROP CONSTRAINT account_movements_pkey;
 ALTER TABLE ONLY moneyjinn.settings DROP CONSTRAINT settings_pkey;
 ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT predefmoneyflows_pkey;
 ALTER TABLE ONLY moneyjinn.postingaccounts DROP CONSTRAINT postingaccounts_pkey;
@@ -120,6 +126,9 @@ ALTER TABLE ONLY moneyjinn.capitalsources DROP CONSTRAINT capitalsources_pkey;
 ALTER TABLE ONLY moneyjinn.access_users DROP CONSTRAINT access_users_pkey;
 ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT access_relation_pkey;
 ALTER TABLE ONLY moneyjinn.access_groups DROP CONSTRAINT access_groups_pkey;
+ALTER TABLE moneyjinn_hbci.balance_monthly ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE moneyjinn_hbci.balance_daily ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE moneyjinn_hbci.account_movements ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE moneyjinn.predefmoneyflows ALTER COLUMN predefmoneyflowid DROP DEFAULT;
 ALTER TABLE moneyjinn.postingaccounts ALTER COLUMN postingaccountid DROP DEFAULT;
 ALTER TABLE moneyjinn.monthlysettlements ALTER COLUMN monthlysettlementid DROP DEFAULT;
@@ -139,6 +148,12 @@ ALTER TABLE moneyjinn.cmp_data_formats ALTER COLUMN formatid DROP DEFAULT;
 ALTER TABLE moneyjinn.capitalsources ALTER COLUMN capitalsourceid DROP DEFAULT;
 ALTER TABLE moneyjinn.access_users ALTER COLUMN userid DROP DEFAULT;
 ALTER TABLE moneyjinn.access_groups ALTER COLUMN groupid DROP DEFAULT;
+DROP SEQUENCE moneyjinn_hbci.balance_monthly_id_seq;
+DROP TABLE moneyjinn_hbci.balance_monthly;
+DROP SEQUENCE moneyjinn_hbci.balance_daily_id_seq;
+DROP TABLE moneyjinn_hbci.balance_daily;
+DROP SEQUENCE moneyjinn_hbci.account_movements_id_seq;
+DROP TABLE moneyjinn_hbci.account_movements;
 DROP VIEW moneyjinn.vw_monthlysettlements;
 DROP VIEW moneyjinn.vw_moneyflows;
 DROP VIEW moneyjinn.vw_etf;
@@ -190,6 +205,7 @@ DROP SEQUENCE moneyjinn.access_groups_groupid_seq;
 DROP TABLE moneyjinn.access_groups;
 DROP FUNCTION moneyjinn.upd_createdate();
 DROP FUNCTION moneyjinn.upd_changedate();
+DROP SCHEMA moneyjinn_hbci;
 DROP SCHEMA moneyjinn;
 --
 -- Name: moneyjinn; Type: SCHEMA; Schema: -; Owner: postgres
@@ -199,6 +215,15 @@ CREATE SCHEMA moneyjinn;
 
 
 ALTER SCHEMA moneyjinn OWNER TO postgres;
+
+--
+-- Name: moneyjinn_hbci; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA moneyjinn_hbci;
+
+
+ALTER SCHEMA moneyjinn_hbci OWNER TO postgres;
 
 --
 -- Name: upd_changedate(); Type: FUNCTION; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -237,7 +262,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: access_groups; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: access_groups; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.access_groups (
@@ -246,10 +271,10 @@ CREATE TABLE moneyjinn.access_groups (
 );
 
 
-ALTER TABLE moneyjinn.access_groups OWNER TO postgres;
+ALTER TABLE moneyjinn.access_groups OWNER TO moneyjinn_owner;
 
 --
--- Name: access_groups_groupid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: access_groups_groupid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.access_groups_groupid_seq
@@ -260,17 +285,17 @@ CREATE SEQUENCE moneyjinn.access_groups_groupid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.access_groups_groupid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.access_groups_groupid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: access_groups_groupid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: access_groups_groupid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.access_groups_groupid_seq OWNED BY moneyjinn.access_groups.groupid;
 
 
 --
--- Name: access_relation; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: access_relation; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.access_relation (
@@ -281,10 +306,10 @@ CREATE TABLE moneyjinn.access_relation (
 );
 
 
-ALTER TABLE moneyjinn.access_relation OWNER TO postgres;
+ALTER TABLE moneyjinn.access_relation OWNER TO moneyjinn_owner;
 
 --
--- Name: access_users; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: access_users; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.access_users (
@@ -296,10 +321,10 @@ CREATE TABLE moneyjinn.access_users (
 );
 
 
-ALTER TABLE moneyjinn.access_users OWNER TO postgres;
+ALTER TABLE moneyjinn.access_users OWNER TO moneyjinn_owner;
 
 --
--- Name: access_users_userid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: access_users_userid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.access_users_userid_seq
@@ -310,17 +335,17 @@ CREATE SEQUENCE moneyjinn.access_users_userid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.access_users_userid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.access_users_userid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: access_users_userid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: access_users_userid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.access_users_userid_seq OWNED BY moneyjinn.access_users.userid;
 
 
 --
--- Name: capitalsources; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: capitalsources; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.capitalsources (
@@ -339,10 +364,10 @@ CREATE TABLE moneyjinn.capitalsources (
 );
 
 
-ALTER TABLE moneyjinn.capitalsources OWNER TO postgres;
+ALTER TABLE moneyjinn.capitalsources OWNER TO moneyjinn_owner;
 
 --
--- Name: capitalsources_capitalsourceid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: capitalsources_capitalsourceid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.capitalsources_capitalsourceid_seq
@@ -353,17 +378,17 @@ CREATE SEQUENCE moneyjinn.capitalsources_capitalsourceid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.capitalsources_capitalsourceid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.capitalsources_capitalsourceid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: capitalsources_capitalsourceid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: capitalsources_capitalsourceid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.capitalsources_capitalsourceid_seq OWNED BY moneyjinn.capitalsources.capitalsourceid;
 
 
 --
--- Name: cmp_data_formats; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: cmp_data_formats; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.cmp_data_formats (
@@ -391,10 +416,10 @@ CREATE TABLE moneyjinn.cmp_data_formats (
 );
 
 
-ALTER TABLE moneyjinn.cmp_data_formats OWNER TO postgres;
+ALTER TABLE moneyjinn.cmp_data_formats OWNER TO moneyjinn_owner;
 
 --
--- Name: cmp_data_formats_formatid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: cmp_data_formats_formatid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.cmp_data_formats_formatid_seq
@@ -405,17 +430,17 @@ CREATE SEQUENCE moneyjinn.cmp_data_formats_formatid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.cmp_data_formats_formatid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.cmp_data_formats_formatid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: cmp_data_formats_formatid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: cmp_data_formats_formatid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.cmp_data_formats_formatid_seq OWNED BY moneyjinn.cmp_data_formats.formatid;
 
 
 --
--- Name: contractpartneraccounts; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartneraccounts; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.contractpartneraccounts (
@@ -426,10 +451,10 @@ CREATE TABLE moneyjinn.contractpartneraccounts (
 );
 
 
-ALTER TABLE moneyjinn.contractpartneraccounts OWNER TO postgres;
+ALTER TABLE moneyjinn.contractpartneraccounts OWNER TO moneyjinn_owner;
 
 --
--- Name: contractpartneraccounts_contractpartneraccountid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartneraccounts_contractpartneraccountid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq
@@ -440,17 +465,17 @@ CREATE SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: contractpartneraccounts_contractpartneraccountid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartneraccounts_contractpartneraccountid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq OWNED BY moneyjinn.contractpartneraccounts.contractpartneraccountid;
 
 
 --
--- Name: contractpartners; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartners; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.contractpartners (
@@ -469,10 +494,10 @@ CREATE TABLE moneyjinn.contractpartners (
 );
 
 
-ALTER TABLE moneyjinn.contractpartners OWNER TO postgres;
+ALTER TABLE moneyjinn.contractpartners OWNER TO moneyjinn_owner;
 
 --
--- Name: contractpartners_contractpartnerid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartners_contractpartnerid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq
@@ -483,17 +508,17 @@ CREATE SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: contractpartners_contractpartnerid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartners_contractpartnerid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq OWNED BY moneyjinn.contractpartners.contractpartnerid;
 
 
 --
--- Name: etf; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: etf; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.etf (
@@ -512,10 +537,10 @@ CREATE TABLE moneyjinn.etf (
 );
 
 
-ALTER TABLE moneyjinn.etf OWNER TO postgres;
+ALTER TABLE moneyjinn.etf OWNER TO moneyjinn_owner;
 
 --
--- Name: etf_etfid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: etf_etfid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.etf_etfid_seq
@@ -526,17 +551,17 @@ CREATE SEQUENCE moneyjinn.etf_etfid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.etf_etfid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.etf_etfid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: etf_etfid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: etf_etfid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.etf_etfid_seq OWNED BY moneyjinn.etf.etfid;
 
 
 --
--- Name: etfflows; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: etfflows; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.etfflows (
@@ -548,10 +573,10 @@ CREATE TABLE moneyjinn.etfflows (
 );
 
 
-ALTER TABLE moneyjinn.etfflows OWNER TO postgres;
+ALTER TABLE moneyjinn.etfflows OWNER TO moneyjinn_owner;
 
 --
--- Name: etfflows_etfflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: etfflows_etfflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.etfflows_etfflowid_seq
@@ -562,17 +587,17 @@ CREATE SEQUENCE moneyjinn.etfflows_etfflowid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.etfflows_etfflowid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.etfflows_etfflowid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: etfflows_etfflowid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: etfflows_etfflowid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.etfflows_etfflowid_seq OWNED BY moneyjinn.etfflows.etfflowid;
 
 
 --
--- Name: etfpreliminarylumpsum; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: etfpreliminarylumpsum; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.etfpreliminarylumpsum (
@@ -596,10 +621,10 @@ CREATE TABLE moneyjinn.etfpreliminarylumpsum (
 );
 
 
-ALTER TABLE moneyjinn.etfpreliminarylumpsum OWNER TO postgres;
+ALTER TABLE moneyjinn.etfpreliminarylumpsum OWNER TO moneyjinn_owner;
 
 --
--- Name: etfpreliminarylumpsum_etfpreliminarylumpsumid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: etfpreliminarylumpsum_etfpreliminarylumpsumid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq
@@ -610,17 +635,17 @@ CREATE SEQUENCE moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: etfpreliminarylumpsum_etfpreliminarylumpsumid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: etfpreliminarylumpsum_etfpreliminarylumpsumid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq OWNED BY moneyjinn.etfpreliminarylumpsum.etfpreliminarylumpsumid;
 
 
 --
--- Name: etfvalues; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: etfvalues; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.etfvalues (
@@ -632,10 +657,10 @@ CREATE TABLE moneyjinn.etfvalues (
 );
 
 
-ALTER TABLE moneyjinn.etfvalues OWNER TO postgres;
+ALTER TABLE moneyjinn.etfvalues OWNER TO moneyjinn_owner;
 
 --
--- Name: imp_data; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: imp_data; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.imp_data (
@@ -649,10 +674,10 @@ CREATE TABLE moneyjinn.imp_data (
 );
 
 
-ALTER TABLE moneyjinn.imp_data OWNER TO postgres;
+ALTER TABLE moneyjinn.imp_data OWNER TO moneyjinn_owner;
 
 --
--- Name: imp_data_dataid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: imp_data_dataid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.imp_data_dataid_seq
@@ -663,17 +688,17 @@ CREATE SEQUENCE moneyjinn.imp_data_dataid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.imp_data_dataid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.imp_data_dataid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: imp_data_dataid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: imp_data_dataid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.imp_data_dataid_seq OWNED BY moneyjinn.imp_data.dataid;
 
 
 --
--- Name: imp_mapping_partner; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: imp_mapping_partner; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.imp_mapping_partner (
@@ -682,10 +707,10 @@ CREATE TABLE moneyjinn.imp_mapping_partner (
 );
 
 
-ALTER TABLE moneyjinn.imp_mapping_partner OWNER TO postgres;
+ALTER TABLE moneyjinn.imp_mapping_partner OWNER TO moneyjinn_owner;
 
 --
--- Name: imp_mapping_source; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: imp_mapping_source; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.imp_mapping_source (
@@ -694,10 +719,10 @@ CREATE TABLE moneyjinn.imp_mapping_source (
 );
 
 
-ALTER TABLE moneyjinn.imp_mapping_source OWNER TO postgres;
+ALTER TABLE moneyjinn.imp_mapping_source OWNER TO moneyjinn_owner;
 
 --
--- Name: impbalance; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: impbalance; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.impbalance (
@@ -707,10 +732,10 @@ CREATE TABLE moneyjinn.impbalance (
 );
 
 
-ALTER TABLE moneyjinn.impbalance OWNER TO postgres;
+ALTER TABLE moneyjinn.impbalance OWNER TO moneyjinn_owner;
 
 --
--- Name: impmoneyflowreceipts; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflowreceipts; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.impmoneyflowreceipts (
@@ -723,10 +748,10 @@ CREATE TABLE moneyjinn.impmoneyflowreceipts (
 );
 
 
-ALTER TABLE moneyjinn.impmoneyflowreceipts OWNER TO postgres;
+ALTER TABLE moneyjinn.impmoneyflowreceipts OWNER TO moneyjinn_owner;
 
 --
--- Name: impmoneyflowreceipts_impmoneyflowreceiptid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflowreceipts_impmoneyflowreceiptid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq
@@ -737,17 +762,17 @@ CREATE SEQUENCE moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: impmoneyflowreceipts_impmoneyflowreceiptid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflowreceipts_impmoneyflowreceiptid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq OWNED BY moneyjinn.impmoneyflowreceipts.impmoneyflowreceiptid;
 
 
 --
--- Name: impmoneyflows; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflows; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.impmoneyflows (
@@ -765,10 +790,10 @@ CREATE TABLE moneyjinn.impmoneyflows (
 );
 
 
-ALTER TABLE moneyjinn.impmoneyflows OWNER TO postgres;
+ALTER TABLE moneyjinn.impmoneyflows OWNER TO moneyjinn_owner;
 
 --
--- Name: impmoneyflows_impmoneyflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflows_impmoneyflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.impmoneyflows_impmoneyflowid_seq
@@ -779,17 +804,17 @@ CREATE SEQUENCE moneyjinn.impmoneyflows_impmoneyflowid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.impmoneyflows_impmoneyflowid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.impmoneyflows_impmoneyflowid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: impmoneyflows_impmoneyflowid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflows_impmoneyflowid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.impmoneyflows_impmoneyflowid_seq OWNED BY moneyjinn.impmoneyflows.impmoneyflowid;
 
 
 --
--- Name: impmonthlysettlements; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: impmonthlysettlements; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.impmonthlysettlements (
@@ -802,10 +827,10 @@ CREATE TABLE moneyjinn.impmonthlysettlements (
 );
 
 
-ALTER TABLE moneyjinn.impmonthlysettlements OWNER TO postgres;
+ALTER TABLE moneyjinn.impmonthlysettlements OWNER TO moneyjinn_owner;
 
 --
--- Name: impmonthlysettlements_impmonthlysettlementid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: impmonthlysettlements_impmonthlysettlementid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq
@@ -816,17 +841,17 @@ CREATE SEQUENCE moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: impmonthlysettlements_impmonthlysettlementid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: impmonthlysettlements_impmonthlysettlementid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq OWNED BY moneyjinn.impmonthlysettlements.impmonthlysettlementid;
 
 
 --
--- Name: moneyflowreceipts; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowreceipts; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.moneyflowreceipts (
@@ -837,10 +862,10 @@ CREATE TABLE moneyjinn.moneyflowreceipts (
 );
 
 
-ALTER TABLE moneyjinn.moneyflowreceipts OWNER TO postgres;
+ALTER TABLE moneyjinn.moneyflowreceipts OWNER TO moneyjinn_owner;
 
 --
--- Name: moneyflowreceipts_moneyflowreceiptid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowreceipts_moneyflowreceiptid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq
@@ -851,17 +876,17 @@ CREATE SEQUENCE moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: moneyflowreceipts_moneyflowreceiptid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowreceipts_moneyflowreceiptid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq OWNED BY moneyjinn.moneyflowreceipts.moneyflowreceiptid;
 
 
 --
--- Name: moneyflows; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.moneyflows (
@@ -879,10 +904,10 @@ CREATE TABLE moneyjinn.moneyflows (
 );
 
 
-ALTER TABLE moneyjinn.moneyflows OWNER TO postgres;
+ALTER TABLE moneyjinn.moneyflows OWNER TO moneyjinn_owner;
 
 --
--- Name: moneyflows_moneyflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows_moneyflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.moneyflows_moneyflowid_seq
@@ -893,17 +918,17 @@ CREATE SEQUENCE moneyjinn.moneyflows_moneyflowid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.moneyflows_moneyflowid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.moneyflows_moneyflowid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: moneyflows_moneyflowid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows_moneyflowid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.moneyflows_moneyflowid_seq OWNED BY moneyjinn.moneyflows.moneyflowid;
 
 
 --
--- Name: moneyflowsplitentries; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowsplitentries; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.moneyflowsplitentries (
@@ -915,10 +940,10 @@ CREATE TABLE moneyjinn.moneyflowsplitentries (
 );
 
 
-ALTER TABLE moneyjinn.moneyflowsplitentries OWNER TO postgres;
+ALTER TABLE moneyjinn.moneyflowsplitentries OWNER TO moneyjinn_owner;
 
 --
--- Name: moneyflowsplitentries_moneyflowsplitentryid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowsplitentries_moneyflowsplitentryid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq
@@ -929,17 +954,17 @@ CREATE SEQUENCE moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: moneyflowsplitentries_moneyflowsplitentryid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowsplitentries_moneyflowsplitentryid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq OWNED BY moneyjinn.moneyflowsplitentries.moneyflowsplitentryid;
 
 
 --
--- Name: monthlysettlements; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: monthlysettlements; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.monthlysettlements (
@@ -953,10 +978,10 @@ CREATE TABLE moneyjinn.monthlysettlements (
 );
 
 
-ALTER TABLE moneyjinn.monthlysettlements OWNER TO postgres;
+ALTER TABLE moneyjinn.monthlysettlements OWNER TO moneyjinn_owner;
 
 --
--- Name: monthlysettlements_monthlysettlementid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: monthlysettlements_monthlysettlementid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.monthlysettlements_monthlysettlementid_seq
@@ -967,17 +992,17 @@ CREATE SEQUENCE moneyjinn.monthlysettlements_monthlysettlementid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.monthlysettlements_monthlysettlementid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.monthlysettlements_monthlysettlementid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: monthlysettlements_monthlysettlementid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: monthlysettlements_monthlysettlementid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.monthlysettlements_monthlysettlementid_seq OWNED BY moneyjinn.monthlysettlements.monthlysettlementid;
 
 
 --
--- Name: postingaccounts; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: postingaccounts; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.postingaccounts (
@@ -986,10 +1011,10 @@ CREATE TABLE moneyjinn.postingaccounts (
 );
 
 
-ALTER TABLE moneyjinn.postingaccounts OWNER TO postgres;
+ALTER TABLE moneyjinn.postingaccounts OWNER TO moneyjinn_owner;
 
 --
--- Name: postingaccounts_postingaccountid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: postingaccounts_postingaccountid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.postingaccounts_postingaccountid_seq
@@ -1000,17 +1025,17 @@ CREATE SEQUENCE moneyjinn.postingaccounts_postingaccountid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.postingaccounts_postingaccountid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.postingaccounts_postingaccountid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: postingaccounts_postingaccountid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: postingaccounts_postingaccountid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.postingaccounts_postingaccountid_seq OWNED BY moneyjinn.postingaccounts.postingaccountid;
 
 
 --
--- Name: predefmoneyflows; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: predefmoneyflows; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.predefmoneyflows (
@@ -1027,10 +1052,10 @@ CREATE TABLE moneyjinn.predefmoneyflows (
 );
 
 
-ALTER TABLE moneyjinn.predefmoneyflows OWNER TO postgres;
+ALTER TABLE moneyjinn.predefmoneyflows OWNER TO moneyjinn_owner;
 
 --
--- Name: predefmoneyflows_predefmoneyflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: postgres
+-- Name: predefmoneyflows_predefmoneyflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE SEQUENCE moneyjinn.predefmoneyflows_predefmoneyflowid_seq
@@ -1041,17 +1066,17 @@ CREATE SEQUENCE moneyjinn.predefmoneyflows_predefmoneyflowid_seq
     CACHE 1;
 
 
-ALTER SEQUENCE moneyjinn.predefmoneyflows_predefmoneyflowid_seq OWNER TO postgres;
+ALTER SEQUENCE moneyjinn.predefmoneyflows_predefmoneyflowid_seq OWNER TO moneyjinn_owner;
 
 --
--- Name: predefmoneyflows_predefmoneyflowid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: postgres
+-- Name: predefmoneyflows_predefmoneyflowid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER SEQUENCE moneyjinn.predefmoneyflows_predefmoneyflowid_seq OWNED BY moneyjinn.predefmoneyflows.predefmoneyflowid;
 
 
 --
--- Name: settings; Type: TABLE; Schema: moneyjinn; Owner: postgres
+-- Name: settings; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TABLE moneyjinn.settings (
@@ -1061,7 +1086,7 @@ CREATE TABLE moneyjinn.settings (
 );
 
 
-ALTER TABLE moneyjinn.settings OWNER TO postgres;
+ALTER TABLE moneyjinn.settings OWNER TO moneyjinn_owner;
 
 --
 -- Name: vw_capitalsources; Type: VIEW; Schema: moneyjinn; Owner: postgres
@@ -1163,7 +1188,7 @@ CREATE VIEW moneyjinn.vw_moneyflows WITH (security_invoker='true') AS
     mmf.private
    FROM moneyjinn.moneyflows mmf,
     moneyjinn.access_relation mar
-  WHERE (((mmf.bookingdate >= mar.validfrom) AND (mmf.bookingdate <= mar.validtil)) AND (mmf.mag_groupid = mar.mag_groupid));
+  WHERE ((mmf.bookingdate >= mar.validfrom) AND (mmf.bookingdate <= mar.validtil) AND (mmf.mag_groupid = mar.mag_groupid));
 
 
 ALTER VIEW moneyjinn.vw_moneyflows OWNER TO postgres;
@@ -1183,146 +1208,312 @@ CREATE VIEW moneyjinn.vw_monthlysettlements WITH (security_invoker='true') AS
     mms.amount
    FROM moneyjinn.monthlysettlements mms,
     moneyjinn.access_relation mar
-  WHERE ((((((concat(mms.year, '-', lpad((mms.month)::text, 2, '0'::text), '-01'))::date + '1 mon'::interval) - '1 day'::interval) >= mar.validfrom) AND ((((concat(mms.year, '-', lpad((mms.month)::text, 2, '0'::text), '-01'))::date + '1 mon'::interval) - '1 day'::interval) <= mar.validtil)) AND (mms.mag_groupid = mar.mag_groupid));
+  WHERE (((((concat(mms.year, '-', lpad((mms.month)::text, 2, '0'::text), '-01'))::date + '1 mon'::interval) - '1 day'::interval) >= mar.validfrom) AND ((((concat(mms.year, '-', lpad((mms.month)::text, 2, '0'::text), '-01'))::date + '1 mon'::interval) - '1 day'::interval) <= mar.validtil) AND (mms.mag_groupid = mar.mag_groupid));
 
 
 ALTER VIEW moneyjinn.vw_monthlysettlements OWNER TO postgres;
 
 --
--- Name: access_groups groupid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: account_movements; Type: TABLE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+CREATE TABLE moneyjinn_hbci.account_movements (
+    id bigint NOT NULL,
+    creation_time timestamp without time zone NOT NULL,
+    my_iban character varying(34) DEFAULT NULL::character varying,
+    my_bic character varying(11) DEFAULT NULL::character varying,
+    my_accountnumber bigint NOT NULL,
+    my_bankcode integer NOT NULL,
+    booking_date date NOT NULL,
+    value_date date NOT NULL,
+    invoice_timestamp timestamp without time zone,
+    other_iban character varying(34) DEFAULT NULL::character varying,
+    other_bic character varying(11) DEFAULT NULL::character varying,
+    other_accountnumber bigint,
+    other_bankcode integer,
+    other_name character varying(54) DEFAULT NULL::character varying,
+    charge_value numeric(15,2) DEFAULT NULL::numeric,
+    charge_currency character varying(3) DEFAULT NULL::character varying,
+    original_value numeric(15,2) DEFAULT NULL::numeric,
+    original_currency character varying(3) DEFAULT NULL::character varying,
+    movement_value numeric(15,2) NOT NULL,
+    movement_currency character varying(3) NOT NULL,
+    movement_reason text,
+    movement_type_code integer NOT NULL,
+    movement_type_text character varying(31) DEFAULT NULL::character varying,
+    customer_reference character varying(16) NOT NULL,
+    bank_reference character varying(16) DEFAULT NULL::character varying,
+    cancellation integer NOT NULL,
+    additional_information character varying(512) DEFAULT NULL::character varying,
+    additional_key integer,
+    prima_nota character varying(16) DEFAULT NULL::character varying,
+    balance_date date NOT NULL,
+    balance_value numeric(15,2) NOT NULL,
+    balance_currency character varying(3) NOT NULL
+);
+
+
+ALTER TABLE moneyjinn_hbci.account_movements OWNER TO moneyjinn_hbci_owner;
+
+--
+-- Name: account_movements_id_seq; Type: SEQUENCE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+CREATE SEQUENCE moneyjinn_hbci.account_movements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE moneyjinn_hbci.account_movements_id_seq OWNER TO moneyjinn_hbci_owner;
+
+--
+-- Name: account_movements_id_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER SEQUENCE moneyjinn_hbci.account_movements_id_seq OWNED BY moneyjinn_hbci.account_movements.id;
+
+
+--
+-- Name: balance_daily; Type: TABLE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+CREATE TABLE moneyjinn_hbci.balance_daily (
+    id bigint NOT NULL,
+    my_iban character varying(34) NOT NULL,
+    my_bic character varying(11) NOT NULL,
+    my_accountnumber bigint NOT NULL,
+    my_bankcode integer NOT NULL,
+    balance_date date NOT NULL,
+    last_transaction_date timestamp without time zone NOT NULL,
+    balance_available_value numeric(10,2) NOT NULL,
+    line_of_credit_value numeric(10,2) NOT NULL,
+    balance_currency character varying(3) NOT NULL,
+    last_balance_update timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE moneyjinn_hbci.balance_daily OWNER TO moneyjinn_hbci_owner;
+
+--
+-- Name: balance_daily_id_seq; Type: SEQUENCE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+CREATE SEQUENCE moneyjinn_hbci.balance_daily_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE moneyjinn_hbci.balance_daily_id_seq OWNER TO moneyjinn_hbci_owner;
+
+--
+-- Name: balance_daily_id_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER SEQUENCE moneyjinn_hbci.balance_daily_id_seq OWNED BY moneyjinn_hbci.balance_daily.id;
+
+
+--
+-- Name: balance_monthly; Type: TABLE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+CREATE TABLE moneyjinn_hbci.balance_monthly (
+    id bigint NOT NULL,
+    my_iban character varying(34) NOT NULL,
+    my_bic character varying(11) NOT NULL,
+    my_accountnumber bigint NOT NULL,
+    my_bankcode integer NOT NULL,
+    balance_year smallint NOT NULL,
+    balance_month smallint NOT NULL,
+    balance_value numeric(10,2) NOT NULL,
+    balance_currency character varying(3) NOT NULL
+);
+
+
+ALTER TABLE moneyjinn_hbci.balance_monthly OWNER TO moneyjinn_hbci_owner;
+
+--
+-- Name: balance_monthly_id_seq; Type: SEQUENCE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+CREATE SEQUENCE moneyjinn_hbci.balance_monthly_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE moneyjinn_hbci.balance_monthly_id_seq OWNER TO moneyjinn_hbci_owner;
+
+--
+-- Name: balance_monthly_id_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER SEQUENCE moneyjinn_hbci.balance_monthly_id_seq OWNED BY moneyjinn_hbci.balance_monthly.id;
+
+
+--
+-- Name: access_groups groupid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_groups ALTER COLUMN groupid SET DEFAULT nextval('moneyjinn.access_groups_groupid_seq'::regclass);
 
 
 --
--- Name: access_users userid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: access_users userid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_users ALTER COLUMN userid SET DEFAULT nextval('moneyjinn.access_users_userid_seq'::regclass);
 
 
 --
--- Name: capitalsources capitalsourceid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: capitalsources capitalsourceid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.capitalsources ALTER COLUMN capitalsourceid SET DEFAULT nextval('moneyjinn.capitalsources_capitalsourceid_seq'::regclass);
 
 
 --
--- Name: cmp_data_formats formatid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: cmp_data_formats formatid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.cmp_data_formats ALTER COLUMN formatid SET DEFAULT nextval('moneyjinn.cmp_data_formats_formatid_seq'::regclass);
 
 
 --
--- Name: contractpartneraccounts contractpartneraccountid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartneraccounts contractpartneraccountid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts ALTER COLUMN contractpartneraccountid SET DEFAULT nextval('moneyjinn.contractpartneraccounts_contractpartneraccountid_seq'::regclass);
 
 
 --
--- Name: contractpartners contractpartnerid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartners contractpartnerid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartners ALTER COLUMN contractpartnerid SET DEFAULT nextval('moneyjinn.contractpartners_contractpartnerid_seq'::regclass);
 
 
 --
--- Name: etf etfid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: etf etfid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etf ALTER COLUMN etfid SET DEFAULT nextval('moneyjinn.etf_etfid_seq'::regclass);
 
 
 --
--- Name: etfflows etfflowid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: etfflows etfflowid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfflows ALTER COLUMN etfflowid SET DEFAULT nextval('moneyjinn.etfflows_etfflowid_seq'::regclass);
 
 
 --
--- Name: etfpreliminarylumpsum etfpreliminarylumpsumid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: etfpreliminarylumpsum etfpreliminarylumpsumid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum ALTER COLUMN etfpreliminarylumpsumid SET DEFAULT nextval('moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq'::regclass);
 
 
 --
--- Name: imp_data dataid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: imp_data dataid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.imp_data ALTER COLUMN dataid SET DEFAULT nextval('moneyjinn.imp_data_dataid_seq'::regclass);
 
 
 --
--- Name: impmoneyflowreceipts impmoneyflowreceiptid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflowreceipts impmoneyflowreceiptid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts ALTER COLUMN impmoneyflowreceiptid SET DEFAULT nextval('moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq'::regclass);
 
 
 --
--- Name: impmoneyflows impmoneyflowid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflows impmoneyflowid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflows ALTER COLUMN impmoneyflowid SET DEFAULT nextval('moneyjinn.impmoneyflows_impmoneyflowid_seq'::regclass);
 
 
 --
--- Name: impmonthlysettlements impmonthlysettlementid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: impmonthlysettlements impmonthlysettlementid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmonthlysettlements ALTER COLUMN impmonthlysettlementid SET DEFAULT nextval('moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq'::regclass);
 
 
 --
--- Name: moneyflowreceipts moneyflowreceiptid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowreceipts moneyflowreceiptid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowreceipts ALTER COLUMN moneyflowreceiptid SET DEFAULT nextval('moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq'::regclass);
 
 
 --
--- Name: moneyflows moneyflowid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows moneyflowid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows ALTER COLUMN moneyflowid SET DEFAULT nextval('moneyjinn.moneyflows_moneyflowid_seq'::regclass);
 
 
 --
--- Name: moneyflowsplitentries moneyflowsplitentryid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowsplitentries moneyflowsplitentryid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowsplitentries ALTER COLUMN moneyflowsplitentryid SET DEFAULT nextval('moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq'::regclass);
 
 
 --
--- Name: monthlysettlements monthlysettlementid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: monthlysettlements monthlysettlementid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements ALTER COLUMN monthlysettlementid SET DEFAULT nextval('moneyjinn.monthlysettlements_monthlysettlementid_seq'::regclass);
 
 
 --
--- Name: postingaccounts postingaccountid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: postingaccounts postingaccountid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.postingaccounts ALTER COLUMN postingaccountid SET DEFAULT nextval('moneyjinn.postingaccounts_postingaccountid_seq'::regclass);
 
 
 --
--- Name: predefmoneyflows predefmoneyflowid; Type: DEFAULT; Schema: moneyjinn; Owner: postgres
+-- Name: predefmoneyflows predefmoneyflowid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows ALTER COLUMN predefmoneyflowid SET DEFAULT nextval('moneyjinn.predefmoneyflows_predefmoneyflowid_seq'::regclass);
 
 
 --
--- Name: access_groups access_groups_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: account_movements id; Type: DEFAULT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER TABLE ONLY moneyjinn_hbci.account_movements ALTER COLUMN id SET DEFAULT nextval('moneyjinn_hbci.account_movements_id_seq'::regclass);
+
+
+--
+-- Name: balance_daily id; Type: DEFAULT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER TABLE ONLY moneyjinn_hbci.balance_daily ALTER COLUMN id SET DEFAULT nextval('moneyjinn_hbci.balance_daily_id_seq'::regclass);
+
+
+--
+-- Name: balance_monthly id; Type: DEFAULT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER TABLE ONLY moneyjinn_hbci.balance_monthly ALTER COLUMN id SET DEFAULT nextval('moneyjinn_hbci.balance_monthly_id_seq'::regclass);
+
+
+--
+-- Name: access_groups access_groups_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_groups
@@ -1330,7 +1521,7 @@ ALTER TABLE ONLY moneyjinn.access_groups
 
 
 --
--- Name: access_relation access_relation_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: access_relation access_relation_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_relation
@@ -1338,7 +1529,7 @@ ALTER TABLE ONLY moneyjinn.access_relation
 
 
 --
--- Name: access_users access_users_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: access_users access_users_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_users
@@ -1346,7 +1537,7 @@ ALTER TABLE ONLY moneyjinn.access_users
 
 
 --
--- Name: capitalsources capitalsources_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: capitalsources capitalsources_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.capitalsources
@@ -1354,7 +1545,7 @@ ALTER TABLE ONLY moneyjinn.capitalsources
 
 
 --
--- Name: cmp_data_formats cmp_data_formats_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: cmp_data_formats cmp_data_formats_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.cmp_data_formats
@@ -1362,7 +1553,7 @@ ALTER TABLE ONLY moneyjinn.cmp_data_formats
 
 
 --
--- Name: contractpartneraccounts contractpartneraccounts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartneraccounts contractpartneraccounts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts
@@ -1370,7 +1561,7 @@ ALTER TABLE ONLY moneyjinn.contractpartneraccounts
 
 
 --
--- Name: contractpartners contractpartners_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartners contractpartners_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartners
@@ -1378,7 +1569,7 @@ ALTER TABLE ONLY moneyjinn.contractpartners
 
 
 --
--- Name: etfvalues etf_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: etfvalues etf_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfvalues
@@ -1386,7 +1577,7 @@ ALTER TABLE ONLY moneyjinn.etfvalues
 
 
 --
--- Name: etf etf_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: etf etf_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etf
@@ -1394,7 +1585,7 @@ ALTER TABLE ONLY moneyjinn.etf
 
 
 --
--- Name: etfflows etfflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: etfflows etfflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfflows
@@ -1402,7 +1593,7 @@ ALTER TABLE ONLY moneyjinn.etfflows
 
 
 --
--- Name: etfpreliminarylumpsum etfpreliminarylumpsum_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: etfpreliminarylumpsum etfpreliminarylumpsum_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
@@ -1410,7 +1601,7 @@ ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
 
 
 --
--- Name: imp_data imp_data_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: imp_data imp_data_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.imp_data
@@ -1418,7 +1609,7 @@ ALTER TABLE ONLY moneyjinn.imp_data
 
 
 --
--- Name: impbalance impbalance_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impbalance impbalance_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impbalance
@@ -1426,7 +1617,7 @@ ALTER TABLE ONLY moneyjinn.impbalance
 
 
 --
--- Name: impmoneyflowreceipts impmoneyflowreceipts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflowreceipts impmoneyflowreceipts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
@@ -1434,7 +1625,7 @@ ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
 
 
 --
--- Name: impmoneyflows impmoneyflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflows impmoneyflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflows
@@ -1442,7 +1633,7 @@ ALTER TABLE ONLY moneyjinn.impmoneyflows
 
 
 --
--- Name: impmonthlysettlements impmonthlysettlements_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impmonthlysettlements impmonthlysettlements_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmonthlysettlements
@@ -1450,7 +1641,7 @@ ALTER TABLE ONLY moneyjinn.impmonthlysettlements
 
 
 --
--- Name: access_groups mag_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: access_groups mag_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_groups
@@ -1458,7 +1649,7 @@ ALTER TABLE ONLY moneyjinn.access_groups
 
 
 --
--- Name: access_users mau_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: access_users mau_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_users
@@ -1466,7 +1657,7 @@ ALTER TABLE ONLY moneyjinn.access_users
 
 
 --
--- Name: contractpartneraccounts mca_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartneraccounts mca_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts
@@ -1474,7 +1665,7 @@ ALTER TABLE ONLY moneyjinn.contractpartneraccounts
 
 
 --
--- Name: contractpartners mcp_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartners mcp_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartners
@@ -1482,7 +1673,7 @@ ALTER TABLE ONLY moneyjinn.contractpartners
 
 
 --
--- Name: etfpreliminarylumpsum mep_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: etfpreliminarylumpsum mep_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
@@ -1490,7 +1681,7 @@ ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
 
 
 --
--- Name: impmoneyflows mim_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflows mim_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflows
@@ -1498,7 +1689,7 @@ ALTER TABLE ONLY moneyjinn.impmoneyflows
 
 
 --
--- Name: imp_mapping_partner mip_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: imp_mapping_partner mip_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.imp_mapping_partner
@@ -1506,7 +1697,7 @@ ALTER TABLE ONLY moneyjinn.imp_mapping_partner
 
 
 --
--- Name: imp_mapping_source mis_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: imp_mapping_source mis_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.imp_mapping_source
@@ -1514,7 +1705,7 @@ ALTER TABLE ONLY moneyjinn.imp_mapping_source
 
 
 --
--- Name: impmonthlysettlements mit_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impmonthlysettlements mit_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmonthlysettlements
@@ -1522,7 +1713,7 @@ ALTER TABLE ONLY moneyjinn.impmonthlysettlements
 
 
 --
--- Name: monthlysettlements mms_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: monthlysettlements mms_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements
@@ -1530,7 +1721,7 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements
 
 
 --
--- Name: moneyflowreceipts moneyflowreceipts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowreceipts moneyflowreceipts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowreceipts
@@ -1538,7 +1729,7 @@ ALTER TABLE ONLY moneyjinn.moneyflowreceipts
 
 
 --
--- Name: moneyflows moneyflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows moneyflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
@@ -1546,7 +1737,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 
 
 --
--- Name: moneyflowsplitentries moneyflowsplitentries_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowsplitentries moneyflowsplitentries_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
@@ -1554,7 +1745,7 @@ ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
 
 
 --
--- Name: monthlysettlements monthlysettlements_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: monthlysettlements monthlysettlements_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements
@@ -1562,7 +1753,7 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements
 
 
 --
--- Name: moneyflowreceipts mrp_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowreceipts mrp_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowreceipts
@@ -1570,7 +1761,7 @@ ALTER TABLE ONLY moneyjinn.moneyflowreceipts
 
 
 --
--- Name: cmp_data_formats name; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: cmp_data_formats name; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.cmp_data_formats
@@ -1578,7 +1769,7 @@ ALTER TABLE ONLY moneyjinn.cmp_data_formats
 
 
 --
--- Name: postingaccounts postingaccounts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: postingaccounts postingaccounts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.postingaccounts
@@ -1586,7 +1777,7 @@ ALTER TABLE ONLY moneyjinn.postingaccounts
 
 
 --
--- Name: predefmoneyflows predefmoneyflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: predefmoneyflows predefmoneyflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows
@@ -1594,7 +1785,7 @@ ALTER TABLE ONLY moneyjinn.predefmoneyflows
 
 
 --
--- Name: settings settings_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: settings settings_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.settings
@@ -1602,245 +1793,293 @@ ALTER TABLE ONLY moneyjinn.settings
 
 
 --
--- Name: mar_i_01; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: account_movements account_movements_pkey; Type: CONSTRAINT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER TABLE ONLY moneyjinn_hbci.account_movements
+    ADD CONSTRAINT account_movements_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: balance_daily balance_daily_pkey; Type: CONSTRAINT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER TABLE ONLY moneyjinn_hbci.balance_daily
+    ADD CONSTRAINT balance_daily_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: balance_monthly balance_monthly_pkey; Type: CONSTRAINT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER TABLE ONLY moneyjinn_hbci.balance_monthly
+    ADD CONSTRAINT balance_monthly_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: balance_monthly hbci_i_02; Type: CONSTRAINT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER TABLE ONLY moneyjinn_hbci.balance_monthly
+    ADD CONSTRAINT hbci_i_02 UNIQUE (my_iban, my_bic, my_accountnumber, my_bankcode, balance_year, balance_month);
+
+
+--
+-- Name: account_movements hbci_i_03; Type: CONSTRAINT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER TABLE ONLY moneyjinn_hbci.account_movements
+    ADD CONSTRAINT hbci_i_03 UNIQUE (my_iban, my_bic, my_accountnumber, my_bankcode, booking_date, value_date, movement_value, movement_currency, movement_type_code, customer_reference, cancellation, balance_date, balance_value, balance_currency);
+
+
+--
+-- Name: balance_daily hbci_i_04; Type: CONSTRAINT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+ALTER TABLE ONLY moneyjinn_hbci.balance_daily
+    ADD CONSTRAINT hbci_i_04 UNIQUE (my_iban, my_bic, my_accountnumber, my_bankcode, balance_date);
+
+
+--
+-- Name: mar_i_01; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mar_i_01 ON moneyjinn.access_relation USING btree (mag_groupid, validfrom);
 
 
 --
--- Name: mca_mcp_pk_01; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mca_mcp_pk_01; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mca_mcp_pk_01 ON moneyjinn.contractpartneraccounts USING btree (mcp_contractpartnerid);
 
 
 --
--- Name: mcp_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mcp_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mcp_mag_pk ON moneyjinn.contractpartners USING btree (mag_groupid);
 
 
 --
--- Name: mcp_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mcp_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mcp_mau_pk ON moneyjinn.contractpartners USING btree (mau_userid);
 
 
 --
--- Name: mcp_mpa_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mcp_mpa_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mcp_mpa_pk ON moneyjinn.contractpartners USING btree (mpa_postingaccountid);
 
 
 --
--- Name: mcs_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mcs_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mcs_mag_pk ON moneyjinn.capitalsources USING btree (mag_groupid);
 
 
 --
--- Name: mcs_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mcs_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mcs_mau_pk ON moneyjinn.capitalsources USING btree (mau_userid);
 
 
 --
--- Name: mef_i_01; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mef_i_01; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mef_i_01 ON moneyjinn.etfflows USING btree (met_etfid, flowdate);
 
 
 --
--- Name: met_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: met_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX met_mag_pk ON moneyjinn.etf USING btree (mag_groupid);
 
 
 --
--- Name: met_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: met_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX met_mau_pk ON moneyjinn.etf USING btree (mau_userid);
 
 
 --
--- Name: mim_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mim_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mim_mcs_pk ON moneyjinn.impmoneyflows USING btree (mcs_capitalsourceid);
 
 
 --
--- Name: mir_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mir_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mir_mag_pk ON moneyjinn.impmoneyflowreceipts USING btree (mag_groupid);
 
 
 --
--- Name: mir_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mir_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mir_mau_pk ON moneyjinn.impmoneyflowreceipts USING btree (mau_userid);
 
 
 --
--- Name: mis_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mis_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mis_mcs_pk ON moneyjinn.impmonthlysettlements USING btree (mcs_capitalsourceid);
 
 
 --
--- Name: mmf_i_01; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mmf_i_01; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mmf_i_01 ON moneyjinn.moneyflows USING btree (bookingdate, mag_groupid, moneyflowid);
 
 
 --
--- Name: mmf_i_02; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mmf_i_02; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mmf_i_02 ON moneyjinn.moneyflows USING btree (mag_groupid, bookingdate);
 
 
 --
--- Name: mmf_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mmf_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mmf_mag_pk ON moneyjinn.moneyflows USING btree (mag_groupid);
 
 
 --
--- Name: mmf_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mmf_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mmf_mau_pk ON moneyjinn.moneyflows USING btree (mau_userid);
 
 
 --
--- Name: mmf_mcp_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mmf_mcp_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mmf_mcp_pk ON moneyjinn.moneyflows USING btree (mcp_contractpartnerid);
 
 
 --
--- Name: mmf_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mmf_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mmf_mcs_pk ON moneyjinn.moneyflows USING btree (mcs_capitalsourceid);
 
 
 --
--- Name: mmf_mpa_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mmf_mpa_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mmf_mpa_pk ON moneyjinn.moneyflows USING btree (mpa_postingaccountid);
 
 
 --
--- Name: mms_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mms_mag_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mms_mag_pk ON moneyjinn.monthlysettlements USING btree (mag_groupid);
 
 
 --
--- Name: mms_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mms_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mms_mau_pk ON moneyjinn.monthlysettlements USING btree (mau_userid);
 
 
 --
--- Name: mms_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mms_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mms_mcs_pk ON moneyjinn.monthlysettlements USING btree (mcs_capitalsourceid);
 
 
 --
--- Name: mpm_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mpm_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mpm_mau_pk ON moneyjinn.predefmoneyflows USING btree (mau_userid);
 
 
 --
--- Name: mpm_mcp_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mpm_mcp_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mpm_mcp_pk ON moneyjinn.predefmoneyflows USING btree (mcp_contractpartnerid);
 
 
 --
--- Name: mpm_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mpm_mcs_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mpm_mcs_pk ON moneyjinn.predefmoneyflows USING btree (mcs_capitalsourceid);
 
 
 --
--- Name: mpm_mpa_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mpm_mpa_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mpm_mpa_pk ON moneyjinn.predefmoneyflows USING btree (mpa_postingaccountid);
 
 
 --
--- Name: mse_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mse_mau_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mse_mau_pk ON moneyjinn.settings USING btree (mau_userid);
 
 
 --
--- Name: mse_mmf_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mse_mmf_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mse_mmf_pk ON moneyjinn.moneyflowsplitentries USING btree (mmf_moneyflowid);
 
 
 --
--- Name: mse_mpa_pk; Type: INDEX; Schema: moneyjinn; Owner: postgres
+-- Name: mse_mpa_pk; Type: INDEX; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE INDEX mse_mpa_pk ON moneyjinn.moneyflowsplitentries USING btree (mpa_postingaccountid);
 
 
 --
--- Name: predefmoneyflows mev_trg_01; Type: TRIGGER; Schema: moneyjinn; Owner: postgres
---
-
-CREATE TRIGGER mev_trg_01 BEFORE UPDATE ON moneyjinn.predefmoneyflows FOR EACH ROW EXECUTE FUNCTION moneyjinn.upd_changedate();
-
-
---
--- Name: impbalance mib_trg_01; Type: TRIGGER; Schema: moneyjinn; Owner: postgres
+-- Name: impbalance mib_trg_01; Type: TRIGGER; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TRIGGER mib_trg_01 BEFORE UPDATE ON moneyjinn.impbalance FOR EACH ROW EXECUTE FUNCTION moneyjinn.upd_changedate();
 
 
 --
--- Name: predefmoneyflows mpm_trg_01; Type: TRIGGER; Schema: moneyjinn; Owner: postgres
+-- Name: impbalance mib_trg_02; Type: TRIGGER; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+CREATE TRIGGER mib_trg_02 BEFORE UPDATE ON moneyjinn.impbalance FOR EACH ROW EXECUTE FUNCTION moneyjinn.upd_changedate();
+
+
+--
+-- Name: predefmoneyflows mpm_trg_01; Type: TRIGGER; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 CREATE TRIGGER mpm_trg_01 BEFORE UPDATE ON moneyjinn.predefmoneyflows FOR EACH ROW EXECUTE FUNCTION moneyjinn.upd_createdate();
 
 
 --
--- Name: access_relation mar_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: access_relation mar_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_relation
@@ -1848,7 +2087,7 @@ ALTER TABLE ONLY moneyjinn.access_relation
 
 
 --
--- Name: access_relation mar_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: access_relation mar_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_relation
@@ -1856,7 +2095,7 @@ ALTER TABLE ONLY moneyjinn.access_relation
 
 
 --
--- Name: contractpartneraccounts mca_mcp_pk_01; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartneraccounts mca_mcp_pk_01; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts
@@ -1864,7 +2103,7 @@ ALTER TABLE ONLY moneyjinn.contractpartneraccounts
 
 
 --
--- Name: contractpartners mcp_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartners mcp_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartners
@@ -1872,7 +2111,7 @@ ALTER TABLE ONLY moneyjinn.contractpartners
 
 
 --
--- Name: contractpartners mcp_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartners mcp_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartners
@@ -1880,7 +2119,7 @@ ALTER TABLE ONLY moneyjinn.contractpartners
 
 
 --
--- Name: contractpartners mcp_mpa_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: contractpartners mcp_mpa_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartners
@@ -1888,7 +2127,7 @@ ALTER TABLE ONLY moneyjinn.contractpartners
 
 
 --
--- Name: capitalsources mcs_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: capitalsources mcs_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.capitalsources
@@ -1896,7 +2135,7 @@ ALTER TABLE ONLY moneyjinn.capitalsources
 
 
 --
--- Name: capitalsources mcs_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: capitalsources mcs_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.capitalsources
@@ -1904,7 +2143,7 @@ ALTER TABLE ONLY moneyjinn.capitalsources
 
 
 --
--- Name: etfflows mef_met_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: etfflows mef_met_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfflows
@@ -1912,7 +2151,7 @@ ALTER TABLE ONLY moneyjinn.etfflows
 
 
 --
--- Name: etfpreliminarylumpsum mep_met_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: etfpreliminarylumpsum mep_met_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
@@ -1920,7 +2159,7 @@ ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
 
 
 --
--- Name: etf met_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: etf met_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etf
@@ -1928,7 +2167,7 @@ ALTER TABLE ONLY moneyjinn.etf
 
 
 --
--- Name: etf met_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: etf met_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etf
@@ -1936,7 +2175,7 @@ ALTER TABLE ONLY moneyjinn.etf
 
 
 --
--- Name: impmoneyflows mim_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflows mim_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflows
@@ -1944,7 +2183,7 @@ ALTER TABLE ONLY moneyjinn.impmoneyflows
 
 
 --
--- Name: impmoneyflowreceipts mir_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflowreceipts mir_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
@@ -1952,7 +2191,7 @@ ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
 
 
 --
--- Name: impmoneyflowreceipts mir_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impmoneyflowreceipts mir_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
@@ -1960,7 +2199,7 @@ ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
 
 
 --
--- Name: impmonthlysettlements mis_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: impmonthlysettlements mis_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.impmonthlysettlements
@@ -1968,7 +2207,7 @@ ALTER TABLE ONLY moneyjinn.impmonthlysettlements
 
 
 --
--- Name: moneyflows mmf_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows mmf_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
@@ -1976,7 +2215,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 
 
 --
--- Name: moneyflows mmf_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows mmf_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
@@ -1984,7 +2223,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 
 
 --
--- Name: moneyflows mmf_mcp_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows mmf_mcp_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
@@ -1992,7 +2231,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 
 
 --
--- Name: moneyflows mmf_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows mmf_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
@@ -2000,7 +2239,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 
 
 --
--- Name: moneyflows mmf_mpa_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflows mmf_mpa_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
@@ -2008,7 +2247,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 
 
 --
--- Name: monthlysettlements mms_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: monthlysettlements mms_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements
@@ -2016,7 +2255,7 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements
 
 
 --
--- Name: monthlysettlements mms_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: monthlysettlements mms_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements
@@ -2024,7 +2263,7 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements
 
 
 --
--- Name: monthlysettlements mms_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: monthlysettlements mms_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements
@@ -2032,7 +2271,7 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements
 
 
 --
--- Name: predefmoneyflows mpm_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: predefmoneyflows mpm_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows
@@ -2040,7 +2279,7 @@ ALTER TABLE ONLY moneyjinn.predefmoneyflows
 
 
 --
--- Name: predefmoneyflows mpm_mcp_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: predefmoneyflows mpm_mcp_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows
@@ -2048,7 +2287,7 @@ ALTER TABLE ONLY moneyjinn.predefmoneyflows
 
 
 --
--- Name: predefmoneyflows mpm_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: predefmoneyflows mpm_mcs_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows
@@ -2056,7 +2295,7 @@ ALTER TABLE ONLY moneyjinn.predefmoneyflows
 
 
 --
--- Name: predefmoneyflows mpm_mpa_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: predefmoneyflows mpm_mpa_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows
@@ -2064,7 +2303,7 @@ ALTER TABLE ONLY moneyjinn.predefmoneyflows
 
 
 --
--- Name: moneyflowreceipts mrp_mmf_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowreceipts mrp_mmf_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowreceipts
@@ -2072,7 +2311,7 @@ ALTER TABLE ONLY moneyjinn.moneyflowreceipts
 
 
 --
--- Name: settings mse_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: settings mse_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.settings
@@ -2080,7 +2319,7 @@ ALTER TABLE ONLY moneyjinn.settings
 
 
 --
--- Name: moneyflowsplitentries mse_mmf_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowsplitentries mse_mmf_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
@@ -2088,7 +2327,7 @@ ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
 
 
 --
--- Name: moneyflowsplitentries mse_mpa_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: postgres
+-- Name: moneyflowsplitentries mse_mpa_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
@@ -2100,11 +2339,405 @@ ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
 --
 
 GRANT ALL ON SCHEMA moneyjinn TO moneyjinn_owner;
+GRANT USAGE ON SCHEMA moneyjinn TO moneyjinn_app;
+
+
+--
+-- Name: SCHEMA moneyjinn_hbci; Type: ACL; Schema: -; Owner: postgres
+--
+
+GRANT ALL ON SCHEMA moneyjinn_hbci TO moneyjinn_hbci_owner;
+GRANT USAGE ON SCHEMA moneyjinn_hbci TO moneyjinn_hbci_app;
+
+
+--
+-- Name: TABLE access_groups; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.access_groups TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE access_groups_groupid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.access_groups_groupid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE access_relation; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.access_relation TO moneyjinn_app;
+
+
+--
+-- Name: TABLE access_users; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.access_users TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE access_users_userid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.access_users_userid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE capitalsources; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.capitalsources TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE capitalsources_capitalsourceid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.capitalsources_capitalsourceid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE cmp_data_formats; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.cmp_data_formats TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE cmp_data_formats_formatid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.cmp_data_formats_formatid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE contractpartneraccounts; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.contractpartneraccounts TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE contractpartneraccounts_contractpartneraccountid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE contractpartners; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.contractpartners TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE contractpartners_contractpartnerid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE etf; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.etf TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE etf_etfid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.etf_etfid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE etfflows; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.etfflows TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE etfflows_etfflowid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.etfflows_etfflowid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE etfpreliminarylumpsum; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.etfpreliminarylumpsum TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE etfpreliminarylumpsum_etfpreliminarylumpsumid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE etfvalues; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.etfvalues TO moneyjinn_app;
+
+
+--
+-- Name: TABLE imp_data; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.imp_data TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE imp_data_dataid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.imp_data_dataid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE imp_mapping_partner; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.imp_mapping_partner TO moneyjinn_app;
+
+
+--
+-- Name: TABLE imp_mapping_source; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.imp_mapping_source TO moneyjinn_app;
+
+
+--
+-- Name: TABLE impbalance; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.impbalance TO moneyjinn_app;
+
+
+--
+-- Name: TABLE impmoneyflowreceipts; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.impmoneyflowreceipts TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE impmoneyflowreceipts_impmoneyflowreceiptid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE impmoneyflows; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.impmoneyflows TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE impmoneyflows_impmoneyflowid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.impmoneyflows_impmoneyflowid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE impmonthlysettlements; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.impmonthlysettlements TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE impmonthlysettlements_impmonthlysettlementid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE moneyflowreceipts; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.moneyflowreceipts TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE moneyflowreceipts_moneyflowreceiptid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE moneyflows; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.moneyflows TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE moneyflows_moneyflowid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.moneyflows_moneyflowid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE moneyflowsplitentries; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.moneyflowsplitentries TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE moneyflowsplitentries_moneyflowsplitentryid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE monthlysettlements; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.monthlysettlements TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE monthlysettlements_monthlysettlementid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.monthlysettlements_monthlysettlementid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE postingaccounts; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.postingaccounts TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE postingaccounts_postingaccountid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.postingaccounts_postingaccountid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE predefmoneyflows; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.predefmoneyflows TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE predefmoneyflows_predefmoneyflowid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.predefmoneyflows_predefmoneyflowid_seq TO moneyjinn_app;
+
+
+--
+-- Name: TABLE settings; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.settings TO moneyjinn_app;
+
+
+--
+-- Name: TABLE vw_capitalsources; Type: ACL; Schema: moneyjinn; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_capitalsources TO moneyjinn_app;
+
+
+--
+-- Name: TABLE vw_contractpartners; Type: ACL; Schema: moneyjinn; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_contractpartners TO moneyjinn_app;
+
+
+--
+-- Name: TABLE vw_etf; Type: ACL; Schema: moneyjinn; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_etf TO moneyjinn_app;
+
+
+--
+-- Name: TABLE vw_moneyflows; Type: ACL; Schema: moneyjinn; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_moneyflows TO moneyjinn_app;
+
+
+--
+-- Name: TABLE vw_monthlysettlements; Type: ACL; Schema: moneyjinn; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_monthlysettlements TO moneyjinn_app;
+
+
+--
+-- Name: TABLE account_movements; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+GRANT SELECT,INSERT,UPDATE ON TABLE moneyjinn_hbci.account_movements TO moneyjinn_hbci_app;
+
+
+--
+-- Name: SEQUENCE account_movements_id_seq; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.account_movements_id_seq TO moneyjinn_hbci_app;
+
+
+--
+-- Name: TABLE balance_daily; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+GRANT SELECT,INSERT,UPDATE ON TABLE moneyjinn_hbci.balance_daily TO moneyjinn_hbci_app;
+
+
+--
+-- Name: SEQUENCE balance_daily_id_seq; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_daily_id_seq TO moneyjinn_hbci_app;
+
+
+--
+-- Name: TABLE balance_monthly; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+GRANT SELECT,INSERT,UPDATE ON TABLE moneyjinn_hbci.balance_monthly TO moneyjinn_hbci_app;
+
+
+--
+-- Name: SEQUENCE balance_monthly_id_seq; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjinn_hbci_app;
 
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict EhXvAkveJZ0bc0PeOPPDZdOptn8MvaQdlmwIyD103gPyobEOaMbVWOe2z5feiaX
+\unrestrict Vf8hyfZwSZoOZzM634FQtyeI0Uuvs9HBK1HW9jLaa9jv9jaSIdYqke1tyMxXbE3
 
