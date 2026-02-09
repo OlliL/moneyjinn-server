@@ -53,7 +53,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
     // @formatter:off
 	private static final String INSERT_STATEMENT =
 			"   INSERT "
-			+ "   INTO balance_monthly "
+			+ "   INTO balance_monthly AS a "
 			+ "      ( my_iban "
 			+ "      , my_bic "
 			+ "      , my_accountnumber "
@@ -74,7 +74,7 @@ public class BalanceMonthlyHandler extends AbstractHandler {
 			+ "      , ? "
 			+ "      ) "
 			+ " ON CONFLICT ON CONSTRAINT hbci_i_02 DO UPDATE "
-			+ " SET balance_value = EXCLUDED.balance_value WHERE balance_value != EXCLUDED.balance_value";
+			+ " SET balance_value = EXCLUDED.balance_value WHERE a.balance_value != EXCLUDED.balance_value";
 
 	
 	private static final String SELECT_STATEMENT =

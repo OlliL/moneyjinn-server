@@ -36,7 +36,7 @@ public class BalanceDailyHandler extends AbstractHandler {
     // @formatter:off
 	private static final String STATEMENT =
 			"   INSERT "
-			+ "   INTO balance_daily "
+			+ "   INTO balance_daily AS a "
 			+ "      ( my_iban "
 			+ "      , my_bic "
 			+ "      , my_accountnumber "

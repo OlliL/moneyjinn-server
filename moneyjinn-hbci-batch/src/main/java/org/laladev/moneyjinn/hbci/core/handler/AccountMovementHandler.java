@@ -101,7 +101,8 @@ public class AccountMovementHandler extends AbstractHandler {
 			+ "      , ? "
 			+ "      , ? "
 			+ "      , ? "
-			+ "      ) ";
+			+ "      ) "
+            + " ON CONFLICT ON CONSTRAINT hbci_i_03 DO NOTHING";
 	// @formatter:on
 
     private final List<AccountMovement> accountMovements;
@@ -177,23 +178,15 @@ public class AccountMovementHandler extends AbstractHandler {
                 stmt.setBigDecimal(30, accountMovement.getBalanceValue());
                 stmt.setString(31, accountMovement.getBalanceCurrency());
 
-                try {
-                    final int rowCount = stmt.executeUpdate();
-                    if (rowCount == 1) {
-                        final ResultSet rs = stmt.getGeneratedKeys();
-                        if (rs.next()) {
-                            accountMovement.setId(rs.getInt(1));
-                        }
-                    }
-                    con.commit();
-
-                    this.notifyObservers(accountMovement);
-                } catch (final SQLException e) {
-                    // ignore: Duplicate entry '........' for key 'account_movements.hbci_i_03'
-                    if (e.getErrorCode() != 1062) {
-                        e.printStackTrace();
+                final int rowCount = stmt.executeUpdate();
+                if (rowCount == 1) {
+                    final ResultSet rs = stmt.getGeneratedKeys();
+                    if (rs.next()) {
+                        accountMovement.setId(rs.getInt(1));
+                        this.notifyObservers(accountMovement);
                     }
                 }
+                con.commit();
             }
         } catch (final SQLException e1) {
             e1.printStackTrace();
