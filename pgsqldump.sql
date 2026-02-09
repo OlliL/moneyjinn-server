@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict Vf8hyfZwSZoOZzM634FQtyeI0Uuvs9HBK1HW9jLaa9jv9jaSIdYqke1tyMxXbE3
+\restrict 1WcHRtnJ8i6wtv5367rvsCcnMORQDxljP8Zk4lB1I93zJdab5DM0CiKGPFEfiBN
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -2739,5 +2739,18 @@ GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjin
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Vf8hyfZwSZoOZzM634FQtyeI0Uuvs9HBK1HW9jLaa9jv9jaSIdYqke1tyMxXbE3
+\unrestrict 1WcHRtnJ8i6wtv5367rvsCcnMORQDxljP8Zk4lB1I93zJdab5DM0CiKGPFEfiBN
 
+SELECT pg_catalog.set_config('search_path', '', false);
+INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (2, 'Sparda Bank', 'Buchungstag', 'Wertstellungstag', 'Verwendungszweck', NULL, '/^"Buchungstag";"Wertstellungstag";"Verwendungszweck"/', ';', 1, NULL, NULL, 4, 3, 'DD.MM.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (3, 'Postbank Online', 'Buchungstag', 'Wert', 'Umsatzart', NULL, '/^Buchungstag;Wert;Umsatzart/', ';', 2, NULL, 4, 12, 5, 'd.M.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (4, 'XML camt.052.001.03', NULL, NULL, NULL, NULL, 'camt', '', 0, NULL, NULL, 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (5, 'Sparkasse', 'Buchungstag', 'Wertstellung', 'Zahlungsgegner', NULL, '/^"Buchungstag";"Wertstellung";"Zahlungsgegner"/', ';', 1, NULL, 3, 7, 6, 'DD.MM.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (6, 'Volksbank', 'Buchungstag', 'Valuta', 'Auftraggeber/Zahlungsempfänger', NULL, '', ';', 1, NULL, 4, 12, 9, 'DD.MM.YYYY', ',', NULL, NULL, NULL, NULL, 13, 'S');
+INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (7, 'Postbank Kreditkarte', 'Belegdatum', 'Eingangstag', 'Verwendungszweck', 'Saldo:', '', ';', 2, 1, NULL, 7, 3, 'd.M.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
+SELECT pg_catalog.setval('moneyjinn.cmp_data_formats_formatid_seq', 7, true);
+INSERT INTO moneyjinn.access_users (name,password,role,change_password) VALUES ('admin','$2a$10$DeePZ05m1PYHOK0lii2crOsPaCiaaDkd5lJWiAm2eiXTKua5lF9dW','ADMIN',1);
+INSERT INTO moneyjinn.access_groups (name) VALUES ('admingroup');
+UPDATE moneyjinn.access_users SET userid=0 WHERE name='admin';
+UPDATE moneyjinn.access_groups SET groupid=0 WHERE name='admingroup';
+INSERT INTO moneyjinn.access_relation (mau_userid,mag_groupid,validfrom,validtil) VALUES (0,0,'2000-01-01','2999-12-31');

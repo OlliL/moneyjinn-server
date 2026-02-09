@@ -298,7 +298,7 @@ CREATE VIEW vw_moneyflows  AS
     mmf.private
    FROM moneyflows mmf,
     access_relation mar
-  WHERE (((mmf.bookingdate >= mar.validfrom) AND (mmf.bookingdate <= mar.validtil)) AND (mmf.mag_groupid = mar.mag_groupid));
+  WHERE ((mmf.bookingdate >= mar.validfrom) AND (mmf.bookingdate <= mar.validtil) AND (mmf.mag_groupid = mar.mag_groupid));
 CREATE VIEW vw_monthlysettlements  AS
  SELECT mms.mau_userid,
     mar.mau_userid AS mar_mau_userid,
@@ -310,7 +310,7 @@ CREATE VIEW vw_monthlysettlements  AS
     mms.amount
    FROM monthlysettlements mms,
     access_relation mar
-  WHERE ((((((concat(mms."year", '-', lpad((mms."month")::text, 2, '0'::text), '-01'))::date + INTERVAL '1' month) - INTERVAL '1' day) >= mar.validfrom) AND ((((concat(mms."year", '-', lpad((mms."month")::text, 2, '0'::text), '-01'))::date + INTERVAL '1' month) - INTERVAL '1' day) <= mar.validtil)) AND (mms.mag_groupid = mar.mag_groupid));
+  WHERE (((((concat(mms."year", '-', lpad((mms."month")::text, 2, '0'::text), '-01'))::date + INTERVAL '1' month) - INTERVAL '1' day) >= mar.validfrom) AND ((((concat(mms."year", '-', lpad((mms."month")::text, 2, '0'::text), '-01'))::date + INTERVAL '1' month) - INTERVAL '1' day) <= mar.validtil) AND (mms.mag_groupid = mar.mag_groupid));
 ALTER TABLE access_groups
     ADD CONSTRAINT access_groups_pkey PRIMARY KEY (groupid);
 ALTER TABLE access_relation
