@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict 1WcHRtnJ8i6wtv5367rvsCcnMORQDxljP8Zk4lB1I93zJdab5DM0CiKGPFEfiBN
+\restrict dIPCEjMn5EBQqQgmG6Rh3MHGJXnOtUCbklz1r8myHZij63I13bm6TWG5KaPsofi
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -19,9 +19,9 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE ONLY moneyjinn.settings DROP CONSTRAINT mst_mau_pk;
 ALTER TABLE ONLY moneyjinn.moneyflowsplitentries DROP CONSTRAINT mse_mpa_pk;
 ALTER TABLE ONLY moneyjinn.moneyflowsplitentries DROP CONSTRAINT mse_mmf_pk;
-ALTER TABLE ONLY moneyjinn.settings DROP CONSTRAINT mse_mau_pk;
 ALTER TABLE ONLY moneyjinn.moneyflowreceipts DROP CONSTRAINT mrp_mmf_pk;
 ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT mpm_mpa_pk;
 ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT mpm_mcs_pk;
@@ -91,41 +91,41 @@ ALTER TABLE ONLY moneyjinn_hbci.balance_monthly DROP CONSTRAINT hbci_i_02;
 ALTER TABLE ONLY moneyjinn_hbci.balance_monthly DROP CONSTRAINT balance_monthly_pkey;
 ALTER TABLE ONLY moneyjinn_hbci.balance_daily DROP CONSTRAINT balance_daily_pkey;
 ALTER TABLE ONLY moneyjinn_hbci.account_movements DROP CONSTRAINT account_movements_pkey;
-ALTER TABLE ONLY moneyjinn.settings DROP CONSTRAINT settings_pkey;
-ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT predefmoneyflows_pkey;
-ALTER TABLE ONLY moneyjinn.postingaccounts DROP CONSTRAINT postingaccounts_pkey;
-ALTER TABLE ONLY moneyjinn.cmp_data_formats DROP CONSTRAINT name;
+ALTER TABLE ONLY moneyjinn.settings DROP CONSTRAINT mst_pk;
+ALTER TABLE ONLY moneyjinn.moneyflowsplitentries DROP CONSTRAINT mse_pk;
+ALTER TABLE ONLY moneyjinn.moneyflowreceipts DROP CONSTRAINT mrp_pk;
 ALTER TABLE ONLY moneyjinn.moneyflowreceipts DROP CONSTRAINT mrp_i_01;
-ALTER TABLE ONLY moneyjinn.monthlysettlements DROP CONSTRAINT monthlysettlements_pkey;
-ALTER TABLE ONLY moneyjinn.moneyflowsplitentries DROP CONSTRAINT moneyflowsplitentries_pkey;
-ALTER TABLE ONLY moneyjinn.moneyflows DROP CONSTRAINT moneyflows_pkey;
-ALTER TABLE ONLY moneyjinn.moneyflowreceipts DROP CONSTRAINT moneyflowreceipts_pkey;
+ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT mpm_pk;
+ALTER TABLE ONLY moneyjinn.postingaccounts DROP CONSTRAINT mpa_pk;
+ALTER TABLE ONLY moneyjinn.monthlysettlements DROP CONSTRAINT mms_pk;
 ALTER TABLE ONLY moneyjinn.monthlysettlements DROP CONSTRAINT mms_i_01;
+ALTER TABLE ONLY moneyjinn.moneyflows DROP CONSTRAINT mmf_pk;
+ALTER TABLE ONLY moneyjinn.impmonthlysettlements DROP CONSTRAINT mit_pk;
 ALTER TABLE ONLY moneyjinn.impmonthlysettlements DROP CONSTRAINT mit_i_01;
 ALTER TABLE ONLY moneyjinn.imp_mapping_source DROP CONSTRAINT mis_i_01;
+ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts DROP CONSTRAINT mir_pk;
 ALTER TABLE ONLY moneyjinn.imp_mapping_partner DROP CONSTRAINT mip_i_01;
+ALTER TABLE ONLY moneyjinn.impmoneyflows DROP CONSTRAINT mim_pk;
 ALTER TABLE ONLY moneyjinn.impmoneyflows DROP CONSTRAINT mim_i_01;
+ALTER TABLE ONLY moneyjinn.imp_data DROP CONSTRAINT mid_pk;
+ALTER TABLE ONLY moneyjinn.impbalance DROP CONSTRAINT mib_pk;
+ALTER TABLE ONLY moneyjinn.etfvalues DROP CONSTRAINT mev_i_01;
+ALTER TABLE ONLY moneyjinn.etf DROP CONSTRAINT met_pk;
+ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum DROP CONSTRAINT mep_pk;
 ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum DROP CONSTRAINT mep_i_01;
+ALTER TABLE ONLY moneyjinn.etfflows DROP CONSTRAINT mef_pk;
+ALTER TABLE ONLY moneyjinn.capitalsources DROP CONSTRAINT mcs_pk;
+ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_pk;
 ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_i_01;
+ALTER TABLE ONLY moneyjinn.cmp_data_formats DROP CONSTRAINT mcf_pk;
+ALTER TABLE ONLY moneyjinn.cmp_data_formats DROP CONSTRAINT mcf_i_01;
+ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT mca_pk;
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT mca_i_01;
+ALTER TABLE ONLY moneyjinn.access_users DROP CONSTRAINT mau_pk;
 ALTER TABLE ONLY moneyjinn.access_users DROP CONSTRAINT mau_i_01;
+ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_pk;
+ALTER TABLE ONLY moneyjinn.access_groups DROP CONSTRAINT mag_pk;
 ALTER TABLE ONLY moneyjinn.access_groups DROP CONSTRAINT mag_i_01;
-ALTER TABLE ONLY moneyjinn.impmonthlysettlements DROP CONSTRAINT impmonthlysettlements_pkey;
-ALTER TABLE ONLY moneyjinn.impmoneyflows DROP CONSTRAINT impmoneyflows_pkey;
-ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts DROP CONSTRAINT impmoneyflowreceipts_pkey;
-ALTER TABLE ONLY moneyjinn.impbalance DROP CONSTRAINT impbalance_pkey;
-ALTER TABLE ONLY moneyjinn.imp_data DROP CONSTRAINT imp_data_pkey;
-ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum DROP CONSTRAINT etfpreliminarylumpsum_pkey;
-ALTER TABLE ONLY moneyjinn.etfflows DROP CONSTRAINT etfflows_pkey;
-ALTER TABLE ONLY moneyjinn.etf DROP CONSTRAINT etf_pkey;
-ALTER TABLE ONLY moneyjinn.etfvalues DROP CONSTRAINT etf_i_01;
-ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT contractpartners_pkey;
-ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT contractpartneraccounts_pkey;
-ALTER TABLE ONLY moneyjinn.cmp_data_formats DROP CONSTRAINT cmp_data_formats_pkey;
-ALTER TABLE ONLY moneyjinn.capitalsources DROP CONSTRAINT capitalsources_pkey;
-ALTER TABLE ONLY moneyjinn.access_users DROP CONSTRAINT access_users_pkey;
-ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT access_relation_pkey;
-ALTER TABLE ONLY moneyjinn.access_groups DROP CONSTRAINT access_groups_pkey;
 ALTER TABLE moneyjinn_hbci.balance_monthly ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE moneyjinn_hbci.balance_daily ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE moneyjinn_hbci.account_movements ALTER COLUMN id DROP DEFAULT;
@@ -274,6 +274,13 @@ CREATE TABLE moneyjinn.access_groups (
 ALTER TABLE moneyjinn.access_groups OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE access_groups; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.access_groups IS 'mag';
+
+
+--
 -- Name: access_groups_groupid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -309,6 +316,13 @@ CREATE TABLE moneyjinn.access_relation (
 ALTER TABLE moneyjinn.access_relation OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE access_relation; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.access_relation IS 'mar';
+
+
+--
 -- Name: access_users; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -322,6 +336,13 @@ CREATE TABLE moneyjinn.access_users (
 
 
 ALTER TABLE moneyjinn.access_users OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE access_users; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.access_users IS 'mau';
+
 
 --
 -- Name: access_users_userid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -365,6 +386,13 @@ CREATE TABLE moneyjinn.capitalsources (
 
 
 ALTER TABLE moneyjinn.capitalsources OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE capitalsources; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.capitalsources IS 'mcs';
+
 
 --
 -- Name: capitalsources_capitalsourceid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -419,6 +447,13 @@ CREATE TABLE moneyjinn.cmp_data_formats (
 ALTER TABLE moneyjinn.cmp_data_formats OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE cmp_data_formats; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.cmp_data_formats IS 'mcf';
+
+
+--
 -- Name: cmp_data_formats_formatid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -452,6 +487,13 @@ CREATE TABLE moneyjinn.contractpartneraccounts (
 
 
 ALTER TABLE moneyjinn.contractpartneraccounts OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE contractpartneraccounts; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.contractpartneraccounts IS 'mce';
+
 
 --
 -- Name: contractpartneraccounts_contractpartneraccountid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -497,6 +539,13 @@ CREATE TABLE moneyjinn.contractpartners (
 ALTER TABLE moneyjinn.contractpartners OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE contractpartners; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.contractpartners IS 'mcp';
+
+
+--
 -- Name: contractpartners_contractpartnerid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -540,6 +589,13 @@ CREATE TABLE moneyjinn.etf (
 ALTER TABLE moneyjinn.etf OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE etf; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.etf IS 'met';
+
+
+--
 -- Name: etf_etfid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -574,6 +630,13 @@ CREATE TABLE moneyjinn.etfflows (
 
 
 ALTER TABLE moneyjinn.etfflows OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE etfflows; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.etfflows IS 'mef';
+
 
 --
 -- Name: etfflows_etfflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -624,6 +687,13 @@ CREATE TABLE moneyjinn.etfpreliminarylumpsum (
 ALTER TABLE moneyjinn.etfpreliminarylumpsum OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE etfpreliminarylumpsum; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.etfpreliminarylumpsum IS 'mep';
+
+
+--
 -- Name: etfpreliminarylumpsum_etfpreliminarylumpsumid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -660,6 +730,13 @@ CREATE TABLE moneyjinn.etfvalues (
 ALTER TABLE moneyjinn.etfvalues OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE etfvalues; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.etfvalues IS 'mev';
+
+
+--
 -- Name: imp_data; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -675,6 +752,13 @@ CREATE TABLE moneyjinn.imp_data (
 
 
 ALTER TABLE moneyjinn.imp_data OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE imp_data; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.imp_data IS 'mid';
+
 
 --
 -- Name: imp_data_dataid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -710,6 +794,13 @@ CREATE TABLE moneyjinn.imp_mapping_partner (
 ALTER TABLE moneyjinn.imp_mapping_partner OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE imp_mapping_partner; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.imp_mapping_partner IS 'mip';
+
+
+--
 -- Name: imp_mapping_source; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -720,6 +811,13 @@ CREATE TABLE moneyjinn.imp_mapping_source (
 
 
 ALTER TABLE moneyjinn.imp_mapping_source OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE imp_mapping_source; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.imp_mapping_source IS 'mis';
+
 
 --
 -- Name: impbalance; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -733,6 +831,13 @@ CREATE TABLE moneyjinn.impbalance (
 
 
 ALTER TABLE moneyjinn.impbalance OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE impbalance; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.impbalance IS 'mib';
+
 
 --
 -- Name: impmoneyflowreceipts; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -749,6 +854,13 @@ CREATE TABLE moneyjinn.impmoneyflowreceipts (
 
 
 ALTER TABLE moneyjinn.impmoneyflowreceipts OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE impmoneyflowreceipts; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.impmoneyflowreceipts IS 'mir';
+
 
 --
 -- Name: impmoneyflowreceipts_impmoneyflowreceiptid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -793,6 +905,13 @@ CREATE TABLE moneyjinn.impmoneyflows (
 ALTER TABLE moneyjinn.impmoneyflows OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE impmoneyflows; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.impmoneyflows IS 'mim';
+
+
+--
 -- Name: impmoneyflows_impmoneyflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -830,6 +949,13 @@ CREATE TABLE moneyjinn.impmonthlysettlements (
 ALTER TABLE moneyjinn.impmonthlysettlements OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE impmonthlysettlements; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.impmonthlysettlements IS 'mit';
+
+
+--
 -- Name: impmonthlysettlements_impmonthlysettlementid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -863,6 +989,13 @@ CREATE TABLE moneyjinn.moneyflowreceipts (
 
 
 ALTER TABLE moneyjinn.moneyflowreceipts OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE moneyflowreceipts; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.moneyflowreceipts IS 'mrp';
+
 
 --
 -- Name: moneyflowreceipts_moneyflowreceiptid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -907,6 +1040,13 @@ CREATE TABLE moneyjinn.moneyflows (
 ALTER TABLE moneyjinn.moneyflows OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE moneyflows; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.moneyflows IS 'mmf';
+
+
+--
 -- Name: moneyflows_moneyflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -941,6 +1081,13 @@ CREATE TABLE moneyjinn.moneyflowsplitentries (
 
 
 ALTER TABLE moneyjinn.moneyflowsplitentries OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE moneyflowsplitentries; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.moneyflowsplitentries IS 'mse';
+
 
 --
 -- Name: moneyflowsplitentries_moneyflowsplitentryid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -981,6 +1128,13 @@ CREATE TABLE moneyjinn.monthlysettlements (
 ALTER TABLE moneyjinn.monthlysettlements OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE monthlysettlements; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.monthlysettlements IS 'mms';
+
+
+--
 -- Name: monthlysettlements_monthlysettlementid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -1012,6 +1166,13 @@ CREATE TABLE moneyjinn.postingaccounts (
 
 
 ALTER TABLE moneyjinn.postingaccounts OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE postingaccounts; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.postingaccounts IS 'mpa';
+
 
 --
 -- Name: postingaccounts_postingaccountid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -1055,6 +1216,13 @@ CREATE TABLE moneyjinn.predefmoneyflows (
 ALTER TABLE moneyjinn.predefmoneyflows OWNER TO moneyjinn_owner;
 
 --
+-- Name: TABLE predefmoneyflows; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.predefmoneyflows IS 'mpm';
+
+
+--
 -- Name: predefmoneyflows_predefmoneyflowid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -1087,6 +1255,13 @@ CREATE TABLE moneyjinn.settings (
 
 
 ALTER TABLE moneyjinn.settings OWNER TO moneyjinn_owner;
+
+--
+-- Name: TABLE settings; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+COMMENT ON TABLE moneyjinn.settings IS 'mst';
+
 
 --
 -- Name: vw_capitalsources; Type: VIEW; Schema: moneyjinn; Owner: postgres
@@ -1513,139 +1688,27 @@ ALTER TABLE ONLY moneyjinn_hbci.balance_monthly ALTER COLUMN id SET DEFAULT next
 
 
 --
--- Name: access_groups access_groups_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.access_groups
-    ADD CONSTRAINT access_groups_pkey PRIMARY KEY (groupid);
-
-
---
--- Name: access_relation access_relation_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.access_relation
-    ADD CONSTRAINT access_relation_pkey PRIMARY KEY (mau_userid, validfrom);
-
-
---
--- Name: access_users access_users_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.access_users
-    ADD CONSTRAINT access_users_pkey PRIMARY KEY (userid);
-
-
---
--- Name: capitalsources capitalsources_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.capitalsources
-    ADD CONSTRAINT capitalsources_pkey PRIMARY KEY (capitalsourceid);
-
-
---
--- Name: cmp_data_formats cmp_data_formats_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.cmp_data_formats
-    ADD CONSTRAINT cmp_data_formats_pkey PRIMARY KEY (formatid);
-
-
---
--- Name: contractpartneraccounts contractpartneraccounts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.contractpartneraccounts
-    ADD CONSTRAINT contractpartneraccounts_pkey PRIMARY KEY (contractpartneraccountid);
-
-
---
--- Name: contractpartners contractpartners_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.contractpartners
-    ADD CONSTRAINT contractpartners_pkey PRIMARY KEY (contractpartnerid);
-
-
---
--- Name: etfvalues etf_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.etfvalues
-    ADD CONSTRAINT etf_i_01 UNIQUE (isin, date);
-
-
---
--- Name: etf etf_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.etf
-    ADD CONSTRAINT etf_pkey PRIMARY KEY (etfid);
-
-
---
--- Name: etfflows etfflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.etfflows
-    ADD CONSTRAINT etfflows_pkey PRIMARY KEY (etfflowid);
-
-
---
--- Name: etfpreliminarylumpsum etfpreliminarylumpsum_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
-    ADD CONSTRAINT etfpreliminarylumpsum_pkey PRIMARY KEY (etfpreliminarylumpsumid);
-
-
---
--- Name: imp_data imp_data_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.imp_data
-    ADD CONSTRAINT imp_data_pkey PRIMARY KEY (dataid);
-
-
---
--- Name: impbalance impbalance_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.impbalance
-    ADD CONSTRAINT impbalance_pkey PRIMARY KEY (mcs_capitalsourceid);
-
-
---
--- Name: impmoneyflowreceipts impmoneyflowreceipts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
-    ADD CONSTRAINT impmoneyflowreceipts_pkey PRIMARY KEY (impmoneyflowreceiptid);
-
-
---
--- Name: impmoneyflows impmoneyflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.impmoneyflows
-    ADD CONSTRAINT impmoneyflows_pkey PRIMARY KEY (impmoneyflowid);
-
-
---
--- Name: impmonthlysettlements impmonthlysettlements_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.impmonthlysettlements
-    ADD CONSTRAINT impmonthlysettlements_pkey PRIMARY KEY (impmonthlysettlementid);
-
-
---
 -- Name: access_groups mag_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.access_groups
     ADD CONSTRAINT mag_i_01 UNIQUE (name);
+
+
+--
+-- Name: access_groups mag_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.access_groups
+    ADD CONSTRAINT mag_pk PRIMARY KEY (groupid);
+
+
+--
+-- Name: access_relation mar_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.access_relation
+    ADD CONSTRAINT mar_pk PRIMARY KEY (mau_userid, validfrom);
 
 
 --
@@ -1657,11 +1720,43 @@ ALTER TABLE ONLY moneyjinn.access_users
 
 
 --
+-- Name: access_users mau_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.access_users
+    ADD CONSTRAINT mau_pk PRIMARY KEY (userid);
+
+
+--
 -- Name: contractpartneraccounts mca_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts
     ADD CONSTRAINT mca_i_01 UNIQUE (accountnumber, bankcode);
+
+
+--
+-- Name: contractpartneraccounts mca_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.contractpartneraccounts
+    ADD CONSTRAINT mca_pk PRIMARY KEY (contractpartneraccountid);
+
+
+--
+-- Name: cmp_data_formats mcf_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.cmp_data_formats
+    ADD CONSTRAINT mcf_i_01 UNIQUE (name);
+
+
+--
+-- Name: cmp_data_formats mcf_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.cmp_data_formats
+    ADD CONSTRAINT mcf_pk PRIMARY KEY (formatid);
 
 
 --
@@ -1673,11 +1768,75 @@ ALTER TABLE ONLY moneyjinn.contractpartners
 
 
 --
+-- Name: contractpartners mcp_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.contractpartners
+    ADD CONSTRAINT mcp_pk PRIMARY KEY (contractpartnerid);
+
+
+--
+-- Name: capitalsources mcs_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.capitalsources
+    ADD CONSTRAINT mcs_pk PRIMARY KEY (capitalsourceid);
+
+
+--
+-- Name: etfflows mef_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.etfflows
+    ADD CONSTRAINT mef_pk PRIMARY KEY (etfflowid);
+
+
+--
 -- Name: etfpreliminarylumpsum mep_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
     ADD CONSTRAINT mep_i_01 UNIQUE (met_etfid, year);
+
+
+--
+-- Name: etfpreliminarylumpsum mep_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
+    ADD CONSTRAINT mep_pk PRIMARY KEY (etfpreliminarylumpsumid);
+
+
+--
+-- Name: etf met_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.etf
+    ADD CONSTRAINT met_pk PRIMARY KEY (etfid);
+
+
+--
+-- Name: etfvalues mev_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.etfvalues
+    ADD CONSTRAINT mev_i_01 UNIQUE (isin, date);
+
+
+--
+-- Name: impbalance mib_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.impbalance
+    ADD CONSTRAINT mib_pk PRIMARY KEY (mcs_capitalsourceid);
+
+
+--
+-- Name: imp_data mid_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.imp_data
+    ADD CONSTRAINT mid_pk PRIMARY KEY (dataid);
 
 
 --
@@ -1689,11 +1848,27 @@ ALTER TABLE ONLY moneyjinn.impmoneyflows
 
 
 --
+-- Name: impmoneyflows mim_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.impmoneyflows
+    ADD CONSTRAINT mim_pk PRIMARY KEY (impmoneyflowid);
+
+
+--
 -- Name: imp_mapping_partner mip_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.imp_mapping_partner
     ADD CONSTRAINT mip_i_01 UNIQUE (partner_from);
+
+
+--
+-- Name: impmoneyflowreceipts mir_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
+    ADD CONSTRAINT mir_pk PRIMARY KEY (impmoneyflowreceiptid);
 
 
 --
@@ -1713,6 +1888,22 @@ ALTER TABLE ONLY moneyjinn.impmonthlysettlements
 
 
 --
+-- Name: impmonthlysettlements mit_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.impmonthlysettlements
+    ADD CONSTRAINT mit_pk PRIMARY KEY (impmonthlysettlementid);
+
+
+--
+-- Name: moneyflows mmf_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.moneyflows
+    ADD CONSTRAINT mmf_pk PRIMARY KEY (moneyflowid);
+
+
+--
 -- Name: monthlysettlements mms_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -1721,35 +1912,27 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements
 
 
 --
--- Name: moneyflowreceipts moneyflowreceipts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.moneyflowreceipts
-    ADD CONSTRAINT moneyflowreceipts_pkey PRIMARY KEY (moneyflowreceiptid);
-
-
---
--- Name: moneyflows moneyflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.moneyflows
-    ADD CONSTRAINT moneyflows_pkey PRIMARY KEY (moneyflowid);
-
-
---
--- Name: moneyflowsplitentries moneyflowsplitentries_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
-    ADD CONSTRAINT moneyflowsplitentries_pkey PRIMARY KEY (moneyflowsplitentryid);
-
-
---
--- Name: monthlysettlements monthlysettlements_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+-- Name: monthlysettlements mms_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements
-    ADD CONSTRAINT monthlysettlements_pkey PRIMARY KEY (monthlysettlementid);
+    ADD CONSTRAINT mms_pk PRIMARY KEY (monthlysettlementid);
+
+
+--
+-- Name: postingaccounts mpa_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.postingaccounts
+    ADD CONSTRAINT mpa_pk PRIMARY KEY (postingaccountid);
+
+
+--
+-- Name: predefmoneyflows mpm_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.predefmoneyflows
+    ADD CONSTRAINT mpm_pk PRIMARY KEY (predefmoneyflowid);
 
 
 --
@@ -1761,35 +1944,27 @@ ALTER TABLE ONLY moneyjinn.moneyflowreceipts
 
 
 --
--- Name: cmp_data_formats name; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+-- Name: moneyflowreceipts mrp_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.cmp_data_formats
-    ADD CONSTRAINT name UNIQUE (name);
-
-
---
--- Name: postingaccounts postingaccounts_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.postingaccounts
-    ADD CONSTRAINT postingaccounts_pkey PRIMARY KEY (postingaccountid);
+ALTER TABLE ONLY moneyjinn.moneyflowreceipts
+    ADD CONSTRAINT mrp_pk PRIMARY KEY (moneyflowreceiptid);
 
 
 --
--- Name: predefmoneyflows predefmoneyflows_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+-- Name: moneyflowsplitentries mse_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.predefmoneyflows
-    ADD CONSTRAINT predefmoneyflows_pkey PRIMARY KEY (predefmoneyflowid);
+ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
+    ADD CONSTRAINT mse_pk PRIMARY KEY (moneyflowsplitentryid);
 
 
 --
--- Name: settings settings_pkey; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+-- Name: settings mst_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.settings
-    ADD CONSTRAINT settings_pkey PRIMARY KEY (name, mau_userid);
+    ADD CONSTRAINT mst_pk PRIMARY KEY (name, mau_userid);
 
 
 --
@@ -2311,14 +2486,6 @@ ALTER TABLE ONLY moneyjinn.moneyflowreceipts
 
 
 --
--- Name: settings mse_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
---
-
-ALTER TABLE ONLY moneyjinn.settings
-    ADD CONSTRAINT mse_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-
---
 -- Name: moneyflowsplitentries mse_mmf_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -2332,6 +2499,14 @@ ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
 
 ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
     ADD CONSTRAINT mse_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts(postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: settings mst_mau_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+--
+
+ALTER TABLE ONLY moneyjinn.settings
+    ADD CONSTRAINT mst_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2739,7 +2914,7 @@ GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjin
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 1WcHRtnJ8i6wtv5367rvsCcnMORQDxljP8Zk4lB1I93zJdab5DM0CiKGPFEfiBN
+\unrestrict dIPCEjMn5EBQqQgmG6Rh3MHGJXnOtUCbklz1r8myHZij63I13bm6TWG5KaPsofi
 
 SELECT pg_catalog.set_config('search_path', '', false);
 INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (2, 'Sparda Bank', 'Buchungstag', 'Wertstellungstag', 'Verwendungszweck', NULL, '/^"Buchungstag";"Wertstellungstag";"Verwendungszweck"/', ';', 1, NULL, NULL, 4, 3, 'DD.MM.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);

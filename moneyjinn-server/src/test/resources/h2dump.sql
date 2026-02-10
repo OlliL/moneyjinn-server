@@ -32,10 +32,10 @@ CREATE TABLE capitalsources (
 CREATE TABLE cmp_data_formats (
     formatid bigserial NOT NULL,
     name character varying(50) NOT NULL,
-    start_trigger_0 character varying(30) DEFAULT NULL::character varying,
-    start_trigger_1 character varying(30) DEFAULT NULL::character varying,
-    start_trigger_2 character varying(30) DEFAULT NULL::character varying,
-    end_trigger_0 character varying(30) DEFAULT NULL::character varying,
+    start_trigger_0 character varying(50) DEFAULT NULL::character varying,
+    start_trigger_1 character varying(50) DEFAULT NULL::character varying,
+    start_trigger_2 character varying(50) DEFAULT NULL::character varying,
+    end_trigger_0 character varying(50) DEFAULT NULL::character varying,
     startline character varying(255) NOT NULL,
     delimiter character varying(1) NOT NULL,
     pos_date smallint NOT NULL,
@@ -312,75 +312,75 @@ CREATE VIEW vw_monthlysettlements  AS
     access_relation mar
   WHERE (((((concat(mms."year", '-', lpad((mms."month")::text, 2, '0'::text), '-01'))::date + INTERVAL '1' month) - INTERVAL '1' day) >= mar.validfrom) AND ((((concat(mms."year", '-', lpad((mms."month")::text, 2, '0'::text), '-01'))::date + INTERVAL '1' month) - INTERVAL '1' day) <= mar.validtil) AND (mms.mag_groupid = mar.mag_groupid));
 ALTER TABLE access_groups
-    ADD CONSTRAINT access_groups_pkey PRIMARY KEY (groupid);
-ALTER TABLE access_relation
-    ADD CONSTRAINT access_relation_pkey PRIMARY KEY (mau_userid, validfrom);
-ALTER TABLE access_users
-    ADD CONSTRAINT access_users_pkey PRIMARY KEY (userid);
-ALTER TABLE capitalsources
-    ADD CONSTRAINT capitalsources_pkey PRIMARY KEY (capitalsourceid);
-ALTER TABLE cmp_data_formats
-    ADD CONSTRAINT cmp_data_formats_pkey PRIMARY KEY (formatid);
-ALTER TABLE contractpartneraccounts
-    ADD CONSTRAINT contractpartneraccounts_pkey PRIMARY KEY (contractpartneraccountid);
-ALTER TABLE contractpartners
-    ADD CONSTRAINT contractpartners_pkey PRIMARY KEY (contractpartnerid);
-ALTER TABLE etfvalues
-    ADD CONSTRAINT etf_i_01 UNIQUE (isin, date);
-ALTER TABLE etf
-    ADD CONSTRAINT etf_pkey PRIMARY KEY (etfid);
-ALTER TABLE etfflows
-    ADD CONSTRAINT etfflows_pkey PRIMARY KEY (etfflowid);
-ALTER TABLE etfpreliminarylumpsum
-    ADD CONSTRAINT etfpreliminarylumpsum_pkey PRIMARY KEY (etfpreliminarylumpsumid);
-ALTER TABLE imp_data
-    ADD CONSTRAINT imp_data_pkey PRIMARY KEY (dataid);
-ALTER TABLE impbalance
-    ADD CONSTRAINT impbalance_pkey PRIMARY KEY (mcs_capitalsourceid);
-ALTER TABLE impmoneyflowreceipts
-    ADD CONSTRAINT impmoneyflowreceipts_pkey PRIMARY KEY (impmoneyflowreceiptid);
-ALTER TABLE impmoneyflows
-    ADD CONSTRAINT impmoneyflows_pkey PRIMARY KEY (impmoneyflowid);
-ALTER TABLE impmonthlysettlements
-    ADD CONSTRAINT impmonthlysettlements_pkey PRIMARY KEY (impmonthlysettlementid);
-ALTER TABLE access_groups
     ADD CONSTRAINT mag_i_01 UNIQUE (name);
+ALTER TABLE access_groups
+    ADD CONSTRAINT mag_pk PRIMARY KEY (groupid);
+ALTER TABLE access_relation
+    ADD CONSTRAINT mar_pk PRIMARY KEY (mau_userid, validfrom);
 ALTER TABLE access_users
     ADD CONSTRAINT mau_i_01 UNIQUE (name);
+ALTER TABLE access_users
+    ADD CONSTRAINT mau_pk PRIMARY KEY (userid);
 ALTER TABLE contractpartneraccounts
     ADD CONSTRAINT mca_i_01 UNIQUE (accountnumber, bankcode);
+ALTER TABLE contractpartneraccounts
+    ADD CONSTRAINT mca_pk PRIMARY KEY (contractpartneraccountid);
+ALTER TABLE cmp_data_formats
+    ADD CONSTRAINT mcf_i_01 UNIQUE (name);
+ALTER TABLE cmp_data_formats
+    ADD CONSTRAINT mcf_pk PRIMARY KEY (formatid);
 ALTER TABLE contractpartners
     ADD CONSTRAINT mcp_i_01 UNIQUE (mag_groupid, name);
+ALTER TABLE contractpartners
+    ADD CONSTRAINT mcp_pk PRIMARY KEY (contractpartnerid);
+ALTER TABLE capitalsources
+    ADD CONSTRAINT mcs_pk PRIMARY KEY (capitalsourceid);
+ALTER TABLE etfflows
+    ADD CONSTRAINT mef_pk PRIMARY KEY (etfflowid);
 ALTER TABLE etfpreliminarylumpsum
     ADD CONSTRAINT mep_i_01 UNIQUE (met_etfid, "year");
+ALTER TABLE etfpreliminarylumpsum
+    ADD CONSTRAINT mep_pk PRIMARY KEY (etfpreliminarylumpsumid);
+ALTER TABLE etf
+    ADD CONSTRAINT met_pk PRIMARY KEY (etfid);
+ALTER TABLE etfvalues
+    ADD CONSTRAINT mev_i_01 UNIQUE (isin, date);
+ALTER TABLE impbalance
+    ADD CONSTRAINT mib_pk PRIMARY KEY (mcs_capitalsourceid);
+ALTER TABLE imp_data
+    ADD CONSTRAINT mid_pk PRIMARY KEY (dataid);
 ALTER TABLE impmoneyflows
     ADD CONSTRAINT mim_i_01 UNIQUE (externalid);
+ALTER TABLE impmoneyflows
+    ADD CONSTRAINT mim_pk PRIMARY KEY (impmoneyflowid);
 ALTER TABLE imp_mapping_partner
     ADD CONSTRAINT mip_i_01 UNIQUE (partner_from);
+ALTER TABLE impmoneyflowreceipts
+    ADD CONSTRAINT mir_pk PRIMARY KEY (impmoneyflowreceiptid);
 ALTER TABLE imp_mapping_source
     ADD CONSTRAINT mis_i_01 UNIQUE (source_from);
 ALTER TABLE impmonthlysettlements
     ADD CONSTRAINT mit_i_01 UNIQUE (externalid);
+ALTER TABLE impmonthlysettlements
+    ADD CONSTRAINT mit_pk PRIMARY KEY (impmonthlysettlementid);
+ALTER TABLE moneyflows
+    ADD CONSTRAINT mmf_pk PRIMARY KEY (moneyflowid);
 ALTER TABLE monthlysettlements
     ADD CONSTRAINT mms_i_01 UNIQUE ("month", "year", mcs_capitalsourceid);
-ALTER TABLE moneyflowreceipts
-    ADD CONSTRAINT moneyflowreceipts_pkey PRIMARY KEY (moneyflowreceiptid);
-ALTER TABLE moneyflows
-    ADD CONSTRAINT moneyflows_pkey PRIMARY KEY (moneyflowid);
-ALTER TABLE moneyflowsplitentries
-    ADD CONSTRAINT moneyflowsplitentries_pkey PRIMARY KEY (moneyflowsplitentryid);
 ALTER TABLE monthlysettlements
-    ADD CONSTRAINT monthlysettlements_pkey PRIMARY KEY (monthlysettlementid);
+    ADD CONSTRAINT mms_pk PRIMARY KEY (monthlysettlementid);
+ALTER TABLE postingaccounts
+    ADD CONSTRAINT mpa_pk PRIMARY KEY (postingaccountid);
+ALTER TABLE predefmoneyflows
+    ADD CONSTRAINT mpm_pk PRIMARY KEY (predefmoneyflowid);
 ALTER TABLE moneyflowreceipts
     ADD CONSTRAINT mrp_i_01 UNIQUE (mmf_moneyflowid);
-ALTER TABLE cmp_data_formats
-    ADD CONSTRAINT name UNIQUE (name);
-ALTER TABLE postingaccounts
-    ADD CONSTRAINT postingaccounts_pkey PRIMARY KEY (postingaccountid);
-ALTER TABLE predefmoneyflows
-    ADD CONSTRAINT predefmoneyflows_pkey PRIMARY KEY (predefmoneyflowid);
+ALTER TABLE moneyflowreceipts
+    ADD CONSTRAINT mrp_pk PRIMARY KEY (moneyflowreceiptid);
+ALTER TABLE moneyflowsplitentries
+    ADD CONSTRAINT mse_pk PRIMARY KEY (moneyflowsplitentryid);
 ALTER TABLE settings
-    ADD CONSTRAINT settings_pkey PRIMARY KEY (name, mau_userid);
+    ADD CONSTRAINT mst_pk PRIMARY KEY (name, mau_userid);
 CREATE INDEX mar_i_01 ON access_relation USING btree (mag_groupid, validfrom);
 CREATE INDEX mca_mcp_pk_01 ON contractpartneraccounts USING btree (mcp_contractpartnerid);
 CREATE INDEX mcp_mag_pk ON contractpartners USING btree (mag_groupid);
@@ -470,9 +470,9 @@ ALTER TABLE predefmoneyflows
     ADD CONSTRAINT mpm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts(postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE moneyflowreceipts
     ADD CONSTRAINT mrp_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyflows(moneyflowid) ON UPDATE RESTRICT ON DELETE RESTRICT;
-ALTER TABLE settings
-    ADD CONSTRAINT mse_mau_pk FOREIGN KEY (mau_userid) REFERENCES access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE moneyflowsplitentries
     ADD CONSTRAINT mse_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyflows(moneyflowid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE moneyflowsplitentries
     ADD CONSTRAINT mse_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts(postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE settings
+    ADD CONSTRAINT mst_mau_pk FOREIGN KEY (mau_userid) REFERENCES access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
