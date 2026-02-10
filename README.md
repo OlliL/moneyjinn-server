@@ -27,6 +27,8 @@
    GRANT CONNECT ON DATABASE moneyjinn TO moneyjinn_app;
    GRANT CONNECT ON DATABASE moneyjinn TO moneyjinn_hbci_app;
    ```
+- load DB Schema and initial Data
+    - `$ psql -U postgres -d moneyjinn -f pgsqldump.sql`
 - configure client (see <a href="https://github.com/OlliL/moneyjinn-client/blob/main/README.md">Client README</a>)
 
 # Notes

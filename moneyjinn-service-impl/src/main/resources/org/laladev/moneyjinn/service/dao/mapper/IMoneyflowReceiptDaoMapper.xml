@@ -5,7 +5,8 @@
     <resultMap id="moneyflowReceiptMap" type="org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData">
         <result property="id" javaType="java.lang.Long" column="id"/>
         <result property="mmfMoneyflowId" javaType="java.lang.Long" column="mmfMoneyflowId"/>
-        <result property="receipt" javaType="_byte[]" column="blob_Data" jdbcType="BLOB"/>
+        <result property="receipt" javaType="byte[]" column="blob_Data"
+                typeHandler="org.apache.ibatis.type.ByteArrayTypeHandler"/>
         <result property="receiptType" javaType="java.lang.Integer" column="receiptType"/>
     </resultMap>
 

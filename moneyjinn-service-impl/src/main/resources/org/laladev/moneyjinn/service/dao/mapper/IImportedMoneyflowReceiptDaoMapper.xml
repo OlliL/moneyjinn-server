@@ -7,7 +7,8 @@
         <result property="id" javaType="java.lang.Long" column="id"/>
         <result property="mauUserId" javaType="java.lang.Long" column="mauUserId"/>
         <result property="magGroupId" javaType="java.lang.Long" column="magGroupId"/>
-        <result property="receipt" javaType="_byte[]" column="blob_Data" jdbcType="BLOB"/>
+        <result property="receipt" javaType="byte[]" column="blob_Data"
+                typeHandler="org.apache.ibatis.type.ByteArrayTypeHandler"/>
         <result property="filename" javaType="java.lang.String" column="filename"/>
         <result property="mediaType" javaType="java.lang.String" column="mediatype"/>
     </resultMap>
