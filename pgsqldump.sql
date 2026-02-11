@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict dIPCEjMn5EBQqQgmG6Rh3MHGJXnOtUCbklz1r8myHZij63I13bm6TWG5KaPsofi
+\restrict kWqmoMCWnmTmr0GCL0ddLROtd8sdneqVdwvz6ARgXntZDatw542KlgQhPvsFnuR
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -102,14 +102,14 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements DROP CONSTRAINT mms_i_01;
 ALTER TABLE ONLY moneyjinn.moneyflows DROP CONSTRAINT mmf_pk;
 ALTER TABLE ONLY moneyjinn.impmonthlysettlements DROP CONSTRAINT mit_pk;
 ALTER TABLE ONLY moneyjinn.impmonthlysettlements DROP CONSTRAINT mit_i_01;
-ALTER TABLE ONLY moneyjinn.imp_mapping_source DROP CONSTRAINT mis_i_01;
+ALTER TABLE ONLY moneyjinn.imp_mapping_source DROP CONSTRAINT mis_pk;
 ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts DROP CONSTRAINT mir_pk;
-ALTER TABLE ONLY moneyjinn.imp_mapping_partner DROP CONSTRAINT mip_i_01;
+ALTER TABLE ONLY moneyjinn.imp_mapping_partner DROP CONSTRAINT mip_pk;
 ALTER TABLE ONLY moneyjinn.impmoneyflows DROP CONSTRAINT mim_pk;
 ALTER TABLE ONLY moneyjinn.impmoneyflows DROP CONSTRAINT mim_i_01;
 ALTER TABLE ONLY moneyjinn.imp_data DROP CONSTRAINT mid_pk;
 ALTER TABLE ONLY moneyjinn.impbalance DROP CONSTRAINT mib_pk;
-ALTER TABLE ONLY moneyjinn.etfvalues DROP CONSTRAINT mev_i_01;
+ALTER TABLE ONLY moneyjinn.etfvalues DROP CONSTRAINT mev_pk;
 ALTER TABLE ONLY moneyjinn.etf DROP CONSTRAINT met_pk;
 ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum DROP CONSTRAINT mep_pk;
 ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum DROP CONSTRAINT mep_i_01;
@@ -1816,11 +1816,11 @@ ALTER TABLE ONLY moneyjinn.etf
 
 
 --
--- Name: etfvalues mev_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+-- Name: etfvalues mev_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.etfvalues
-    ADD CONSTRAINT mev_i_01 UNIQUE (isin, date);
+    ADD CONSTRAINT mev_pk PRIMARY KEY (isin, date);
 
 
 --
@@ -1856,11 +1856,11 @@ ALTER TABLE ONLY moneyjinn.impmoneyflows
 
 
 --
--- Name: imp_mapping_partner mip_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+-- Name: imp_mapping_partner mip_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.imp_mapping_partner
-    ADD CONSTRAINT mip_i_01 UNIQUE (partner_from);
+    ADD CONSTRAINT mip_pk PRIMARY KEY (partner_from);
 
 
 --
@@ -1872,11 +1872,11 @@ ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
 
 
 --
--- Name: imp_mapping_source mis_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
+-- Name: imp_mapping_source mis_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
 ALTER TABLE ONLY moneyjinn.imp_mapping_source
-    ADD CONSTRAINT mis_i_01 UNIQUE (source_from);
+    ADD CONSTRAINT mis_pk PRIMARY KEY (source_from);
 
 
 --
@@ -2914,7 +2914,7 @@ GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjin
 -- PostgreSQL database dump complete
 --
 
-\unrestrict dIPCEjMn5EBQqQgmG6Rh3MHGJXnOtUCbklz1r8myHZij63I13bm6TWG5KaPsofi
+\unrestrict kWqmoMCWnmTmr0GCL0ddLROtd8sdneqVdwvz6ARgXntZDatw542KlgQhPvsFnuR
 
 SELECT pg_catalog.set_config('search_path', '', false);
 INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (2, 'Sparda Bank', 'Buchungstag', 'Wertstellungstag', 'Verwendungszweck', NULL, '/^"Buchungstag";"Wertstellungstag";"Verwendungszweck"/', ';', 1, NULL, NULL, 4, 3, 'DD.MM.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);

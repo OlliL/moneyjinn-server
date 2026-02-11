@@ -344,7 +344,7 @@ ALTER TABLE etfpreliminarylumpsum
 ALTER TABLE etf
     ADD CONSTRAINT met_pk PRIMARY KEY (etfid);
 ALTER TABLE etfvalues
-    ADD CONSTRAINT mev_i_01 UNIQUE (isin, date);
+    ADD CONSTRAINT mev_pk PRIMARY KEY (isin, date);
 ALTER TABLE impbalance
     ADD CONSTRAINT mib_pk PRIMARY KEY (mcs_capitalsourceid);
 ALTER TABLE imp_data
@@ -354,11 +354,11 @@ ALTER TABLE impmoneyflows
 ALTER TABLE impmoneyflows
     ADD CONSTRAINT mim_pk PRIMARY KEY (impmoneyflowid);
 ALTER TABLE imp_mapping_partner
-    ADD CONSTRAINT mip_i_01 UNIQUE (partner_from);
+    ADD CONSTRAINT mip_pk PRIMARY KEY (partner_from);
 ALTER TABLE impmoneyflowreceipts
     ADD CONSTRAINT mir_pk PRIMARY KEY (impmoneyflowreceiptid);
 ALTER TABLE imp_mapping_source
-    ADD CONSTRAINT mis_i_01 UNIQUE (source_from);
+    ADD CONSTRAINT mis_pk PRIMARY KEY (source_from);
 ALTER TABLE impmonthlysettlements
     ADD CONSTRAINT mit_i_01 UNIQUE (externalid);
 ALTER TABLE impmonthlysettlements
