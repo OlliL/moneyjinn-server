@@ -191,7 +191,7 @@ class CreateEtfTest extends AbstractEtfTest {
         super.callUsecaseExpect204(transport);
 
         final var userId = new UserID(UserTransportBuilder.ADMIN_ID);
-        final var etfId = new EtfID(1L);
+        final var etfId = new EtfID(EtfTransportBuilder.NEXT_ID);
 
         final var etf = this.etfService.getEtfById(userId, etfId);
         Assertions.assertNotNull(etf);

@@ -40,7 +40,7 @@ public class PreDefMoneyflowData {
     private Long mcpContractpartnerId;
     private String comment;
     private LocalDate createdate;
-    private boolean onceAMonth;
+    private int onceAMonth;
     private LocalDate lastUsed;
     private Long mpaPostingAccountId;
 }

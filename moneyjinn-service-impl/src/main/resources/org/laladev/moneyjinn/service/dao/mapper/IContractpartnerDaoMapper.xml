@@ -3,111 +3,112 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IContractpartnerDaoMapper">
 
     <sql id="contractpartnerColumns">
-                 mau_userid             AS mauUserId
-                ,mag_groupid            AS magGroupId
-                ,contractpartnerid      AS id
-                ,name
-                ,street
-                ,postcode
-                ,town
-                ,country
-                ,validtil               AS validTil
-                ,validfrom              AS validFrom
-                ,mmf_comment            AS mmfComment
-                ,mpa_postingaccountid   AS mpaPostingAccountId
+        mau_userid AS mauUserId
+        ,mag_groupid AS magGroupId
+        ,contractpartnerid AS id
+        ,name
+        ,street
+        ,postcode
+        ,town
+        ,country
+        ,validtil AS validTil
+        ,validfrom AS validFrom
+        ,mmf_comment AS mmfComment
+        ,mpa_postingaccountid AS mpaPostingAccountId
     </sql>
 
 
     <select id="getAllContractpartners"
             resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
-                SELECT <include refid="contractpartnerColumns" />
-                  FROM vw_contractpartners
-                 WHERE mar_mau_userid = #{userId}
-                   AND NOW() BETWEEN maf_validfrom AND maf_validtil
-                 ORDER BY name
+        SELECT
+        <include refid="contractpartnerColumns"/>
+        FROM vw_contractpartners
+        WHERE mar_mau_userid = #{userId}
+        AND NOW() BETWEEN maf_validfrom AND maf_validtil
+        ORDER BY name
     </select>
 
     <select id="getContractpartnerById"
             resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
-                SELECT <include refid="contractpartnerColumns" />
-                  FROM vw_contractpartners
-                 WHERE contractpartnerid = #{id}
-                   AND mar_mau_userid    = #{userId}
-                 LIMIT 1
+        SELECT
+        <include refid="contractpartnerColumns"/>
+        FROM vw_contractpartners
+        WHERE contractpartnerid = #{id}
+        AND mar_mau_userid = #{userId}
+        FETCH FIRST 1 ROW ONLY
     </select>
 
     <select id="getContractpartnerByName"
             resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
 
-                SELECT <include refid="contractpartnerColumns" />
-                  FROM vw_contractpartners
-                 WHERE mar_mau_userid  = #{userId}
-                   AND name            = #{name}
-                   AND NOW()           BETWEEN maf_validfrom AND maf_validtil
-                 LIMIT 1
+        SELECT
+        <include refid="contractpartnerColumns"/>
+        FROM vw_contractpartners
+        WHERE mar_mau_userid = #{userId}
+        AND name = #{name}
+        AND NOW() BETWEEN maf_validfrom AND maf_validtil
+        FETCH FIRST 1 ROW ONLY
     </select>
 
     <insert id="createContractpartner"
             parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartnerid">
-                INSERT
-                  INTO contractpartners
-                      (mau_userid
-                      ,mag_groupid
-                      ,name
-                      ,street
-                      ,postcode
-                      ,town
-                      ,country
-                      ,validfrom
-                      ,validtil
-                      ,mmf_comment
-                      ,mpa_postingaccountid
-                      )
-                VALUES
-                      (#{mauUserId}
-                      ,#{magGroupId}
-                      ,#{name}
-                      ,#{street}
-                      ,#{postcode}
-                      ,#{town}
-                      ,#{country}
-                      ,#{validFrom}
-                      ,#{validTil}
-                      ,#{mmfComment}
-                      ,#{mpaPostingAccountId}
-                      )
+        INSERT
+        INTO contractpartners
+        (mau_userid
+        ,mag_groupid
+        ,name
+        ,street
+        ,postcode
+        ,town
+        ,country
+        ,validfrom
+        ,validtil
+        ,mmf_comment
+        ,mpa_postingaccountid
+        )
+        VALUES
+        (#{mauUserId}
+        ,#{magGroupId}
+        ,#{name}
+        ,#{street}
+        ,#{postcode}
+        ,#{town}
+        ,#{country}
+        ,#{validFrom}
+        ,#{validTil}
+        ,#{mmfComment}
+        ,#{mpaPostingAccountId}
+        )
     </insert>
 
     <update id="updateContractpartner" parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
-                UPDATE contractpartners
-                   SET name                 = #{name}
-                      ,street               = #{street}
-                      ,postcode             = #{postcode}
-                      ,town                 = #{town}
-                      ,country              = #{country}
-                      ,validtil             = #{validTil}
-                      ,validfrom            = #{validFrom}
-                      ,mmf_comment          = #{mmfComment}
-                      ,mpa_postingaccountid = #{mpaPostingAccountId}
-                 WHERE contractpartnerid    = #{id}
-                   AND mag_groupid          = #{magGroupId}
-                 LIMIT 1
+        UPDATE contractpartners
+        SET name = #{name}
+        ,street = #{street}
+        ,postcode = #{postcode}
+        ,town = #{town}
+        ,country = #{country}
+        ,validtil = #{validTil}
+        ,validfrom = #{validFrom}
+        ,mmf_comment = #{mmfComment}
+        ,mpa_postingaccountid = #{mpaPostingAccountId}
+        WHERE contractpartnerid = #{id}
+        AND mag_groupid = #{magGroupId}
     </update>
 
     <delete id="deleteContractpartner">
-                DELETE
-                  FROM contractpartners
-                 WHERE mag_groupid       = #{groupId}
-                   AND contractpartnerid = #{id}
-                 LIMIT 1
+        DELETE
+        FROM contractpartners
+        WHERE mag_groupid = #{groupId}
+        AND contractpartnerid = #{id}
     </delete>
 
     <select id="checkContractpartnerInUseOutOfDate" resultType="java.lang.Boolean">
-                SELECT 1
-                  FROM moneyflows
-                 WHERE mcp_contractpartnerid = #{id}
-                   AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
-                 LIMIT 1        
+        SELECT 1
+        FROM moneyflows
+        WHERE mcp_contractpartnerid = #{id}
+        AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
+        FETCH FIRST 1 ROWS ONLY
     </select>
 </mapper>

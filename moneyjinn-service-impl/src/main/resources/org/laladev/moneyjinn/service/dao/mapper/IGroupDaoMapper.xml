@@ -3,56 +3,55 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IGroupDaoMapper">
 
     <sql id="groupColumns">
-                 groupid
-                ,name
+        groupid
+        ,name
     </sql>
 
     <select id="getGroupById" parameterType="java.lang.Long"
             resultType="org.laladev.moneyjinn.service.dao.data.GroupData">
-                SELECT <include refid="groupColumns" />
-                  FROM access_groups
-                 WHERE groupid = #{groupid}
-                 LIMIT 1
+        SELECT
+        <include refid="groupColumns"/>
+        FROM access_groups
+        WHERE groupid = #{groupid}
     </select>
 
     <select id="getGroupByName" parameterType="java.lang.String"
             resultType="org.laladev.moneyjinn.service.dao.data.GroupData">
-                SELECT <include refid="groupColumns" />
-                  FROM access_groups
-                 WHERE name = #{name}
-                 LIMIT 1
+        SELECT
+        <include refid="groupColumns"/>
+        FROM access_groups
+        WHERE name = #{name}
     </select>
 
     <select id="getAllGroups"
             resultType="org.laladev.moneyjinn.service.dao.data.GroupData">
-                SELECT <include refid="groupColumns" />
-                  FROM access_groups
-                 ORDER BY name
+        SELECT
+        <include refid="groupColumns"/>
+        FROM access_groups
+        ORDER BY name
     </select>
 
     <insert id="createGroup"
             parameterType="org.laladev.moneyjinn.service.dao.data.GroupData"
             useGeneratedKeys="true" keyProperty="groupid" keyColumn="groupid">
-                INSERT
-                  INTO access_groups
-                      (name
-                      )
-                VALUES
-                      (#{name}
-                      )
+        INSERT
+        INTO access_groups
+        (name
+        )
+        VALUES
+        (#{name}
+        )
     </insert>
 
     <update id="updateGroup" parameterType="org.laladev.moneyjinn.service.dao.data.GroupData">
-                UPDATE access_groups
-                   SET name    = #{name}
-                 WHERE groupid = #{groupid}
-                 LIMIT 1
+        UPDATE access_groups
+        SET name = #{name}
+        WHERE groupid = #{groupid}
     </update>
 
     <delete id="deleteGroup">
-                DELETE
-                  FROM access_groups
-                 WHERE groupid = #{groupid}
-                 LIMIT 1
+        DELETE
+        FROM access_groups
+        WHERE groupid = #{groupid}
     </delete>
 </mapper>

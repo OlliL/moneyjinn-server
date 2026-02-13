@@ -4,47 +4,54 @@
         namespace="org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper">
 
     <sql id="settingColumns">
-                 mau_userid      as mauUserId
-                ,name
-                ,`value`
+        mau_userid as mauUserId
+        ,name
+        ,"value"
     </sql>
 
     <select id="getSetting"
             resultType="org.laladev.moneyjinn.service.dao.data.SettingData">
-                SELECT <include refid="settingColumns" />
-                  FROM settings
-                 WHERE mau_userid = #{mauUserId}
-                   AND name = #{name}
-                 LIMIT 1
+        SELECT
+        <include refid="settingColumns"/>
+        FROM settings
+        WHERE mau_userid = #{mauUserId}
+        AND name = #{name}
     </select>
 
-    <insert id="setSetting" >
-                INSERT
-                  INTO settings
-                      (mau_userid
-                      ,name
-                      ,`value`
-                      )
-                VALUES
-                      (#{mauUserId}
-                      ,#{name}
-                      ,#{value}
-                      )
-                    ON DUPLICATE KEY
-                UPDATE `value` = VALUES(`value`)
+    <insert id="setSetting">
+        MERGE
+        INTO settings
+        USING (SELECT
+        CAST(#{mauUserId} as integer),
+        CAST(#{name} as text),
+        CAST(#{value} as text)
+        ) AS source (source_mau_userid, source_name, source_value)
+        ON (mau_userid = source.source_mau_userid AND name = source.source_name)
+        WHEN MATCHED THEN
+        UPDATE set "value" = source.source_value
+        WHEN NOT MATCHED THEN
+        INSERT
+        (mau_userid
+        ,name
+        ,"value"
+        )
+        VALUES
+        (source_mau_userid
+        ,source_name
+        ,source_value
+        )
     </insert>
 
     <delete id="deleteSettings">
-                DELETE
-                  FROM settings
-                 WHERE mau_userid = #{mauUserId}
+        DELETE
+        FROM settings
+        WHERE mau_userid = #{mauUserId}
     </delete>
 
     <delete id="deleteSetting">
-                DELETE
-                  FROM settings
-                 WHERE mau_userid = #{mauUserId}
-                   AND name = #{name}
-                 LIMIT 1
+        DELETE
+        FROM settings
+        WHERE mau_userid = #{mauUserId}
+        AND name = #{name}
     </delete>
 </mapper>

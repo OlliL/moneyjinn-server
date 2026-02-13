@@ -18,8 +18,6 @@ public class TestDatabaseConfiguration {
     private Resource dropAllScript;
     @Value("classpath:h2dump.sql")
     private Resource schemaScript;
-    @Value("classpath:h2ext.sql")
-    private Resource dataScript;
 
     /**
      * Configures the DataSource for the Unit-Test-Context.
@@ -38,10 +36,11 @@ public class TestDatabaseConfiguration {
         // final Mode mode = Mode.getInstance("MYSQL");
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(Driver.class);
-        ds.setUrl("jdbc:h2:mem:test;MODE=mysql;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+        final var dsn =
+                "jdbc:h2:mem:test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
         // for debugging:
-        // ds.setUrl(
-        // "jdbc:h2:mem:test;MODE=mysql;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;TRACE_LEVEL_FIle=4;TRACE_LEVEL_SYSTEM_OUT=3");
+        //dsn = dsn + ";TRACE_LEVEL_FIle=4;TRACE_LEVEL_SYSTEM_OUT=3";
+        ds.setUrl(dsn);
         ds.setUsername("sa");
         ds.setPassword("");
         return ds;
@@ -51,7 +50,7 @@ public class TestDatabaseConfiguration {
         final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScript(this.dropAllScript);
         populator.addScript(this.schemaScript);
-        populator.addScript(this.dataScript);
+//        populator.addScript(this.dataScript);
         return populator;
     }
 }

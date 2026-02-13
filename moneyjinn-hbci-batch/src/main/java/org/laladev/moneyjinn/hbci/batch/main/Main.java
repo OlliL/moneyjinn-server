@@ -76,8 +76,6 @@ public final class Main {
 
     private static Connection connectToDatabase(final String url, final String username, final String password)
             throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
         final Connection con = DriverManager.getConnection(url, username, password);
         con.setAutoCommit(false);
 

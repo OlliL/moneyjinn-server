@@ -32,7 +32,6 @@
         <include refid="compareDataFormatColumns"/>
         FROM cmp_data_formats
         WHERE formatid = #{id}
-        LIMIT 1
     </select>
 
     <select id="getAllCompareDataFormats"

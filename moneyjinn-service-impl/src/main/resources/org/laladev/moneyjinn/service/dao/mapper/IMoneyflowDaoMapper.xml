@@ -3,341 +3,336 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMoneyflowDaoMapper">
 
     <sql id="moneyflowColumns">
-                 moneyflowid            AS id
-                ,mau_userid             AS mauUserId
-                ,mag_groupid            AS magGroupId
-                ,bookingdate
-                ,invoicedate
-                ,amount
-                ,mcs_capitalsourceid    AS mcsCapitalsourceId
-                ,mcp_contractpartnerid  AS mcpContractpartnerId
-                ,comment
-                ,mpa_postingaccountid   AS mpaPostingAccountId
-                ,private                AS privat
+        moneyflowid AS id
+        ,mau_userid AS mauUserId
+        ,mag_groupid AS magGroupId
+        ,bookingdate
+        ,invoicedate
+        ,amount
+        ,mcs_capitalsourceid AS mcsCapitalsourceId
+        ,mcp_contractpartnerid AS mcpContractpartnerId
+        ,comment
+        ,mpa_postingaccountid AS mpaPostingAccountId
+        ,private AS privat
     </sql>
 
     <select id="getMoneyflowById"
             resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
-                SELECT <include refid="moneyflowColumns" />
-                  FROM vw_moneyflows
-                 WHERE moneyflowid     = #{id}
-                   AND mar_mau_userid  = #{userId}
-                   AND (
-                        private        = 0
-                          OR
-                        mau_userid     = #{userId}
-                       )
-                 LIMIT 1
+        SELECT
+        <include refid="moneyflowColumns"/>
+        FROM vw_moneyflows
+        WHERE moneyflowid = #{id}
+        AND mar_mau_userid = #{userId}
+        AND (
+        private = 0
+        OR
+        mau_userid = #{userId}
+        )
     </select>
 
     <insert id="createMoneyflow"
             parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowid">
-                INSERT
-                  INTO moneyflows
-                      (mau_userid
-                      ,mag_groupid
-                      ,bookingdate
-                      ,invoicedate
-                      ,amount
-                      ,mcs_capitalsourceid
-                      ,mcp_contractpartnerid
-                      ,comment
-                      ,mpa_postingaccountid
-                      ,private
-                      )
-                VALUES
-                      (#{mauUserId}
-                      ,#{magGroupId}
-                      ,#{bookingdate}
-                      ,#{invoicedate}
-                      ,#{amount}
-                      ,#{mcsCapitalsourceId}
-                      ,#{mcpContractpartnerId}
-                      ,#{comment}
-                      ,#{mpaPostingAccountId}
-                      ,#{privat}
-                      )
+        INSERT
+        INTO moneyflows
+        (mau_userid
+        ,mag_groupid
+        ,bookingdate
+        ,invoicedate
+        ,amount
+        ,mcs_capitalsourceid
+        ,mcp_contractpartnerid
+        ,comment
+        ,mpa_postingaccountid
+        ,private
+        )
+        VALUES
+        (#{mauUserId}
+        ,#{magGroupId}
+        ,#{bookingdate}
+        ,#{invoicedate}
+        ,#{amount}
+        ,#{mcsCapitalsourceId}
+        ,#{mcpContractpartnerId}
+        ,#{comment}
+        ,#{mpaPostingAccountId}
+        ,#{privat}
+        )
     </insert>
 
     <update id="updateMoneyflow" parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
-                UPDATE moneyflows
-                   SET bookingdate           = #{bookingdate}
-                      ,invoicedate           = #{invoicedate}
-                      ,amount                = #{amount}
-                      ,mcs_capitalsourceid   = #{mcsCapitalsourceId}
-                      ,mcp_contractpartnerid = #{mcpContractpartnerId}
-                      ,comment               = #{comment}
-                      ,mpa_postingaccountid  = #{mpaPostingAccountId}
-                      ,private               = #{privat}
-                 WHERE mau_userid            = #{mauUserId}
-                   AND moneyflowid           = #{id}
-                 LIMIT 1
+        UPDATE moneyflows
+        SET bookingdate = #{bookingdate}
+        ,invoicedate = #{invoicedate}
+        ,amount = #{amount}
+        ,mcs_capitalsourceid = #{mcsCapitalsourceId}
+        ,mcp_contractpartnerid = #{mcpContractpartnerId}
+        ,comment = #{comment}
+        ,mpa_postingaccountid = #{mpaPostingAccountId}
+        ,private = #{privat}
+        WHERE mau_userid = #{mauUserId}
+        AND moneyflowid = #{id}
     </update>
 
     <delete id="deleteMoneyflow">
-                DELETE
-                  FROM moneyflows
-                 WHERE mau_userid  = #{userId}
-                   AND moneyflowid = #{id}
-                 LIMIT 1
+        DELETE
+        FROM moneyflows
+        WHERE mau_userid = #{userId}
+        AND moneyflowid = #{id}
     </delete>
 
     <select id="getSumAmountByDateRangeForCapitalsourceIds"
             resultType="java.math.BigDecimal">
-                SELECT IFNULL(SUM(amount),0)
-                  FROM vw_moneyflows
-                 WHERE bookingdate BETWEEN #{validFrom} AND #{validTil}
-                   AND mar_mau_userid      = #{userId}
-                   AND mcs_capitalsourceid IN 
-                   <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
-                      open="(" separator="," close=")">
-                        #{mcsCapitalsourceId}
-                   </foreach>
+        SELECT COALESCE(SUM(amount),0)
+        FROM vw_moneyflows
+        WHERE bookingdate BETWEEN #{validFrom} AND #{validTil}
+        AND mar_mau_userid = #{userId}
+        AND mcs_capitalsourceid IN
+        <foreach item="mcsCapitalsourceId" index="index" collection="mcsCapitalsourceIds"
+                 open="(" separator="," close=")">
+            #{mcsCapitalsourceId}
+        </foreach>
     </select>
 
     <select id="getAllYears" resultType="java.lang.Integer">
-                SELECT DISTINCT YEAR(bookingdate)
-                  FROM vw_moneyflows
-                 WHERE mar_mau_userid          = #{userId}
-                   AND (
-                        private        = 0
-                          OR
-                        mau_userid     = #{userId}
-                       )
-                 ORDER BY 1 ASC
+        SELECT DISTINCT to_char(bookingdate, 'YYYY')
+        FROM vw_moneyflows
+        WHERE mar_mau_userid = #{userId}
+        AND (
+        private = 0
+        OR
+        mau_userid = #{userId}
+        )
+        ORDER BY 1 ASC
     </select>
 
     <select id="getAllMonth" resultType="java.lang.Integer">
-                SELECT DISTINCT MONTH(bookingdate)
-                  FROM vw_moneyflows
-                 WHERE bookingdate   BETWEEN #{beginOfYear} AND #{endOfYear}
-                   AND mar_mau_userid        = #{userId}
-                   AND (
-                        private      = 0
-                          OR
-                        mau_userid   = #{userId}
-                       )
-                 ORDER BY 1 ASC
+        SELECT DISTINCT to_char(bookingdate, 'MM')
+        FROM vw_moneyflows
+        WHERE bookingdate BETWEEN #{beginOfYear} AND #{endOfYear}
+        AND mar_mau_userid = #{userId}
+        AND (
+        private = 0
+        OR
+        mau_userid = #{userId}
+        )
+        ORDER BY 1 ASC
     </select>
 
     <select id="getAllMoneyflowsByDateRangeIncludingPrivate"
             resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
-                SELECT <include refid="moneyflowColumns" />
-                  FROM vw_moneyflows
-                 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
-                   AND mar_mau_userid              = #{userId}
+        SELECT
+        <include refid="moneyflowColumns"/>
+        FROM vw_moneyflows
+        WHERE bookingdate BETWEEN #{dateFrom} AND #{dateTil}
+        AND mar_mau_userid = #{userId}
     </select>
 
     <select id="monthHasMoneyflows" resultType="java.lang.Boolean">
-                SELECT 1
-                  FROM vw_moneyflows
-                 WHERE bookingdate     BETWEEN #{dateFrom} AND #{dateTil}
-                   AND mar_mau_userid          = #{userId}
-                   AND (
-                        private        = 0
-                          OR
-                        mau_userid     = #{userId}
-                       )
-                 LIMIT 1
+        SELECT 1
+        FROM vw_moneyflows
+        WHERE bookingdate BETWEEN #{dateFrom} AND #{dateTil}
+        AND mar_mau_userid = #{userId}
+        AND ( private = 0 OR mau_userid = #{userId} )
+        FETCH FIRST 1 ROWS ONLY
     </select>
 
     <select id="getMaxMoneyflowDate" resultType="java.time.LocalDate">
-                SELECT MAX(bookingdate)
-                  FROM vw_moneyflows
-                 WHERE mar_mau_userid          = #{userId}
-                   AND (
-                        private        = 0
-                          OR
-                        mau_userid     = #{userId}
-                       )
+        SELECT MAX(bookingdate)
+        FROM vw_moneyflows
+        WHERE mar_mau_userid = #{userId}
+        AND ( private = 0 OR mau_userid = #{userId} )
     </select>
 
     <select id="getMinMoneyflowDate" resultType="java.time.LocalDate">
-                SELECT MIN(bookingdate)
-                  FROM vw_moneyflows
-                 WHERE mar_mau_userid          = #{userId}
-                   AND (
-                        private        = 0
-                          OR
-                        mau_userid     = #{userId}
-                       )
+        SELECT MIN(bookingdate)
+        FROM vw_moneyflows
+        WHERE mar_mau_userid = #{userId}
+        AND (
+        private = 0
+        OR
+        mau_userid = #{userId}
+        )
     </select>
 
     <select id="getPreviousMoneyflowDate" resultType="java.time.LocalDate">
-                SELECT MAX(bookingdate)
-                  FROM vw_moneyflows
-                 WHERE bookingdate     <![CDATA[ < ]]> #{date}
-                   AND mar_mau_userid          = #{userId}
-                   AND (
-                        private        = 0
-                          OR
-                        mau_userid     = #{userId}
-                       )
+        SELECT MAX(bookingdate)
+        FROM vw_moneyflows
+        WHERE bookingdate     <![CDATA[ < ]]> #{date}
+        AND mar_mau_userid = #{userId}
+        AND (
+        private = 0
+        OR
+        mau_userid = #{userId}
+        )
     </select>
 
     <select id="getNextMoneyflowDate" resultType="java.time.LocalDate">
-                SELECT MIN(bookingdate)
-                  FROM vw_moneyflows
-                 WHERE bookingdate     <![CDATA[ > ]]> #{date}
-                   AND mar_mau_userid          = #{userId}
-                   AND (
-                        private        = 0
-                          OR
-                        mau_userid     = #{userId}
-                       )
+        SELECT MIN(bookingdate)
+        FROM vw_moneyflows
+        WHERE bookingdate     <![CDATA[ > ]]> #{date}
+        AND mar_mau_userid = #{userId}
+        AND (
+        private = 0
+        OR
+        mau_userid = #{userId}
+        )
     </select>
 
     <select id="getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount"
             resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData">
-                SELECT MIN(mmf.invoicedate)                                       date
-                      ,IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) mpaPostingAccountId
-                    ,SUM(IFNULL(mse.amount, mmf.amount))                        amount
-                  FROM vw_moneyflows mmf
-                  LEFT OUTER JOIN moneyflowsplitentries mse
-                    ON mmf.moneyflowid = mse.mmf_moneyflowid 
-                 WHERE mmf.invoicedate BETWEEN #{dateFrom} AND #{dateTil}
-                   AND IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) IN 
-                   <foreach item="postingAccountId" index="index" collection="postingAccountIds"
-                      open="(" separator="," close=")">
-                        #{postingAccountId}
-                   </foreach>
-                   AND mmf.mar_mau_userid  = #{userId}
-                   AND (
-                        mmf.private        = 0
-                          OR
-                        mmf.mau_userid     = #{userId}
-                       )
-                 GROUP BY YEAR(mmf.invoicedate)
-                         ,MONTH(mmf.invoicedate)
-                         ,mpaPostingAccountId
-                  ORDER BY 1
-                         ,2
-                         ,3
+        SELECT MIN(mmf.invoicedate) date
+        ,COALESCE(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) mpaPostingAccountId
+        ,SUM(COALESCE(mse.amount, mmf.amount)) amount
+        FROM vw_moneyflows mmf
+        LEFT OUTER JOIN moneyflowsplitentries mse
+        ON mmf.moneyflowid = mse.mmf_moneyflowid
+        WHERE mmf.invoicedate BETWEEN #{dateFrom} AND #{dateTil}
+        AND COALESCE(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) IN
+        <foreach item="postingAccountId" index="index" collection="postingAccountIds"
+                 open="(" separator="," close=")">
+            #{postingAccountId}
+        </foreach>
+        AND mmf.mar_mau_userid = #{userId}
+        AND (
+        mmf.private = 0
+        OR
+        mmf.mau_userid = #{userId}
+        )
+        GROUP BY to_char(mmf.invoicedate, 'YYYY')
+        ,to_char(mmf.invoicedate, 'MM')
+        ,mpaPostingAccountId
+        ORDER BY 1
+        ,2
+        ,3
     </select>
 
     <select id="getAllMoneyflowsByDateRangeGroupedByYearPostingAccount"
             resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData">
-                SELECT CONCAT(YEAR(MIN(mmf.invoicedate)),'-01-01')                date
-                      ,IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) mpaPostingAccountId
-                    ,SUM(IFNULL(mse.amount, mmf.amount))                        amount
-                  FROM vw_moneyflows mmf
-                  LEFT OUTER JOIN moneyflowsplitentries mse
-                    ON mmf.moneyflowid = mse.mmf_moneyflowid 
-                 WHERE mmf.invoicedate    BETWEEN #{dateFrom} AND #{dateTil}
-                   AND IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) IN 
-                   <foreach item="postingAccountId" index="index" collection="postingAccountIds"
-                      open="(" separator="," close=")">
-                        #{postingAccountId}
-                   </foreach>
-                   AND mmf.mar_mau_userid              = #{userId}
-                   AND (
-                        mmf.private            = 0
-                          OR
-                        mmf.mau_userid     = #{userId}
-                       )
-                 GROUP BY YEAR(mmf.invoicedate)
-                         ,mpaPostingAccountId
-                  ORDER BY 1
-                         ,2
-                         ,3
+        SELECT CONCAT(to_char(MIN(mmf.invoicedate), 'YYYY'),'-01-01') date
+        ,COALESCE(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) mpaPostingAccountId
+        ,SUM(COALESCE(mse.amount, mmf.amount)) amount
+        FROM vw_moneyflows mmf
+        LEFT OUTER JOIN moneyflowsplitentries mse
+        ON mmf.moneyflowid = mse.mmf_moneyflowid
+        WHERE mmf.invoicedate BETWEEN #{dateFrom} AND #{dateTil}
+        AND COALESCE(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) IN
+        <foreach item="postingAccountId" index="index" collection="postingAccountIds"
+                 open="(" separator="," close=")">
+            #{postingAccountId}
+        </foreach>
+        AND mmf.mar_mau_userid = #{userId}
+        AND (
+        mmf.private = 0
+        OR
+        mmf.mau_userid = #{userId}
+        )
+        GROUP BY to_char(mmf.invoicedate, 'YYYY')
+        ,mpaPostingAccountId
+        ORDER BY 1
+        ,2
+        ,3
     </select>
 
     <select id="searchMoneyflowsByAmountDate"
             resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
-                SELECT <include refid="moneyflowColumns" />
-                  FROM vw_moneyflows
-                 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
-                   AND amount              = CAST(#{amount} AS DECIMAL(8,2))
-                   AND mar_mau_userid              = #{userId}
+        SELECT
+        <include refid="moneyflowColumns"/>
+        FROM vw_moneyflows
+        WHERE bookingdate BETWEEN #{dateFrom} AND #{dateTil}
+        AND amount = CAST(#{amount} AS DECIMAL(8,2))
+        AND mar_mau_userid = #{userId}
     </select>
 
     <select id="searchMoneyflowsByAbsoluteAmountDate"
             resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
-                SELECT <include refid="moneyflowColumns" />
-                  FROM vw_moneyflows
-                 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
-                   AND ABS(amount)         = CAST(#{amount} AS DECIMAL(8,2))
-                   AND mar_mau_userid              = #{userId}
+        SELECT
+        <include refid="moneyflowColumns"/>
+        FROM vw_moneyflows
+        WHERE bookingdate BETWEEN #{dateFrom} AND #{dateTil}
+        AND ABS(amount) = CAST(#{amount} AS DECIMAL(8,2))
+        AND mar_mau_userid = #{userId}
     </select>
 
     <select id="getAllMoneyflowsByDateRangeCapitalsourceId"
             resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
-                SELECT <include refid="moneyflowColumns" />
-                  FROM vw_moneyflows
-                 WHERE bookingdate         BETWEEN #{dateFrom} AND #{dateTil}
-                   AND mcs_capitalsourceid = #{capitalsourceId}
-                   AND mar_mau_userid              = #{userId}
-                   AND (
-                        private            = 0
-                          OR
-                        mau_userid     = #{userId}
-                       )
+        SELECT
+        <include refid="moneyflowColumns"/>
+        FROM vw_moneyflows
+        WHERE bookingdate BETWEEN #{dateFrom} AND #{dateTil}
+        AND mcs_capitalsourceid = #{capitalsourceId}
+        AND mar_mau_userid = #{userId}
+        AND (
+        private = 0
+        OR
+        mau_userid = #{userId}
+        )
     </select>
 
 
     <select id="searchMoneyflows"
             resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData"
             parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSearchParamsData">
-                SELECT mmf.moneyflowid                                            AS id
-                      ,mmf.mau_userid                                             AS mauUserId
-                      ,mmf.mag_groupid                                            AS magGroupId
-                      ,mmf.bookingdate                                            AS bookingdate
-                      ,mmf.invoicedate                                            AS invoicedate
-                      ,IFNULL(mse.amount,mmf.amount)                              AS amount
-                      ,mmf.mcs_capitalsourceid                                    AS mcsCapitalsourceId
-                      ,mmf.mcp_contractpartnerid                                  AS mcpContractpartnerId
-                      ,IFNULL(mse.comment,mmf.comment)                            AS comment
-                      ,IFNULL(mse.mpa_postingaccountid,mmf.mpa_postingaccountid)  AS mpaPostingAccountId
-                      ,mmf.private                                                AS privat
-                  FROM vw_moneyflows mmf
-                  LEFT OUTER JOIN moneyflowsplitentries mse
-                    ON mmf.moneyflowid = mse.mmf_moneyflowid 
-                 WHERE <choose>
-                           <when test="searchString != null and featureCaseSensitive">
-                               IFNULL(mse.comment, mmf.comment)
-                           </when>
-                           <when test="searchString != null">
-                               UPPER(IFNULL(mse.comment, mmf.comment))
-                           </when>
-                       </choose>
-                       <choose>
-                           <when test="searchString != null and featureEqual">
-                               =
-                           </when>
-                            <when test="searchString != null and featureRegexp">
-                               REGEXP
-                           </when>
-                            <when test="searchString != null">
-                               LIKE
-                           </when>
-                       </choose>
-                       <choose>
-                            <when test="searchString != null and featureCaseSensitive">
-                               #{searchString}
-                           </when>
-                            <when test="searchString != null">
-                                UPPER(#{searchString}) 
-                           </when>
-                       </choose>
-                       <if  test="searchString != null">
-                           AND
-                       </if>
-                       mmf.bookingdate BETWEEN #{startDate} AND #{endDate}
-                   AND mmf.mar_mau_userid              = #{userId}
-                   AND (
-                        mmf.private            = 0
-                          OR
-                        mmf.mau_userid     = #{userId}
-                       )
-                       <if test="featureOnlyMinusAmounts">
-                           AND IFNULL(mse.amount, mmf.amount) <![CDATA[ < ]]> 0
-                       </if>
-                       <if test="contractpartnerId != null">
-                           AND mmf.mcp_contractpartnerid = #{contractpartnerId}
-                       </if>
-                       <if test="postingAccountId != null">
-                           AND IFNULL(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) = #{postingAccountId}
-                       </if>
+        SELECT mmf.moneyflowid AS id
+        ,mmf.mau_userid AS mauUserId
+        ,mmf.mag_groupid AS magGroupId
+        ,mmf.bookingdate AS bookingdate
+        ,mmf.invoicedate AS invoicedate
+        ,COALESCE(mse.amount,mmf.amount) AS amount
+        ,mmf.mcs_capitalsourceid AS mcsCapitalsourceId
+        ,mmf.mcp_contractpartnerid AS mcpContractpartnerId
+        ,COALESCE(mse.comment,mmf.comment) AS comment
+        ,COALESCE(mse.mpa_postingaccountid,mmf.mpa_postingaccountid) AS mpaPostingAccountId
+        ,mmf.private AS privat
+        FROM vw_moneyflows mmf
+        LEFT OUTER JOIN moneyflowsplitentries mse
+        ON mmf.moneyflowid = mse.mmf_moneyflowid
+        WHERE
+        <choose>
+            <when test="searchString != null and featureCaseSensitive">
+                COALESCE(mse.comment, mmf.comment)
+            </when>
+            <when test="searchString != null">
+                UPPER(COALESCE(mse.comment, mmf.comment))
+            </when>
+        </choose>
+        <choose>
+            <when test="searchString != null and featureEqual">
+                =
+            </when>
+            <when test="searchString != null and featureRegexp">
+                ~
+            </when>
+            <when test="searchString != null">
+                LIKE
+            </when>
+        </choose>
+        <choose>
+            <when test="searchString != null and featureCaseSensitive">
+                #{searchString}
+            </when>
+            <when test="searchString != null">
+                UPPER(#{searchString})
+            </when>
+        </choose>
+        <if test="searchString != null">
+            AND
+        </if>
+        mmf.bookingdate BETWEEN #{startDate} AND #{endDate}
+        AND mmf.mar_mau_userid = #{userId}
+        AND (
+        mmf.private = 0
+        OR
+        mmf.mau_userid = #{userId}
+        )
+        <if test="featureOnlyMinusAmounts">
+            AND COALESCE(mse.amount, mmf.amount) <![CDATA[ < ]]> 0
+        </if>
+        <if test="contractpartnerId != null">
+            AND mmf.mcp_contractpartnerid = #{contractpartnerId}
+        </if>
+        <if test="postingAccountId != null">
+            AND COALESCE(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) = #{postingAccountId}
+        </if>
     </select>
 </mapper>

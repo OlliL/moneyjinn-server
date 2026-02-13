@@ -47,9 +47,9 @@ public interface UserDataMapper extends IMapstructMapper<User, UserData> {
     User mapBToA(UserData b);
 
     @Named("mapUserAttributesToEntity")
-    default Collection<UserAttribute> mapUserAttributesToEntity(final boolean changePassword) {
+    default Collection<UserAttribute> mapUserAttributesToEntity(final int changePassword) {
         final Collection<UserAttribute> attributes = new ArrayList<>();
-        if (changePassword) {
+        if (changePassword == 1) {
             attributes.add(UserAttribute.IS_NEW);
         }
         if (attributes.isEmpty()) {
@@ -78,7 +78,7 @@ public interface UserDataMapper extends IMapstructMapper<User, UserData> {
     UserData mapAToB(User a);
 
     @Named("mapUserAttributeIsNewToData")
-    default boolean mapUserAttributeIsNewToData(final Collection<UserAttribute> a) {
-        return (a != null && a.contains(UserAttribute.IS_NEW));
+    default int mapUserAttributeIsNewToData(final Collection<UserAttribute> a) {
+        return (a != null && a.contains(UserAttribute.IS_NEW)) ? 1 : 0;
     }
 }

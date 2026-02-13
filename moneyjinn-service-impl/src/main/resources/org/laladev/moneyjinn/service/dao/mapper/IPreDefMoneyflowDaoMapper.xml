@@ -3,86 +3,84 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IPreDefMoneyflowDaoMapper">
 
     <sql id="preDefMoneyflowColumns">
-                 predefmoneyflowid        AS id
-                ,mau_userid               AS mauUserId
-                ,amount
-                ,mcs_capitalsourceid      AS mcsCapitalsourceId
-                ,mcp_contractpartnerid    AS mcpContractpartnerId
-                ,comment
-                ,createdate
-                ,once_a_month             AS onceAMonth
-                ,last_used                AS lastUsed
-                ,mpa_postingaccountid     AS mpaPostingAccountId
+        predefmoneyflowid AS id
+        ,mau_userid AS mauUserId
+        ,amount
+        ,mcs_capitalsourceid AS mcsCapitalsourceId
+        ,mcp_contractpartnerid AS mcpContractpartnerId
+        ,comment
+        ,createdate
+        ,once_a_month AS onceAMonth
+        ,last_used AS lastUsed
+        ,mpa_postingaccountid AS mpaPostingAccountId
     </sql>
 
     <select id="getPreDefMoneyflowById" parameterType="java.lang.Long"
             resultType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
-                SELECT <include refid="preDefMoneyflowColumns" />
-                  FROM predefmoneyflows
-                 WHERE predefmoneyflowid = #{id}
-                   AND mau_userid        = #{userId}
-                 LIMIT 1
+        SELECT
+        <include refid="preDefMoneyflowColumns"/>
+        FROM predefmoneyflows
+        WHERE predefmoneyflowid = #{id}
+        AND mau_userid = #{userId}
     </select>
 
     <select id="getAllPreDefMoneyflows"
             resultType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
-                SELECT <include refid="preDefMoneyflowColumns" />
-                  FROM predefmoneyflows
-                 WHERE mau_userid = #{userId}
-                 ORDER BY predefmoneyflowid
+        SELECT
+        <include refid="preDefMoneyflowColumns"/>
+        FROM predefmoneyflows
+        WHERE mau_userid = #{userId}
+        ORDER BY predefmoneyflowid
     </select>
 
     <insert id="createPreDefMoneyflow"
             parameterType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="predefmoneyflowid">
-                INSERT
-                  INTO predefmoneyflows
-                      (mau_userid
-                      ,amount
-                      ,mcs_capitalsourceid
-                      ,mcp_contractpartnerid
-                      ,comment
-                      ,once_a_month
-                      ,mpa_postingaccountid
-                      )
-                VALUES
-                      (#{mauUserId}
-                      ,#{amount}
-                      ,#{mcsCapitalsourceId}
-                      ,#{mcpContractpartnerId}
-                      ,#{comment}
-                      ,#{onceAMonth}
-                      ,#{mpaPostingAccountId}
-                      )
+        INSERT
+        INTO predefmoneyflows
+        (mau_userid
+        ,amount
+        ,mcs_capitalsourceid
+        ,mcp_contractpartnerid
+        ,comment
+        ,once_a_month
+        ,mpa_postingaccountid
+        )
+        VALUES
+        (#{mauUserId}
+        ,#{amount}
+        ,#{mcsCapitalsourceId}
+        ,#{mcpContractpartnerId}
+        ,#{comment}
+        ,#{onceAMonth}
+        ,#{mpaPostingAccountId}
+        )
     </insert>
 
     <update id="updatePreDefMoneyflow"
             parameterType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
-                UPDATE predefmoneyflows
-                   SET amount                = #{amount}
-                      ,mcs_capitalsourceid   = #{mcsCapitalsourceId}
-                      ,mcp_contractpartnerid = #{mcpContractpartnerId}
-                      ,comment               = #{comment}
-                      ,once_a_month          = #{onceAMonth}
-                      ,mpa_postingaccountid  = #{mpaPostingAccountId}
-                 WHERE predefmoneyflowid     = #{id}
-                   AND mau_userid            = #{mauUserId}
-                 LIMIT 1
+        UPDATE predefmoneyflows
+        SET amount = #{amount}
+        ,mcs_capitalsourceid = #{mcsCapitalsourceId}
+        ,mcp_contractpartnerid = #{mcpContractpartnerId}
+        ,comment = #{comment}
+        ,once_a_month = #{onceAMonth}
+        ,mpa_postingaccountid = #{mpaPostingAccountId}
+        WHERE predefmoneyflowid = #{id}
+        AND mau_userid = #{mauUserId}
     </update>
 
     <delete id="deletePreDefMoneyflow">
-                DELETE
-                  FROM predefmoneyflows
-                 WHERE predefmoneyflowid = #{id}
-                   AND mau_userid        = #{userId}
-                 LIMIT 1
+        DELETE
+        FROM predefmoneyflows
+        WHERE predefmoneyflowid = #{id}
+        AND mau_userid = #{userId}
     </delete>
 
     <update id="setLastUsed">
-                UPDATE predefmoneyflows
-                   SET last_used         = NOW()
-                 WHERE predefmoneyflowid = #{id}
-                   AND mau_userid        = #{userId}
-                 LIMIT 1
+        UPDATE predefmoneyflows
+        SET last_used = NOW()
+        WHERE predefmoneyflowid = #{id}
+        AND mau_userid = #{userId}
     </update>
 </mapper>

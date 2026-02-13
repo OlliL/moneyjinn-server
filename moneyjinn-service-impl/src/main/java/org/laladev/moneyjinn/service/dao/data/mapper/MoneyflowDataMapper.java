@@ -34,7 +34,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = {MoneyflowIdMapper.class, CapitalsourceIdMapper.class,
-        ContractpartnerIdMapper.class, PostingAccountIdMapper.class, UserIdMapper.class, GroupIdMapper.class})
+        ContractpartnerIdMapper.class, PostingAccountIdMapper.class, UserIdMapper.class, GroupIdMapper.class,
+        BooleanToIntMapper.class})
 public interface MoneyflowDataMapper extends IMapstructMapper<Moneyflow, MoneyflowData> {
     @Override
     @Mapping(target = "bookingDate", source = "bookingdate")

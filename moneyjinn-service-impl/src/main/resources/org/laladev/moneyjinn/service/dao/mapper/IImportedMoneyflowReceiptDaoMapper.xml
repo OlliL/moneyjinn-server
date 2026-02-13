@@ -2,63 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowReceiptDaoMapper">
 
-        <resultMap id="importedMoneyflowReceiptMap" type="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData">
-                <result property="id"         javaType="java.lang.Long"   column="id"          />
-                <result property="mauUserId"  javaType="java.lang.Long"   column="mauUserId"   />
-                <result property="magGroupId" javaType="java.lang.Long"   column="magGroupId"  />
-                <result property="receipt"    javaType="_byte[]"          column="blob_Data"   jdbcType="BLOB"/>
-                <result property="filename"   javaType="java.lang.String" column="filename"    />
-                <result property="mediaType"  javaType="java.lang.String" column="mediatype"   />
-        </resultMap>
+    <resultMap id="importedMoneyflowReceiptMap"
+               type="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData">
+        <result property="id" javaType="java.lang.Long" column="id"/>
+        <result property="mauUserId" javaType="java.lang.Long" column="mauUserId"/>
+        <result property="magGroupId" javaType="java.lang.Long" column="magGroupId"/>
+        <result property="receipt" javaType="byte[]" column="blob_Data"
+                typeHandler="org.apache.ibatis.type.ByteArrayTypeHandler"/>
+        <result property="filename" javaType="java.lang.String" column="filename"/>
+        <result property="mediaType" javaType="java.lang.String" column="mediatype"/>
+    </resultMap>
 
     <sql id="importedMoneyflowReceiptColumns">
-                 impmoneyflowreceiptid AS id
-                ,mau_userid            AS mauUserId
-                ,mag_groupid           AS magGroupId
-                ,receipt               AS blob_Data
-                ,filename              AS filename
-                ,mediatype             AS mediaType
+        impmoneyflowreceiptid AS id
+        ,mau_userid AS mauUserId
+        ,mag_groupid AS magGroupId
+        ,receipt AS blob_Data
+        ,filename AS filename
+        ,mediatype AS mediaType
     </sql>
 
     <insert id="createImportedMoneyflowReceipt"
             parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="impmoneyflowreceiptid">
-                INSERT INTO impmoneyflowreceipts
-                      (mau_userid
-                      ,mag_groupid
-                      ,receipt
-                      ,filename
-                      ,mediatype
-                      )
-                        VALUES
-                      (#{mauUserId}
-                      ,#{magGroupId}
-                      ,#{receipt}
-                      ,#{filename}
-                      ,#{mediaType}
-                      )
+        INSERT INTO impmoneyflowreceipts
+        (mau_userid
+        ,mag_groupid
+        ,receipt
+        ,filename
+        ,mediatype
+        )
+        VALUES
+        (#{mauUserId}
+        ,#{magGroupId}
+        ,#{receipt}
+        ,#{filename}
+        ,#{mediaType}
+        )
     </insert>
 
     <delete id="deleteImportedMoneyflowReceiptById">
-                DELETE
-                  FROM impmoneyflowreceipts
-                 WHERE impmoneyflowreceiptid = #{id}
-                   AND mag_groupid           = #{groupId}
+        DELETE
+        FROM impmoneyflowreceipts
+        WHERE impmoneyflowreceiptid = #{id}
+        AND mag_groupid = #{groupId}
     </delete>
 
     <select id="getAllImportedMoneyflowReceipts"
-                resultMap="importedMoneyflowReceiptMap">
-                    SELECT <include refid="importedMoneyflowReceiptColumns" />
-                      FROM impmoneyflowreceipts
-                     WHERE mag_groupid = #{groupId}
+            resultMap="importedMoneyflowReceiptMap">
+        SELECT
+        <include refid="importedMoneyflowReceiptColumns"/>
+        FROM impmoneyflowreceipts
+        WHERE mag_groupid = #{groupId}
     </select>
 
     <select id="getImportedMoneyflowReceiptById"
-                resultMap="importedMoneyflowReceiptMap">
-                    SELECT <include refid="importedMoneyflowReceiptColumns" />
-                      FROM impmoneyflowreceipts
-                     WHERE mag_groupid = #{groupId}
-                       AND impmoneyflowreceiptid = #{id}
-                     LIMIT 1
+            resultMap="importedMoneyflowReceiptMap">
+        SELECT
+        <include refid="importedMoneyflowReceiptColumns"/>
+        FROM impmoneyflowreceipts
+        WHERE mag_groupid = #{groupId}
+        AND impmoneyflowreceiptid = #{id}
     </select>
 </mapper>

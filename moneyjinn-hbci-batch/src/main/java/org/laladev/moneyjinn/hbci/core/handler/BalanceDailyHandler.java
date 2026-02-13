@@ -36,7 +36,7 @@ public class BalanceDailyHandler extends AbstractHandler {
     // @formatter:off
 	private static final String STATEMENT =
 			"   INSERT "
-			+ "   INTO balance_daily "
+			+ "   INTO balance_daily AS a "
 			+ "      ( my_iban "
 			+ "      , my_bic "
 			+ "      , my_accountnumber "
@@ -60,12 +60,11 @@ public class BalanceDailyHandler extends AbstractHandler {
 			+ "      , ? "
 			+ "      , ? "
 			+ "      ) "
-			+ " ON DUPLICATE KEY UPDATE "
-			+ "        balance_date            = VALUES (balance_date)"
-			+ "      , last_transaction_date   = VALUES (last_transaction_date) "
-			+ "      , balance_available_value = VALUES (balance_available_value) "
-			+ "      , line_of_credit_value    = VALUES (line_of_credit_value) "
-			+ "      , last_balance_update     = VALUES (last_balance_update) " ;
+			+ " ON CONFLICT ON CONSTRAINT hbci_i_04 DO UPDATE "
+            + " SET    last_transaction_date   = EXCLUDED.last_transaction_date "
+			+ "      , balance_available_value = EXCLUDED.balance_available_value "
+			+ "      , line_of_credit_value    = EXCLUDED.line_of_credit_value "
+			+ "      , last_balance_update     = EXCLUDED.last_balance_update " ;
 	// @formatter:on
 
     private final BalanceDaily balanceDaily;
