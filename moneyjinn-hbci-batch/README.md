@@ -4,19 +4,11 @@ moneyjinn-hbci-batch utilizes [hbci4java](https://github.com/willuhn/hbci4java) 
 accounts specified. It stores the collected information in a database and notifies all given Observers to for further
 data processing.
 
-## Setup
+# Setup
 
-# database
-
-- create a database
-- execute `src/main/resources/database.sql` to create all needed tables
-- create a user with insert/select rights on the created tables
-
-# properties
+## properties
 
 - TODO: explain how to build the propperties file here...
-    * hbci.passport.password
-        * must be the password to all of your passport files
     * hbci.PASSPORT-FILENAME.pin
         * replace PASSPORT-FILENAME with the filename of your passport file
         * generate the passport file
@@ -24,3 +16,15 @@ data processing.
           supplied with hbci4java
         * must contain the pin for logging in to the bank account specified in the passport file
         * specify as much of these properties as you have passport files
+    * hbci.PASSPORT-FILENAME.password
+        * must be the password to your passport file
+    * hbci.server.username
+        * the Moneyjinn user which has import-rights
+    * hbci.server.password
+        * the Moneyjinn users password
+    * hbci.database.url
+        * jdbc:postgresql://db/postgres?currentSchema=moneyjinn_hbci
+    * hbci.database.username
+        * moneyjinn_hbci_app
+    * hbci.database.password
+        * your-password 

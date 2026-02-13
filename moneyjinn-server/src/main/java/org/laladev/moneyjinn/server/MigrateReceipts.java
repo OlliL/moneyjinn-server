@@ -13,7 +13,7 @@ public class MigrateReceipts {
     private static final String MYSQL_USER = "moneyflow_readonly";
     private static final String MYSQL_PASS = "moneyflow_readonly";
 
-    private static final String PGSQL_URL = "jdbc:postgresql://db/moneyjinn?currentSchema=moneyjinn";
+    private static final String PGSQL_URL = "jdbc:postgresql://db/postgres?currentSchema=moneyjinn";
     private static final String PGSQL_USER = "moneyjinn_app";
     private static final String PGSQL_PASS = "moneyjinn_app";
 

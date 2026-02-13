@@ -4,22 +4,17 @@
 
 # Installation
 
-- create a new PostgreSQL DB
+- create new schemas in your database
     - `$ psql -U postgres`
-   ```
-   CREATE DATABASE moneyjinn;
-   ```
-- create two new schemas in the new database
-    - `$ psql -U postgres -d moneyjinn`
    ```
    CREATE SCHEMA moneyjinn;
    CREATE SCHEMA moneyjinn_hbci;
    ```
 - create the new user/roles and transfer schema ownership to the schema owners
-    - `$ psql -U postgres -d moneyjinn`
+    - `$ psql -U postgres`
    ```
    CREATE ROLE moneyjinn_owner;
-   CREATE ROLE moneyjinn_hbci_owner
+   CREATE ROLE moneyjinn_hbci_owner;
    ALTER SCHEMA moneyjinn OWNER TO moneyjinn_owner;
    ALTER SCHEMA moneyjinn_hbci OWNER TO moneyjinn_hbci_owner;
    CREATE USER moneyjinn_app WITH PASSWORD '<your password goes here>';
@@ -28,7 +23,7 @@
    GRANT CONNECT ON DATABASE moneyjinn TO moneyjinn_hbci_app;
    ```
 - load DB Schema and initial Data
-    - `$ psql -U postgres -d moneyjinn -f pgsqldump.sql`
+    - `$ psql -U postgres -f pgsqldump.sql`
 - configure client (see <a href="https://github.com/OlliL/moneyjinn-client/blob/main/README.md">Client README</a>)
 
 # Notes
