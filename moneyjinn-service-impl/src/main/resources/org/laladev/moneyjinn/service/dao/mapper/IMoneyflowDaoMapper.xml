@@ -34,51 +34,51 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowid">
         INSERT
-        INTO moneyflows
-        (mau_userid
-        ,mag_groupid
-        ,bookingdate
-        ,invoicedate
-        ,amount
-        ,mcs_capitalsourceid
-        ,mcp_contractpartnerid
-        ,comment
-        ,mpa_postingaccountid
-        ,private
-        )
+          INTO moneyflows
+              ( mau_userid
+              , mag_groupid
+              , bookingdate
+              , invoicedate
+              , amount
+              , mcs_capitalsourceid
+              , mcp_contractpartnerid
+              , comment
+              , mpa_postingaccountid
+              , private
+              )
         VALUES
-        (#{mauUserId}
-        ,#{magGroupId}
-        ,#{bookingdate}
-        ,#{invoicedate}
-        ,#{amount}
-        ,#{mcsCapitalsourceId}
-        ,#{mcpContractpartnerId}
-        ,#{comment}
-        ,#{mpaPostingAccountId}
-        ,#{privat}
-        )
+            ( #{mauUserId}
+            , #{magGroupId}
+            , #{bookingdate}
+            , #{invoicedate}
+            , #{amount}
+            , #{mcsCapitalsourceId}
+            , #{mcpContractpartnerId}
+            , #{comment}
+            , #{mpaPostingAccountId}
+            , #{privat}
+            )
     </insert>
 
     <update id="updateMoneyflow" parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
         UPDATE moneyflows
-        SET bookingdate = #{bookingdate}
-        ,invoicedate = #{invoicedate}
-        ,amount = #{amount}
-        ,mcs_capitalsourceid = #{mcsCapitalsourceId}
-        ,mcp_contractpartnerid = #{mcpContractpartnerId}
-        ,comment = #{comment}
-        ,mpa_postingaccountid = #{mpaPostingAccountId}
-        ,private = #{privat}
-        WHERE mau_userid = #{mauUserId}
-        AND moneyflowid = #{id}
+           SET bookingdate           = #{bookingdate}
+             , invoicedate           = #{invoicedate}
+             , amount                = #{amount}
+             , mcs_capitalsourceid   = #{mcsCapitalsourceId}
+             , mcp_contractpartnerid = #{mcpContractpartnerId}
+             , comment               = #{comment}
+             , mpa_postingaccountid  = #{mpaPostingAccountId}
+             , private               = #{privat}
+         WHERE mau_userid = #{mauUserId}
+           AND moneyflowid = #{id}
     </update>
 
     <delete id="deleteMoneyflow">
         DELETE
-        FROM moneyflows
-        WHERE mau_userid = #{userId}
-        AND moneyflowid = #{id}
+          FROM moneyflows
+         WHERE mau_userid = #{userId}
+           AND moneyflowid = #{id}
     </delete>
 
     <select id="getSumAmountByDateRangeForCapitalsourceIds"
@@ -95,28 +95,28 @@
     </select>
 
     <select id="getAllYears" resultType="java.lang.Integer">
-        SELECT DISTINCT to_char(bookingdate, 'YYYY')
-        FROM vw_moneyflows
-        WHERE mar_mau_userid = #{userId}
-        AND (
-        private = 0
-        OR
-        mau_userid = #{userId}
-        )
-        ORDER BY 1 ASC
+        SELECT DISTINCT TO_CHAR(bookingdate, 'YYYY')
+          FROM vw_moneyflows
+         WHERE mar_mau_userid = #{userId}
+           AND (
+             private = 0
+                 OR
+             mau_userid = #{userId}
+             )
+         ORDER BY 1
     </select>
 
     <select id="getAllMonth" resultType="java.lang.Integer">
-        SELECT DISTINCT to_char(bookingdate, 'MM')
-        FROM vw_moneyflows
-        WHERE bookingdate BETWEEN #{beginOfYear} AND #{endOfYear}
-        AND mar_mau_userid = #{userId}
-        AND (
-        private = 0
-        OR
-        mau_userid = #{userId}
-        )
-        ORDER BY 1 ASC
+        SELECT DISTINCT TO_CHAR(bookingdate, 'MM')
+          FROM vw_moneyflows
+         WHERE bookingdate BETWEEN #{beginOfYear} AND #{endOfYear}
+           AND mar_mau_userid = #{userId}
+           AND (
+             private = 0
+                 OR
+             mau_userid = #{userId}
+             )
+         ORDER BY 1
     </select>
 
     <select id="getAllMoneyflowsByDateRangeIncludingPrivate"
@@ -130,53 +130,53 @@
 
     <select id="monthHasMoneyflows" resultType="java.lang.Boolean">
         SELECT 1
-        FROM vw_moneyflows
-        WHERE bookingdate BETWEEN #{dateFrom} AND #{dateTil}
-        AND mar_mau_userid = #{userId}
-        AND ( private = 0 OR mau_userid = #{userId} )
-        FETCH FIRST 1 ROWS ONLY
+          FROM vw_moneyflows
+         WHERE bookingdate BETWEEN #{dateFrom} AND #{dateTil}
+           AND mar_mau_userid = #{userId}
+           AND (private = 0 OR mau_userid = #{userId})
+             FETCH FIRST 1 ROWS ONLY
     </select>
 
     <select id="getMaxMoneyflowDate" resultType="java.time.LocalDate">
         SELECT MAX(bookingdate)
-        FROM vw_moneyflows
-        WHERE mar_mau_userid = #{userId}
-        AND ( private = 0 OR mau_userid = #{userId} )
+          FROM vw_moneyflows
+         WHERE mar_mau_userid = #{userId}
+           AND (private = 0 OR mau_userid = #{userId})
     </select>
 
     <select id="getMinMoneyflowDate" resultType="java.time.LocalDate">
         SELECT MIN(bookingdate)
-        FROM vw_moneyflows
-        WHERE mar_mau_userid = #{userId}
-        AND (
-        private = 0
-        OR
-        mau_userid = #{userId}
-        )
+          FROM vw_moneyflows
+         WHERE mar_mau_userid = #{userId}
+           AND (
+             private = 0
+                 OR
+             mau_userid = #{userId}
+             )
     </select>
 
     <select id="getPreviousMoneyflowDate" resultType="java.time.LocalDate">
         SELECT MAX(bookingdate)
-        FROM vw_moneyflows
-        WHERE bookingdate     <![CDATA[ < ]]> #{date}
-        AND mar_mau_userid = #{userId}
-        AND (
-        private = 0
-        OR
-        mau_userid = #{userId}
-        )
+          FROM vw_moneyflows
+         WHERE bookingdate     <![CDATA[ < ]]> #{date}
+           AND mar_mau_userid = #{userId}
+           AND (
+             private = 0
+                 OR
+             mau_userid = #{userId}
+             )
     </select>
 
     <select id="getNextMoneyflowDate" resultType="java.time.LocalDate">
         SELECT MIN(bookingdate)
-        FROM vw_moneyflows
-        WHERE bookingdate     <![CDATA[ > ]]> #{date}
-        AND mar_mau_userid = #{userId}
-        AND (
-        private = 0
-        OR
-        mau_userid = #{userId}
-        )
+          FROM vw_moneyflows
+         WHERE bookingdate     <![CDATA[ > ]]> #{date}
+           AND mar_mau_userid = #{userId}
+           AND (
+             private = 0
+                 OR
+             mau_userid = #{userId}
+             )
     </select>
 
     <select id="getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount"
@@ -194,11 +194,7 @@
             #{postingAccountId}
         </foreach>
         AND mmf.mar_mau_userid = #{userId}
-        AND (
-        mmf.private = 0
-        OR
-        mmf.mau_userid = #{userId}
-        )
+        AND ( mmf.private = 0 OR mmf.mau_userid = #{userId} )
         GROUP BY to_char(mmf.invoicedate, 'YYYY')
         ,to_char(mmf.invoicedate, 'MM')
         ,mpaPostingAccountId

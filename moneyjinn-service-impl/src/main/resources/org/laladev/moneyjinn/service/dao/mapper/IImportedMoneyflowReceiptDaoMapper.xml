@@ -25,27 +25,28 @@
     <insert id="createImportedMoneyflowReceipt"
             parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="impmoneyflowreceiptid">
-        INSERT INTO impmoneyflowreceipts
-        (mau_userid
-        ,mag_groupid
-        ,receipt
-        ,filename
-        ,mediatype
-        )
+        INSERT
+          INTO impmoneyflowreceipts
+              ( mau_userid
+              , mag_groupid
+              , receipt
+              , filename
+              , mediatype
+              )
         VALUES
-        (#{mauUserId}
-        ,#{magGroupId}
-        ,#{receipt}
-        ,#{filename}
-        ,#{mediaType}
-        )
+            ( #{mauUserId}
+            , #{magGroupId}
+            , #{receipt}
+            , #{filename}
+            , #{mediaType}
+            )
     </insert>
 
     <delete id="deleteImportedMoneyflowReceiptById">
         DELETE
-        FROM impmoneyflowreceipts
-        WHERE impmoneyflowreceiptid = #{id}
-        AND mag_groupid = #{groupId}
+          FROM impmoneyflowreceipts
+         WHERE impmoneyflowreceiptid = #{id}
+           AND mag_groupid = #{groupId}
     </delete>
 
     <select id="getAllImportedMoneyflowReceipts"

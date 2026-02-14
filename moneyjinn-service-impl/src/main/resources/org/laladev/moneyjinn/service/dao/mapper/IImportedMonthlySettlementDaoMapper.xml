@@ -25,31 +25,30 @@
             useGeneratedKeys="true" keyProperty="id" keyColumn="impmonthlysettlementid">
         MERGE
         INTO impmonthlysettlements
-        USING (
-        SELECT
-        CAST(#{externalId} as text),
-        CAST(#{mcsCapitalsourceId} as integer),
-        CAST(#{month} as smallint),
-        CAST(#{year} as smallint),
-        CAST(#{amount} as decimal)
-        ) AS source (source_externalid, source_mcs_capitalsourceid, source_month, source_year, source_amount)
+        USING (SELECT CAST(#{externalId} AS TEXT)
+                    , CAST(#{mcsCapitalsourceId} AS INTEGER)
+                    , CAST(#{month} AS SMALLINT)
+                    , CAST(#{year} AS SMALLINT)
+                    , CAST(#{amount} AS DECIMAL)) AS source (source_externalid, source_mcs_capitalsourceid,
+                                                             source_month, source_year, source_amount)
         ON (externalid = source.source_externalid)
         WHEN MATCHED THEN
-        UPDATE set amount = source.source_amount
+            UPDATE
+               SET amount = source.source_amount
         WHEN NOT MATCHED THEN
-        INSERT
-        (externalid
-        ,mcs_capitalsourceid
-        ,"month"
-        ,"year"
-        ,amount
-        )
-        VALUES
-        (source_externalid
-        ,source_mcs_capitalsourceid
-        ,source_month
-        ,source_year
-        ,source_amount
-        )
+            INSERT
+                ( externalid
+                , mcs_capitalsourceid
+                , "month"
+                , "year"
+                , amount
+                )
+            VALUES
+                ( source_externalid
+                , source_mcs_capitalsourceid
+                , source_month
+                , source_year
+                , source_amount
+                )
     </insert>
 </mapper>

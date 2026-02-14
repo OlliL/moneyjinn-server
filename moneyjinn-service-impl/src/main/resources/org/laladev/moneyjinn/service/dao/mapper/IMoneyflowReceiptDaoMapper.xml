@@ -36,22 +36,23 @@
 
     <delete id="deleteMoneyflowReceipt">
         DELETE
-        FROM moneyflowreceipts
-        WHERE mmf_moneyflowid = #{id}
+          FROM moneyflowreceipts
+         WHERE mmf_moneyflowid = #{id}
     </delete>
 
     <insert id="createMoneyflowReceipt"
             parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowReceiptData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowreceiptid">
-        INSERT INTO moneyflowreceipts
-        (mmf_moneyflowid
-        ,receipt
-        ,receipt_type
-        )
+        INSERT
+          INTO moneyflowreceipts
+              ( mmf_moneyflowid
+              , receipt
+              , receipt_type
+              )
         VALUES
-        (#{mmfMoneyflowId}
-        ,#{receipt}
-        ,#{receiptType}
-        )
+            ( #{mmfMoneyflowId}
+            , #{receipt}
+            , #{receiptType}
+            )
     </insert>
 </mapper>

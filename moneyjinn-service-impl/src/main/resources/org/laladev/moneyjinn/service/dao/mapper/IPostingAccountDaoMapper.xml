@@ -36,24 +36,24 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.PostingAccountData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="postingaccountid">
         INSERT
-        INTO postingaccounts
-        (postingaccountname
-        )
+          INTO postingaccounts
+              (postingaccountname
+              )
         VALUES
-        (#{name}
-        )
+            (#{name}
+            )
     </insert>
 
     <update id="updatePostingAccount" parameterType="org.laladev.moneyjinn.service.dao.data.PostingAccountData">
         UPDATE postingaccounts
-        SET postingaccountname = #{name}
-        WHERE postingaccountid = #{id}
+           SET postingaccountname = #{name}
+         WHERE postingaccountid = #{id}
     </update>
 
 
     <delete id="deletePostingAccount">
         DELETE
-        FROM postingaccounts
-        WHERE postingaccountid = #{id}
+          FROM postingaccounts
+         WHERE postingaccountid = #{id}
     </delete>
 </mapper>

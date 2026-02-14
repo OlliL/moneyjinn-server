@@ -70,65 +70,65 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="capitalsourceid">
         INSERT
-        INTO capitalsources
-        (mau_userid
-        ,mag_groupid
-        ,type
-        ,state
-        ,accountnumber
-        ,bankcode
-        ,comment
-        ,validtil
-        ,validfrom
-        ,att_group_use
-        ,import_allowed
-        )
+          INTO capitalsources
+              ( mau_userid
+              , mag_groupid
+              , type
+              , state
+              , accountnumber
+              , bankcode
+              , comment
+              , validtil
+              , validfrom
+              , att_group_use
+              , import_allowed
+              )
         VALUES
-        (#{mauUserId}
-        ,#{magGroupId}
-        ,#{type}
-        ,#{state}
-        ,#{accountNumber}
-        ,#{bankCode}
-        ,#{comment}
-        ,#{validTil}
-        ,#{validFrom}
-        ,#{attGroupUse}
-        ,#{importAllowed}
-        )
+            ( #{mauUserId}
+            , #{magGroupId}
+            , #{type}
+            , #{state}
+            , #{accountNumber}
+            , #{bankCode}
+            , #{comment}
+            , #{validTil}
+            , #{validFrom}
+            , #{attGroupUse}
+            , #{importAllowed}
+            )
     </insert>
 
     <update id="updateCapitalsource"
             parameterType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">
         UPDATE capitalsources
-        SET type = #{type}
-        ,state = #{state}
-        ,accountnumber = #{accountNumber}
-        ,bankcode = #{bankCode}
-        ,comment = #{comment}
-        ,validtil = #{validTil}
-        ,validfrom = #{validFrom}
-        ,att_group_use = #{attGroupUse}
-        ,import_allowed = #{importAllowed}
-        WHERE capitalsourceid = #{id}
-        AND mau_userid = #{mauUserId}
-        AND mag_groupid = #{magGroupId}
+           SET type           = #{type}
+             , state          = #{state}
+             , accountnumber  = #{accountNumber}
+             , bankcode       = #{bankCode}
+             , comment        = #{comment}
+             , validtil       = #{validTil}
+             , validfrom      = #{validFrom}
+             , att_group_use  = #{attGroupUse}
+             , import_allowed = #{importAllowed}
+         WHERE capitalsourceid = #{id}
+           AND mau_userid = #{mauUserId}
+           AND mag_groupid = #{magGroupId}
     </update>
 
     <delete id="deleteCapitalsource">
         DELETE
-        FROM capitalsources
-        WHERE mau_userid = #{userId}
-        AND mag_groupid = #{magGroupId}
-        AND capitalsourceid = #{id}
+          FROM capitalsources
+         WHERE mau_userid = #{userId}
+           AND mag_groupid = #{magGroupId}
+           AND capitalsourceid = #{id}
     </delete>
 
     <select id="checkCapitalsourceInUseOutOfDate" resultType="java.lang.Boolean">
         SELECT 1
-        FROM moneyflows
-        WHERE mcs_capitalsourceid = #{id}
-        AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
-        FETCH FIRST 1 ROWS ONLY
+          FROM moneyflows
+         WHERE mcs_capitalsourceid = #{id}
+           AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
+             FETCH FIRST 1 ROWS ONLY
     </select>
 
     <select id="getGroupCapitalsourcesByDateRange"

@@ -35,23 +35,23 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.GroupData"
             useGeneratedKeys="true" keyProperty="groupid" keyColumn="groupid">
         INSERT
-        INTO access_groups
-        (name
-        )
+          INTO access_groups
+              (name
+              )
         VALUES
-        (#{name}
-        )
+            (#{name}
+            )
     </insert>
 
     <update id="updateGroup" parameterType="org.laladev.moneyjinn.service.dao.data.GroupData">
         UPDATE access_groups
-        SET name = #{name}
-        WHERE groupid = #{groupid}
+           SET name = #{name}
+         WHERE groupid = #{groupid}
     </update>
 
     <delete id="deleteGroup">
         DELETE
-        FROM access_groups
-        WHERE groupid = #{groupid}
+          FROM access_groups
+         WHERE groupid = #{groupid}
     </delete>
 </mapper>

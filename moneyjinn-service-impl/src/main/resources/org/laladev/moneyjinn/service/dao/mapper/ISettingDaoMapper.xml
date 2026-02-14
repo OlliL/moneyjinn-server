@@ -21,37 +21,36 @@
     <insert id="setSetting">
         MERGE
         INTO settings
-        USING (SELECT
-        CAST(#{mauUserId} as integer),
-        CAST(#{name} as text),
-        CAST(#{value} as text)
-        ) AS source (source_mau_userid, source_name, source_value)
+        USING (SELECT CAST(#{mauUserId} AS INTEGER)
+                    , CAST(#{name} AS TEXT)
+                    , CAST(#{value} AS TEXT)) AS source (source_mau_userid, source_name, source_value)
         ON (mau_userid = source.source_mau_userid AND name = source.source_name)
         WHEN MATCHED THEN
-        UPDATE set "value" = source.source_value
+            UPDATE
+               SET "value" = source.source_value
         WHEN NOT MATCHED THEN
-        INSERT
-        (mau_userid
-        ,name
-        ,"value"
-        )
-        VALUES
-        (source_mau_userid
-        ,source_name
-        ,source_value
-        )
+            INSERT
+                ( mau_userid
+                , name
+                , "value"
+                )
+            VALUES
+                ( source_mau_userid
+                , source_name
+                , source_value
+                )
     </insert>
 
     <delete id="deleteSettings">
         DELETE
-        FROM settings
-        WHERE mau_userid = #{mauUserId}
+          FROM settings
+         WHERE mau_userid = #{mauUserId}
     </delete>
 
     <delete id="deleteSetting">
         DELETE
-        FROM settings
-        WHERE mau_userid = #{mauUserId}
-        AND name = #{name}
+          FROM settings
+         WHERE mau_userid = #{mauUserId}
+           AND name = #{name}
     </delete>
 </mapper>

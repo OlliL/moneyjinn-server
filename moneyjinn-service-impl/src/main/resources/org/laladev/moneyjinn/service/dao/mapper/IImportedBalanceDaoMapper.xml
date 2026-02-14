@@ -24,25 +24,23 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.ImportedBalanceData">
         MERGE
         INTO impbalance
-        USING (
-        SELECT
-        CAST(#{mcsCapitalsourceId} as integer),
-        CAST(#{balance} as decimal),
-        CAST(#{changedate} as timestamp)
-        ) AS source (source_mcs_capitalsourceid, source_balance, source_changedate)
+        USING (SELECT CAST(#{mcsCapitalsourceId} AS INTEGER)
+                    , CAST(#{balance} AS DECIMAL)
+                    , CAST(#{changedate} AS TIMESTAMP)) AS source (source_mcs_capitalsourceid, source_balance, source_changedate)
         ON (mcs_capitalsourceid = source.source_mcs_capitalsourceid)
         WHEN MATCHED THEN
-        UPDATE set balance = source.source_balance
+            UPDATE
+               SET balance = source.source_balance
         WHEN NOT MATCHED THEN
-        INSERT
-        (mcs_capitalsourceid
-        ,balance
-        ,changedate
-        )
-        VALUES
-        (source_mcs_capitalsourceid
-        ,source_balance
-        ,source_changedate
-        )
+            INSERT
+                ( mcs_capitalsourceid
+                , balance
+                , changedate
+                )
+            VALUES
+                ( source_mcs_capitalsourceid
+                , source_balance
+                , source_changedate
+                )
     </insert>
 </mapper>

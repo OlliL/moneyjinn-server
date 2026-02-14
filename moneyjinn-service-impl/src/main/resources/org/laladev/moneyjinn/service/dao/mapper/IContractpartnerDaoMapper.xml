@@ -54,61 +54,61 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartnerid">
         INSERT
-        INTO contractpartners
-        (mau_userid
-        ,mag_groupid
-        ,name
-        ,street
-        ,postcode
-        ,town
-        ,country
-        ,validfrom
-        ,validtil
-        ,mmf_comment
-        ,mpa_postingaccountid
-        )
+          INTO contractpartners
+              ( mau_userid
+              , mag_groupid
+              , name
+              , street
+              , postcode
+              , town
+              , country
+              , validfrom
+              , validtil
+              , mmf_comment
+              , mpa_postingaccountid
+              )
         VALUES
-        (#{mauUserId}
-        ,#{magGroupId}
-        ,#{name}
-        ,#{street}
-        ,#{postcode}
-        ,#{town}
-        ,#{country}
-        ,#{validFrom}
-        ,#{validTil}
-        ,#{mmfComment}
-        ,#{mpaPostingAccountId}
-        )
+            ( #{mauUserId}
+            , #{magGroupId}
+            , #{name}
+            , #{street}
+            , #{postcode}
+            , #{town}
+            , #{country}
+            , #{validFrom}
+            , #{validTil}
+            , #{mmfComment}
+            , #{mpaPostingAccountId}
+            )
     </insert>
 
     <update id="updateContractpartner" parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerData">
         UPDATE contractpartners
-        SET name = #{name}
-        ,street = #{street}
-        ,postcode = #{postcode}
-        ,town = #{town}
-        ,country = #{country}
-        ,validtil = #{validTil}
-        ,validfrom = #{validFrom}
-        ,mmf_comment = #{mmfComment}
-        ,mpa_postingaccountid = #{mpaPostingAccountId}
-        WHERE contractpartnerid = #{id}
-        AND mag_groupid = #{magGroupId}
+           SET name                 = #{name}
+             , street               = #{street}
+             , postcode             = #{postcode}
+             , town                 = #{town}
+             , country              = #{country}
+             , validtil             = #{validTil}
+             , validfrom            = #{validFrom}
+             , mmf_comment          = #{mmfComment}
+             , mpa_postingaccountid = #{mpaPostingAccountId}
+         WHERE contractpartnerid = #{id}
+           AND mag_groupid = #{magGroupId}
     </update>
 
     <delete id="deleteContractpartner">
         DELETE
-        FROM contractpartners
-        WHERE mag_groupid = #{groupId}
-        AND contractpartnerid = #{id}
+          FROM contractpartners
+         WHERE mag_groupid = #{groupId}
+           AND contractpartnerid = #{id}
     </delete>
 
     <select id="checkContractpartnerInUseOutOfDate" resultType="java.lang.Boolean">
         SELECT 1
-        FROM moneyflows
-        WHERE mcp_contractpartnerid = #{id}
-        AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
-        FETCH FIRST 1 ROWS ONLY
+          FROM moneyflows
+         WHERE mcp_contractpartnerid = #{id}
+           AND bookingdate NOT BETWEEN #{validFrom} AND #{validTil}
+             FETCH FIRST 1 ROWS ONLY
     </select>
 </mapper>

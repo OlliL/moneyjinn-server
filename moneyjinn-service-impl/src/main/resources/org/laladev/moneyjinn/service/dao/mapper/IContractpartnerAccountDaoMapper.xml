@@ -53,36 +53,36 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartneraccountid">
         INSERT
-        INTO contractpartneraccounts
-        (mcp_contractpartnerid
-        ,accountnumber
-        ,bankcode
-        )
+          INTO contractpartneraccounts
+              ( mcp_contractpartnerid
+              , accountnumber
+              , bankcode
+              )
         VALUES
-        (#{mcpContractpartnerId}
-        ,#{accountNumber}
-        ,#{bankCode}
-        )
+            ( #{mcpContractpartnerId}
+            , #{accountNumber}
+            , #{bankCode}
+            )
     </insert>
 
     <update id="updateContractpartnerAccount"
             parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerAccountData">
         UPDATE contractpartneraccounts
-        SET mcp_contractpartnerid = #{mcpContractpartnerId}
-        ,accountnumber = #{accountNumber}
-        ,bankcode = #{bankCode}
-        WHERE contractpartneraccountid = #{id}
+           SET mcp_contractpartnerid = #{mcpContractpartnerId}
+             , accountnumber         = #{accountNumber}
+             , bankcode              = #{bankCode}
+         WHERE contractpartneraccountid = #{id}
     </update>
 
     <delete id="deleteContractpartnerAccount">
         DELETE
-        FROM contractpartneraccounts
-        WHERE contractpartneraccountid = #{id}
+          FROM contractpartneraccounts
+         WHERE contractpartneraccountid = #{id}
     </delete>
 
     <delete id="deleteContractpartnerAccounts">
         DELETE
-        FROM contractpartneraccounts
-        WHERE mcp_contractpartnerid = #{contractpartnerId}
+          FROM contractpartneraccounts
+         WHERE mcp_contractpartnerid = #{contractpartnerId}
     </delete>
 </mapper>

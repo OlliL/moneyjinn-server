@@ -14,17 +14,17 @@
 
     <select id="getAllYears" resultType="java.lang.Integer">
         SELECT DISTINCT "year"
-        FROM vw_monthlysettlements
-        WHERE mar_mau_userid = #{userId}
-        ORDER BY "year" ASC
+          FROM vw_monthlysettlements
+         WHERE mar_mau_userid = #{userId}
+         ORDER BY "year"
     </select>
 
     <select id="getAllMonth" resultType="java.lang.Integer">
         SELECT DISTINCT "month"
-        FROM vw_monthlysettlements
-        WHERE mar_mau_userid = #{userId}
-        AND "year" = #{year}
-        ORDER BY "month" ASC
+          FROM vw_monthlysettlements
+         WHERE mar_mau_userid = #{userId}
+           AND "year" = #{year}
+         ORDER BY "month"
     </select>
 
     <select id="getAllMonthlySettlementsByYearMonth"
@@ -41,29 +41,29 @@
 
     <select id="checkMonthlySettlementsExists" resultType="java.lang.Boolean">
         SELECT 1
-        FROM monthlysettlements
-        WHERE mau_userid = #{userId}
-        AND "year" = #{year}
-        AND "month" = #{month}
-        FETCH FIRST 1 ROWS ONLY
+          FROM monthlysettlements
+         WHERE mau_userid = #{userId}
+           AND "year" = #{year}
+           AND "month" = #{month}
+             FETCH FIRST 1 ROWS ONLY
     </select>
 
     <select id="getMaxSettlementDate" resultType="java.time.LocalDate">
-        SELECT CONCAT("year",'-',LPAD("month"::text,2,'0'),'-01')::date
-        FROM monthlysettlements
-        WHERE mau_userid = #{userId}
-        ORDER BY "year" DESC
-        , "month" DESC
-        FETCH FIRST 1 ROW ONLY
+        SELECT CONCAT("year", '-', LPAD("month"::TEXT, 2, '0'), '-01')::DATE
+          FROM monthlysettlements
+         WHERE mau_userid = #{userId}
+         ORDER BY "year" DESC
+                , "month" DESC
+             FETCH FIRST 1 ROW ONLY
     </select>
 
     <select id="getMinSettlementDate" resultType="java.time.LocalDate">
-        SELECT CONCAT("year",'-',LPAD("month"::text,2,'0'),'-01')::date
-        FROM monthlysettlements
-        WHERE mau_userid = #{userId}
-        ORDER BY "year" ASC
-        , "month" ASC
-        FETCH FIRST 1 ROW ONLY
+        SELECT CONCAT("year", '-', LPAD("month"::TEXT, 2, '0'), '-01')::DATE
+          FROM monthlysettlements
+         WHERE mau_userid = #{userId}
+         ORDER BY "year"
+                , "month"
+             FETCH FIRST 1 ROW ONLY
     </select>
 
     <insert id="upsertMonthlySettlement"
@@ -71,45 +71,44 @@
             useGeneratedKeys="true" keyProperty="id" keyColumn="monthlysettlementid">
         MERGE
         INTO monthlysettlements
-        USING (
-        SELECT
-        CAST(#{mauUserId} as integer),
-        CAST(#{magGroupId} as integer),
-        CAST(#{mcsCapitalsourceId} as integer),
-        CAST(#{month} as smallint),
-        CAST(#{year} as smallint),
-        CAST(#{amount} as decimal)
-        ) AS source (source_mau_userid, source_mag_groupid, source_mcs_capitalsourceid, source_month, source_year,
-        source_amount)
+        USING (SELECT CAST(#{mauUserId} AS INTEGER)
+                    , CAST(#{magGroupId} AS INTEGER)
+                    , CAST(#{mcsCapitalsourceId} AS INTEGER)
+                    , CAST(#{month} AS SMALLINT)
+                    , CAST(#{year} AS SMALLINT)
+                    , CAST(#{amount} AS DECIMAL)) AS source (source_mau_userid, source_mag_groupid,
+                                                             source_mcs_capitalsourceid, source_month, source_year,
+                                                             source_amount)
         ON (mcs_capitalsourceid = source.source_mcs_capitalsourceid AND "month" = source.source_month AND "year" =
-        source.source_year)
+                                                                                                          source.source_year)
         WHEN MATCHED THEN
-        UPDATE set amount = source.source_amount
+            UPDATE
+               SET amount = source.source_amount
         WHEN NOT MATCHED THEN
-        INSERT
-        (mau_userid
-        ,mag_groupid
-        ,mcs_capitalsourceid
-        ,"month"
-        ,"year"
-        ,amount
-        )
-        VALUES
-        (source_mau_userid
-        ,source_mag_groupid
-        ,source_mcs_capitalsourceid
-        ,source_month
-        ,source_year
-        ,source_amount
-        )
+            INSERT
+                ( mau_userid
+                , mag_groupid
+                , mcs_capitalsourceid
+                , "month"
+                , "year"
+                , amount
+                )
+            VALUES
+                ( source_mau_userid
+                , source_mag_groupid
+                , source_mcs_capitalsourceid
+                , source_month
+                , source_year
+                , source_amount
+                )
     </insert>
 
     <delete id="deleteMonthlySettlement">
         DELETE
-        FROM monthlysettlements
-        WHERE mau_userid = #{userId}
-        AND "year" = #{year}
-        AND "month" = #{month}
+          FROM monthlysettlements
+         WHERE mau_userid = #{userId}
+           AND "year" = #{year}
+           AND "month" = #{month}
     </delete>
 
     <select id="getAllMonthlySettlementsByRangeAndCapitalsource"

@@ -54,49 +54,49 @@
 
     <delete id="deleteImportedMoneyflowById">
         DELETE
-        FROM impmoneyflows
-        WHERE impmoneyflowid = #{id}
+          FROM impmoneyflows
+         WHERE impmoneyflowid = #{id}
     </delete>
 
     <update id="updateImportedMoneyflowStatus">
         UPDATE impmoneyflows
-        SET status = #{status}
-        WHERE impmoneyflowid = #{id}
+           SET status = #{status}
+         WHERE impmoneyflowid = #{id}
     </update>
 
     <insert id="createImportedMoneyflow"
             parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
         INSERT
-        INTO impmoneyflows
-        (externalid
-        ,mcs_capitalsourceid
-        ,bookingdate
-        ,invoicedate
-        ,name
-        ,accountnumber
-        ,bankcode
-        ,comment
-        ,amount
-        ,status
-        )
+          INTO impmoneyflows
+              ( externalid
+              , mcs_capitalsourceid
+              , bookingdate
+              , invoicedate
+              , name
+              , accountnumber
+              , bankcode
+              , comment
+              , amount
+              , status
+              )
         VALUES
-        (#{externalId}
-        ,#{mcsCapitalsourceId}
-        ,#{bookingdate}
-        ,#{invoicedate}
-        ,#{name}
-        ,#{accountNumber}
-        ,#{bankCode}
-        ,#{comment}
-        ,#{amount}
-        ,0
-        )
+            ( #{externalId}
+            , #{mcsCapitalsourceId}
+            , #{bookingdate}
+            , #{invoicedate}
+            , #{name}
+            , #{accountNumber}
+            , #{bankCode}
+            , #{comment}
+            , #{amount}
+            , 0
+            )
     </insert>
 
     <select id="checkIfExternalIdAlreadyExists" resultType="java.lang.Boolean">
         SELECT 1
-        FROM impmoneyflows
-        WHERE externalId = #{externalId}
-        FETCH FIRST 1 ROWS ONLY
+          FROM impmoneyflows
+         WHERE externalId = #{externalId}
+             FETCH FIRST 1 ROWS ONLY
     </select>
 </mapper>

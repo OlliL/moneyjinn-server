@@ -26,41 +26,41 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="moneyflowsplitentryid">
         INSERT
-        INTO moneyflowsplitentries
-        (mmf_moneyflowid
-        ,amount
-        ,mpa_postingaccountid
-        ,comment
-        )
+          INTO moneyflowsplitentries
+              ( mmf_moneyflowid
+              , amount
+              , mpa_postingaccountid
+              , comment
+              )
         VALUES
-        (#{mmfMoneyflowId}
-        ,#{amount}
-        ,#{mpaPostingAccountId}
-        ,#{comment}
-        )
+            ( #{mmfMoneyflowId}
+            , #{amount}
+            , #{mpaPostingAccountId}
+            , #{comment}
+            )
     </insert>
 
     <update id="updateMoneyflowSplitEntry"
             parameterType="org.laladev.moneyjinn.service.dao.data.MoneyflowSplitEntryData">
         UPDATE moneyflowsplitentries
-        SET amount = #{amount}
-        ,mpa_postingaccountid = #{mpaPostingAccountId}
-        ,comment = #{comment}
-        WHERE mmf_moneyflowid = #{mmfMoneyflowId}
-        AND moneyflowsplitentryid = #{id}
+           SET amount               = #{amount}
+             , mpa_postingaccountid = #{mpaPostingAccountId}
+             , comment              = #{comment}
+         WHERE mmf_moneyflowid = #{mmfMoneyflowId}
+           AND moneyflowsplitentryid = #{id}
     </update>
 
     <delete id="deleteMoneyflowSplitEntry">
         DELETE
-        FROM moneyflowsplitentries
-        WHERE mmf_moneyflowid = #{moneyflowId}
-        AND moneyflowsplitentryid = #{id}
+          FROM moneyflowsplitentries
+         WHERE mmf_moneyflowid = #{moneyflowId}
+           AND moneyflowsplitentryid = #{id}
 
     </delete>
 
     <delete id="deleteMoneyflowSplitEntries">
         DELETE
-        FROM moneyflowsplitentries
-        WHERE mmf_moneyflowid = #{id}
+          FROM moneyflowsplitentries
+         WHERE mmf_moneyflowid = #{id}
     </delete>
 </mapper>

@@ -77,54 +77,54 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.EtfData"
             useGeneratedKeys="true" keyProperty="etfid" keyColumn="etfid">
         INSERT
-        INTO etf
-        (mau_userid
-        ,mag_groupid
-        ,isin
-        ,name
-        ,wkn
-        ,ticker
-        ,chart_url
-        ,trans_cost_abs
-        ,trans_cost_rel
-        ,trans_cost_max
-        ,part_tax_exempt
-        )
+          INTO etf
+              ( mau_userid
+              , mag_groupid
+              , isin
+              , name
+              , wkn
+              , ticker
+              , chart_url
+              , trans_cost_abs
+              , trans_cost_rel
+              , trans_cost_max
+              , part_tax_exempt
+              )
         VALUES
-        (#{mauUserId}
-        ,#{magGroupId}
-        ,#{isin}
-        ,#{name}
-        ,#{wkn}
-        ,#{ticker}
-        ,#{chartUrl}
-        ,#{transCostAbs}
-        ,#{transCostRel}
-        ,#{transCostMax}
-        ,#{partTaxExempt}
-        )
+            ( #{mauUserId}
+            , #{magGroupId}
+            , #{isin}
+            , #{name}
+            , #{wkn}
+            , #{ticker}
+            , #{chartUrl}
+            , #{transCostAbs}
+            , #{transCostRel}
+            , #{transCostMax}
+            , #{partTaxExempt}
+            )
     </insert>
 
     <update id="updateEtf" parameterType="org.laladev.moneyjinn.service.dao.data.EtfData">
         UPDATE etf
-        SET isin = #{isin}
-        ,name = #{name}
-        ,wkn = #{wkn}
-        ,ticker = #{ticker}
-        ,chart_url = #{chartUrl}
-        ,trans_cost_abs = #{transCostAbs}
-        ,trans_cost_rel = #{transCostRel}
-        ,trans_cost_max = #{transCostMax}
-        ,part_tax_exempt = #{partTaxExempt}
-        WHERE etfid = #{etfid}
-        AND mag_groupid = #{magGroupId}
+           SET isin            = #{isin}
+             , name            = #{name}
+             , wkn             = #{wkn}
+             , ticker          = #{ticker}
+             , chart_url       = #{chartUrl}
+             , trans_cost_abs  = #{transCostAbs}
+             , trans_cost_rel  = #{transCostRel}
+             , trans_cost_max  = #{transCostMax}
+             , part_tax_exempt = #{partTaxExempt}
+         WHERE etfid = #{etfid}
+           AND mag_groupid = #{magGroupId}
     </update>
 
     <delete id="deleteEtf">
         DELETE
-        FROM etf
-        WHERE etfid = #{etfid}
-        AND mag_groupid = #{magGroupId}
+          FROM etf
+         WHERE etfid = #{etfid}
+           AND mag_groupid = #{magGroupId}
     </delete>
 
     <select id="getAllFlowsUntil"
@@ -170,33 +170,33 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData"
             useGeneratedKeys="true" keyProperty="etfflowid" keyColumn="etfflowid">
         INSERT
-        INTO etfflows
-        (met_etfid
-        ,flowdate
-        ,amount
-        ,price
-        )
+          INTO etfflows
+              ( met_etfid
+              , flowdate
+              , amount
+              , price
+              )
         VALUES
-        (#{metEtfid}
-        ,#{flowdate}
-        ,#{amount}
-        ,#{price}
-        )
+            ( #{metEtfid}
+            , #{flowdate}
+            , #{amount}
+            , #{price}
+            )
     </insert>
 
     <update id="updateEtfFlow" parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
         UPDATE etfflows
-        SET flowdate = #{flowdate}
-        ,met_etfid = #{metEtfid}
-        ,amount = #{amount}
-        ,price = #{price}
-        WHERE etfflowid = #{etfflowid}
+           SET flowdate  = #{flowdate}
+             , met_etfid = #{metEtfid}
+             , amount    = #{amount}
+             , price     = #{price}
+         WHERE etfflowid = #{etfflowid}
     </update>
 
     <delete id="deleteEtfFlow">
         DELETE
-        FROM etfflows
-        WHERE etfflowid = #{id}
+          FROM etfflows
+         WHERE etfflowid = #{id}
     </delete>
 
     <select id="getAllPreliminaryLumpSum"
@@ -205,7 +205,7 @@
         <include refid="etfPreliminaryLumpSumColumns"/>
         FROM etfpreliminarylumpsum
         WHERE met_etfid = #{metEtfid}
-        ORDER BY "year" ASC
+        ORDER BY "year"
     </select>
 
     <select id="getPreliminaryLumpSum"
@@ -219,9 +219,9 @@
     <select id="getPreliminaryLumpSumId"
             resultType="java.lang.Long">
         SELECT etfpreliminarylumpsumid
-        FROM etfpreliminarylumpsum
-        WHERE met_etfid = #{metEtfid}
-        AND "year" = #{year}
+          FROM etfpreliminarylumpsum
+         WHERE met_etfid = #{metEtfid}
+           AND "year" = #{year}
     </select>
 
     <select id="getAllEtfPreliminaryLumpSum"
@@ -230,75 +230,75 @@
         <include refid="etfPreliminaryLumpSumColumns"/>
         FROM etfpreliminarylumpsum
         WHERE met_etfid = #{metEtfid}
-        ORDER BY "year" ASC
+        ORDER BY "year"
     </select>
 
     <insert id="createPreliminaryLumpSum"
             parameterType="org.laladev.moneyjinn.service.dao.data.EtfPreliminaryLumpSumData"
             useGeneratedKeys="true" keyProperty="etfPreliminaryLumpSumId" keyColumn="etfpreliminarylumpsumid">
         INSERT
-        INTO etfpreliminarylumpsum
-        (met_etfid
-        ,"year"
-        ,type
-        ,amount_per_piece
-        ,amount01
-        ,amount02
-        ,amount03
-        ,amount04
-        ,amount05
-        ,amount06
-        ,amount07
-        ,amount08
-        ,amount09
-        ,amount10
-        ,amount11
-        ,amount12
-        )
+          INTO etfpreliminarylumpsum
+              ( met_etfid
+              , "year"
+              , type
+              , amount_per_piece
+              , amount01
+              , amount02
+              , amount03
+              , amount04
+              , amount05
+              , amount06
+              , amount07
+              , amount08
+              , amount09
+              , amount10
+              , amount11
+              , amount12
+              )
         VALUES
-        (#{metEtfid}
-        ,#{year}
-        ,#{type}
-        ,#{amountPerPiece}
-        ,#{amountJanuary}
-        ,#{amountFebruary}
-        ,#{amountMarch}
-        ,#{amountApril}
-        ,#{amountMay}
-        ,#{amountJune}
-        ,#{amountJuly}
-        ,#{amountAugust}
-        ,#{amountSeptember}
-        ,#{amountOctober}
-        ,#{amountNovember}
-        ,#{amountDecember}
-        )
+            ( #{metEtfid}
+            , #{year}
+            , #{type}
+            , #{amountPerPiece}
+            , #{amountJanuary}
+            , #{amountFebruary}
+            , #{amountMarch}
+            , #{amountApril}
+            , #{amountMay}
+            , #{amountJune}
+            , #{amountJuly}
+            , #{amountAugust}
+            , #{amountSeptember}
+            , #{amountOctober}
+            , #{amountNovember}
+            , #{amountDecember}
+            )
     </insert>
 
     <update id="updatePreliminaryLumpSum" parameterType="org.laladev.moneyjinn.service.dao.data.EtfFlowData">
         UPDATE etfpreliminarylumpsum
-        SET met_etfid = #{metEtfid}
-        ,"year" = #{year}
-        ,type = #{type}
-        ,amount_per_piece = #{amountPerPiece}
-        ,amount01 = #{amountJanuary}
-        ,amount02 = #{amountFebruary}
-        ,amount03 = #{amountMarch}
-        ,amount04 = #{amountApril}
-        ,amount05 = #{amountMay}
-        ,amount06 = #{amountJune}
-        ,amount07 = #{amountJuly}
-        ,amount08 = #{amountAugust}
-        ,amount09 = #{amountSeptember}
-        ,amount10 = #{amountOctober}
-        ,amount11 = #{amountNovember}
-        ,amount12 = #{amountDecember}
-        WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
+           SET met_etfid        = #{metEtfid}
+             , "year"           = #{year}
+             , type             = #{type}
+             , amount_per_piece = #{amountPerPiece}
+             , amount01         = #{amountJanuary}
+             , amount02         = #{amountFebruary}
+             , amount03         = #{amountMarch}
+             , amount04         = #{amountApril}
+             , amount05         = #{amountMay}
+             , amount06         = #{amountJune}
+             , amount07         = #{amountJuly}
+             , amount08         = #{amountAugust}
+             , amount09         = #{amountSeptember}
+             , amount10         = #{amountOctober}
+             , amount11         = #{amountNovember}
+             , amount12         = #{amountDecember}
+         WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
     </update>
 
     <delete id="deletePreliminaryLumpSum">
         DELETE
-        FROM etfpreliminarylumpsum
-        WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
+          FROM etfpreliminarylumpsum
+         WHERE etfpreliminarylumpsumid = #{etfPreliminaryLumpSumId}
     </delete>
 </mapper>

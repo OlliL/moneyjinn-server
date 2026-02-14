@@ -39,45 +39,45 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.UserData"
             useGeneratedKeys="true" keyProperty="userid" keyColumn="userid">
         INSERT
-        INTO access_users
-        (name
-        ,password
-        ,role
-        ,change_password
-        )
+          INTO access_users
+              ( name
+              , password
+              , role
+              , change_password
+              )
         VALUES
-        (#{name}
-        ,#{password}
-        ,#{role}
-        ,1
-        )
+            ( #{name}
+            , #{password}
+            , #{role}
+            , 1
+            )
     </insert>
 
     <update id="updateUser" parameterType="org.laladev.moneyjinn.service.dao.data.UserData">
         UPDATE access_users
-        SET name = #{name}
-        ,role = #{role}
-        ,change_password = #{changePassword}
-        WHERE userid = #{userid}
+           SET name            = #{name}
+             , role            = #{role}
+             , change_password = #{changePassword}
+         WHERE userid = #{userid}
     </update>
 
     <update id="setPassword">
         UPDATE access_users
-        SET password = #{password}
-        ,change_password = 0
-        WHERE userid = #{userid}
+           SET password        = #{password}
+             , change_password = 0
+         WHERE userid = #{userid}
     </update>
 
     <update id="resetPassword">
         UPDATE access_users
-        SET password = #{password}
-        ,change_password = 1
-        WHERE userid = #{userid}
+           SET password        = #{password}
+             , change_password = 1
+         WHERE userid = #{userid}
     </update>
 
     <delete id="deleteUser">
         DELETE
-        FROM access_users
-        WHERE userid = #{userid}
+          FROM access_users
+         WHERE userid = #{userid}
     </delete>
 </mapper>

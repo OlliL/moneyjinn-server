@@ -37,50 +37,50 @@
             parameterType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData"
             useGeneratedKeys="true" keyProperty="id" keyColumn="predefmoneyflowid">
         INSERT
-        INTO predefmoneyflows
-        (mau_userid
-        ,amount
-        ,mcs_capitalsourceid
-        ,mcp_contractpartnerid
-        ,comment
-        ,once_a_month
-        ,mpa_postingaccountid
-        )
+          INTO predefmoneyflows
+              ( mau_userid
+              , amount
+              , mcs_capitalsourceid
+              , mcp_contractpartnerid
+              , comment
+              , once_a_month
+              , mpa_postingaccountid
+              )
         VALUES
-        (#{mauUserId}
-        ,#{amount}
-        ,#{mcsCapitalsourceId}
-        ,#{mcpContractpartnerId}
-        ,#{comment}
-        ,#{onceAMonth}
-        ,#{mpaPostingAccountId}
-        )
+            ( #{mauUserId}
+            , #{amount}
+            , #{mcsCapitalsourceId}
+            , #{mcpContractpartnerId}
+            , #{comment}
+            , #{onceAMonth}
+            , #{mpaPostingAccountId}
+            )
     </insert>
 
     <update id="updatePreDefMoneyflow"
             parameterType="org.laladev.moneyjinn.service.dao.data.PreDefMoneyflowData">
         UPDATE predefmoneyflows
-        SET amount = #{amount}
-        ,mcs_capitalsourceid = #{mcsCapitalsourceId}
-        ,mcp_contractpartnerid = #{mcpContractpartnerId}
-        ,comment = #{comment}
-        ,once_a_month = #{onceAMonth}
-        ,mpa_postingaccountid = #{mpaPostingAccountId}
-        WHERE predefmoneyflowid = #{id}
-        AND mau_userid = #{mauUserId}
+           SET amount                = #{amount}
+             , mcs_capitalsourceid   = #{mcsCapitalsourceId}
+             , mcp_contractpartnerid = #{mcpContractpartnerId}
+             , comment               = #{comment}
+             , once_a_month          = #{onceAMonth}
+             , mpa_postingaccountid  = #{mpaPostingAccountId}
+         WHERE predefmoneyflowid = #{id}
+           AND mau_userid = #{mauUserId}
     </update>
 
     <delete id="deletePreDefMoneyflow">
         DELETE
-        FROM predefmoneyflows
-        WHERE predefmoneyflowid = #{id}
-        AND mau_userid = #{userId}
+          FROM predefmoneyflows
+         WHERE predefmoneyflowid = #{id}
+           AND mau_userid = #{userId}
     </delete>
 
     <update id="setLastUsed">
         UPDATE predefmoneyflows
-        SET last_used = NOW()
-        WHERE predefmoneyflowid = #{id}
-        AND mau_userid = #{userId}
+           SET last_used = NOW()
+         WHERE predefmoneyflowid = #{id}
+           AND mau_userid = #{userId}
     </update>
 </mapper>
