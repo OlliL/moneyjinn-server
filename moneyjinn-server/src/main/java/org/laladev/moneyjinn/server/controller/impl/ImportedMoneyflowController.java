@@ -74,6 +74,8 @@ public class ImportedMoneyflowController extends AbstractController implements I
     private final IMoneyflowService moneyflowService;
     private final IImportedMoneyflowService importedMoneyflowService;
     private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
+    private final IContractpartnerMatchingService contractpartnerMatchingService;
+
     private final ImportedMoneyflowTransportMapper importedMoneyflowTransportMapper;
     private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
 
@@ -104,8 +106,21 @@ public class ImportedMoneyflowController extends AbstractController implements I
                             ImportedMoneyflowStatus.CREATED);
             if (!importedMoneyflows.isEmpty()) {
 
+                importedMoneyflows.stream()
+                        .filter(importedMoneyflow -> importedMoneyflow.getComment() != null)
+                        .forEach(importedMoneyflow -> {
+                            final var contractpartnerMatching = this.contractpartnerMatchingService
+                                    .getContractpartnerBySearchString(userId, importedMoneyflow.getComment());
+                            if (contractpartnerMatching != null) {
+                                importedMoneyflow.setContractpartner(contractpartnerMatching.getContractpartner());
+                            }
+                        });
+
                 final List<BankAccount> contractpartnerBankAccounts = importedMoneyflows.stream()
-                        .map(ImportedMoneyflow::getBankAccount).toList();
+                        .filter(importedMoneyflow -> importedMoneyflow.getContractpartner() == null)
+                        .map(ImportedMoneyflow::getBankAccount)
+                        .filter(Objects::nonNull)
+                        .toList();
 
                 final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
                         .getAllContractpartnerByAccounts(userId, contractpartnerBankAccounts);
@@ -147,7 +162,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
         if (importedMoneyflowTransport == null) {
             return ResponseEntity.noContent().build();
         }
-        
+
         final ImportedMoneyflow importedMoneyflow = this.importedMoneyflowTransportMapper
                 .mapBToA(importedMoneyflowTransport);
         final BankAccount bankAccount = new BankAccount(importedMoneyflowTransport.getAccountNumberCapitalsource(),

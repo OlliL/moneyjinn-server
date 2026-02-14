@@ -47,7 +47,10 @@ import org.laladev.moneyjinn.sepa.camt.mapper.BankToCustomerAccountReportMapper;
 import org.laladev.moneyjinn.sepa.camt.model.BankToCustomerAccountReport;
 import org.laladev.moneyjinn.sepa.camt.model.CreditDebitCode;
 import org.laladev.moneyjinn.sepa.camt.model.Entry;
-import org.laladev.moneyjinn.service.api.*;
+import org.laladev.moneyjinn.service.api.ICompareDataService;
+import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
+import org.laladev.moneyjinn.service.api.IContractpartnerMatchingService;
+import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.dao.CompareDataFormatDao;
 import org.laladev.moneyjinn.service.dao.data.CompareDataFormatData;
 import org.laladev.moneyjinn.service.dao.data.mapper.CompareDataFormatDataMapper;
@@ -75,7 +78,6 @@ public class CompareDataService extends AbstractService implements ICompareDataS
             "The specified file is not parseable! Maybe you've selected the wrong format or file?";
     private final CompareDataFormatDao compareDataFormatDao;
     private final IMoneyflowService moneyflowService;
-    private final IContractpartnerService contractpartnerService;
     private final IContractpartnerAccountService contractpartnerAccountService;
     private final IContractpartnerMatchingService contractpartnerMatchingService;
     private final CompareDataFormatDataMapper compareDataFormatDataMapper;
@@ -418,12 +420,10 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         if (posComment != null) {
             final String comment = cmpDataRaw[posComment - 1];
             data.setComment(comment.trim());
-            final var contractpartnerMatching =
-                    this.contractpartnerMatchingService.getContractpartnerBySearchString(userId, data.getComment());
+            final var contractpartnerMatching = this.contractpartnerMatchingService
+                    .getContractpartnerBySearchString(userId, data.getComment());
             if (contractpartnerMatching != null) {
-                final var contractpartner = this.contractpartnerService.getContractpartnerById(userId,
-                        contractpartnerMatching.getContractpartner().getId());
-                data.setContractpartner(contractpartner);
+                data.setContractpartner(contractpartnerMatching.getContractpartner());
             }
         }
 
