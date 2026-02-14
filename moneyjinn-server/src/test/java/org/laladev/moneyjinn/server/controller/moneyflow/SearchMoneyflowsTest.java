@@ -247,6 +247,8 @@ class SearchMoneyflowsTest extends AbstractWebUserControllerTest {
         moneyflowTransports.add(transport1a);
         moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow2().build());
         expected.setMoneyflowTransports(moneyflowTransports);
+        expected.setMoneyflowsWithReceipt(
+                List.of(MoneyflowTransportBuilder.MONEYFLOW1_ID, MoneyflowTransportBuilder.MONEYFLOW2_ID));
 
         final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request, SearchMoneyflowsResponse.class);
 
@@ -291,6 +293,8 @@ class SearchMoneyflowsTest extends AbstractWebUserControllerTest {
         moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow17().build());
         moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
         expected.setMoneyflowTransports(moneyflowTransports);
+        expected.setMoneyflowsWithReceipt(
+                List.of(MoneyflowTransportBuilder.MONEYFLOW1_ID, MoneyflowTransportBuilder.MONEYFLOW2_ID));
 
         final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request, SearchMoneyflowsResponse.class);
 
@@ -309,6 +313,7 @@ class SearchMoneyflowsTest extends AbstractWebUserControllerTest {
         final List<MoneyflowTransport> moneyflowTransports = new ArrayList<>();
         moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow2().build());
         expected.setMoneyflowTransports(moneyflowTransports);
+        expected.setMoneyflowsWithReceipt(List.of(MoneyflowTransportBuilder.MONEYFLOW2_ID));
 
         final SearchMoneyflowsResponse actual = super.callUsecaseExpect200(request, SearchMoneyflowsResponse.class);
 
@@ -336,6 +341,7 @@ class SearchMoneyflowsTest extends AbstractWebUserControllerTest {
         moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow18().build());
         moneyflowTransports.add(new MoneyflowTransportBuilder().forMoneyflow19().build());
         expected.setMoneyflowTransports(moneyflowTransports);
+        expected.setMoneyflowsWithReceipt(List.of(MoneyflowTransportBuilder.MONEYFLOW2_ID));
     }
 
     @Test

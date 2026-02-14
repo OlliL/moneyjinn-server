@@ -6,6 +6,13 @@
       "items": {
         "$ref": "../../transport/MoneyflowTransport.json"
       }
+    },
+    "moneyflowsWithReceipt": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int64"
+      }
     }
   }
 }
