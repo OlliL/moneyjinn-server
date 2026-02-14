@@ -58,6 +58,11 @@ CREATE TABLE contractpartneraccounts (
     accountnumber character varying(34) NOT NULL,
     bankcode character varying(11) DEFAULT NULL::character varying
 );
+CREATE TABLE contractpartnermatchings (
+    contractpartnermatchingid bigserial NOT NULL,
+    mcp_contractpartnerid integer NOT NULL,
+    matching_text character varying(50) NOT NULL
+);
 CREATE TABLE contractpartners (
     contractpartnerid bigserial NOT NULL,
     mau_userid integer NOT NULL,
@@ -329,6 +334,10 @@ ALTER TABLE cmp_data_formats
     ADD CONSTRAINT mcf_i_01 UNIQUE (name);
 ALTER TABLE cmp_data_formats
     ADD CONSTRAINT mcf_pk PRIMARY KEY (formatid);
+ALTER TABLE contractpartnermatchings
+    ADD CONSTRAINT mcm_i_01 UNIQUE (matching_text, mcp_contractpartnerid);
+ALTER TABLE contractpartnermatchings
+    ADD CONSTRAINT mcm_pk PRIMARY KEY (contractpartnermatchingid);
 ALTER TABLE contractpartners
     ADD CONSTRAINT mcp_i_01 UNIQUE (mag_groupid, name);
 ALTER TABLE contractpartners
@@ -418,6 +427,8 @@ ALTER TABLE access_relation
     ADD CONSTRAINT mar_mau_pk FOREIGN KEY (mau_userid) REFERENCES access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE contractpartneraccounts
     ADD CONSTRAINT mca_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE contractpartnermatchings
+    ADD CONSTRAINT mcm_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE CASCADE;
 ALTER TABLE contractpartners
     ADD CONSTRAINT mcp_mag_pk FOREIGN KEY (mag_groupid) REFERENCES access_groups(groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE contractpartners

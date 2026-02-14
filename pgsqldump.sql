@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict kWqmoMCWnmTmr0GCL0ddLROtd8sdneqVdwvz6ARgXntZDatw542KlgQhPvsFnuR
+\restrict udqqrdwY87f7NnFpNoSJ4THHX5aZLNNO0Ar4vinDm6fQMpo09yCFhkP4RBk3Kny
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -48,6 +48,7 @@ ALTER TABLE ONLY moneyjinn.capitalsources DROP CONSTRAINT mcs_mag_pk;
 ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_mpa_pk;
 ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_mau_pk;
 ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_mag_pk;
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_mcp_pk_01;
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT mca_mcp_pk_01;
 ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_mau_pk;
 ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_mag_pk;
@@ -117,6 +118,8 @@ ALTER TABLE ONLY moneyjinn.etfflows DROP CONSTRAINT mef_pk;
 ALTER TABLE ONLY moneyjinn.capitalsources DROP CONSTRAINT mcs_pk;
 ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_pk;
 ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_i_01;
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_pk;
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_i_01;
 ALTER TABLE ONLY moneyjinn.cmp_data_formats DROP CONSTRAINT mcf_pk;
 ALTER TABLE ONLY moneyjinn.cmp_data_formats DROP CONSTRAINT mcf_i_01;
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT mca_pk;
@@ -143,6 +146,7 @@ ALTER TABLE moneyjinn.etfpreliminarylumpsum ALTER COLUMN etfpreliminarylumpsumid
 ALTER TABLE moneyjinn.etfflows ALTER COLUMN etfflowid DROP DEFAULT;
 ALTER TABLE moneyjinn.etf ALTER COLUMN etfid DROP DEFAULT;
 ALTER TABLE moneyjinn.contractpartners ALTER COLUMN contractpartnerid DROP DEFAULT;
+ALTER TABLE moneyjinn.contractpartnermatchings ALTER COLUMN contractpartnermatchingid DROP DEFAULT;
 ALTER TABLE moneyjinn.contractpartneraccounts ALTER COLUMN contractpartneraccountid DROP DEFAULT;
 ALTER TABLE moneyjinn.cmp_data_formats ALTER COLUMN formatid DROP DEFAULT;
 ALTER TABLE moneyjinn.capitalsources ALTER COLUMN capitalsourceid DROP DEFAULT;
@@ -192,6 +196,8 @@ DROP SEQUENCE moneyjinn.etf_etfid_seq;
 DROP TABLE moneyjinn.etf;
 DROP SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq;
 DROP TABLE moneyjinn.contractpartners;
+DROP SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq;
+DROP TABLE moneyjinn.contractpartnermatchings;
 DROP SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq;
 DROP TABLE moneyjinn.contractpartneraccounts;
 DROP SEQUENCE moneyjinn.cmp_data_formats_formatid_seq;
@@ -514,6 +520,47 @@ ALTER SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq OW
 --
 
 ALTER SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq OWNED BY moneyjinn.contractpartneraccounts.contractpartneraccountid;
+
+
+--
+-- Name: contractpartnermatchings; Type: TABLE; Schema: moneyjinn; Owner: admin
+--
+
+CREATE TABLE moneyjinn.contractpartnermatchings (
+    contractpartnermatchingid bigint NOT NULL,
+    mcp_contractpartnerid integer NOT NULL,
+    matching_text character varying(50) NOT NULL
+);
+
+
+ALTER TABLE moneyjinn.contractpartnermatchings OWNER TO admin;
+
+--
+-- Name: TABLE contractpartnermatchings; Type: COMMENT; Schema: moneyjinn; Owner: admin
+--
+
+COMMENT ON TABLE moneyjinn.contractpartnermatchings IS 'mcm';
+
+
+--
+-- Name: contractpartnermatchings_contractpartnermatchingid_seq; Type: SEQUENCE; Schema: moneyjinn; Owner: admin
+--
+
+CREATE SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq OWNER TO admin;
+
+--
+-- Name: contractpartnermatchings_contractpartnermatchingid_seq; Type: SEQUENCE OWNED BY; Schema: moneyjinn; Owner: admin
+--
+
+ALTER SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq OWNED BY moneyjinn.contractpartnermatchings.contractpartnermatchingid;
 
 
 --
@@ -1569,6 +1616,13 @@ ALTER TABLE ONLY moneyjinn.contractpartneraccounts ALTER COLUMN contractpartnera
 
 
 --
+-- Name: contractpartnermatchings contractpartnermatchingid; Type: DEFAULT; Schema: moneyjinn; Owner: admin
+--
+
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings ALTER COLUMN contractpartnermatchingid SET DEFAULT nextval('moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq'::regclass);
+
+
+--
 -- Name: contractpartners contractpartnerid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -1757,6 +1811,22 @@ ALTER TABLE ONLY moneyjinn.cmp_data_formats
 
 ALTER TABLE ONLY moneyjinn.cmp_data_formats
     ADD CONSTRAINT mcf_pk PRIMARY KEY (formatid);
+
+
+--
+-- Name: contractpartnermatchings mcm_i_01; Type: CONSTRAINT; Schema: moneyjinn; Owner: admin
+--
+
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings
+    ADD CONSTRAINT mcm_i_01 UNIQUE (matching_text, mcp_contractpartnerid);
+
+
+--
+-- Name: contractpartnermatchings mcm_pk; Type: CONSTRAINT; Schema: moneyjinn; Owner: admin
+--
+
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings
+    ADD CONSTRAINT mcm_pk PRIMARY KEY (contractpartnermatchingid);
 
 
 --
@@ -2278,6 +2348,14 @@ ALTER TABLE ONLY moneyjinn.contractpartneraccounts
 
 
 --
+-- Name: contractpartnermatchings mcm_mcp_pk_01; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: admin
+--
+
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings
+    ADD CONSTRAINT mcm_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
 -- Name: contractpartners mcp_mag_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -2603,6 +2681,22 @@ GRANT SELECT,USAGE ON SEQUENCE moneyjinn.contractpartneraccounts_contractpartner
 
 
 --
+-- Name: TABLE contractpartnermatchings; Type: ACL; Schema: moneyjinn; Owner: admin
+--
+
+GRANT ALL ON TABLE moneyjinn.contractpartnermatchings TO moneyjinn_owner;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.contractpartnermatchings TO moneyjinn_app;
+
+
+--
+-- Name: SEQUENCE contractpartnermatchings_contractpartnermatchingid_seq; Type: ACL; Schema: moneyjinn; Owner: admin
+--
+
+GRANT SELECT,USAGE ON SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq TO moneyjinn_app;
+GRANT ALL ON SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq TO moneyjinn_owner;
+
+
+--
 -- Name: TABLE contractpartners; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
@@ -2914,7 +3008,7 @@ GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjin
 -- PostgreSQL database dump complete
 --
 
-\unrestrict kWqmoMCWnmTmr0GCL0ddLROtd8sdneqVdwvz6ARgXntZDatw542KlgQhPvsFnuR
+\unrestrict udqqrdwY87f7NnFpNoSJ4THHX5aZLNNO0Ar4vinDm6fQMpo09yCFhkP4RBk3Kny
 
 SELECT pg_catalog.set_config('search_path', '', false);
 INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (2, 'Sparda Bank', 'Buchungstag', 'Wertstellungstag', 'Verwendungszweck', NULL, '/^"Buchungstag";"Wertstellungstag";"Verwendungszweck"/', ';', 1, NULL, NULL, 4, 3, 'DD.MM.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
