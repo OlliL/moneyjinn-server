@@ -24,23 +24,24 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.model.comparedata;
+package org.laladev.moneyjinn.service.dao.mapper;
 
-import lombok.Data;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
+import org.apache.ibatis.annotations.Param;
+import org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.List;
 
-@Data
-public class CompareDataDataset {
-    private LocalDate bookingDate;
-    private LocalDate invoiceDate;
-    private BigDecimal amount;
-    private String partner;
-    private Contractpartner contractpartner;
-    private BankAccount partnerBankAccount;
-    private String comment;
+public interface IContractpartnerMatchingDaoMapper {
+    ContractpartnerMatchingData getContractpartnerMatchingBySearchString(@Param("userId") Long userId,
+                                                                         @Param("searchString") String searchString);
 
+    List<ContractpartnerMatchingData> getAllContractpartnerMatching(@Param("userId") Long userId);
+
+    ContractpartnerMatchingData getContractpartnerMatchingById(@Param("userId") Long userId, @Param("id") Long id);
+
+    void createContractpartnerMatching(ContractpartnerMatchingData contractpartnerMatchingData);
+
+    void updateContractpartnerMatching(ContractpartnerMatchingData contractpartnerMatchingData);
+
+    void deleteContractpartnerMatching(@Param("id") Long id);
 }

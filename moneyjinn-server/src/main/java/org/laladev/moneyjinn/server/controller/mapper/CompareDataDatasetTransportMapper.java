@@ -26,6 +26,7 @@
 
 package org.laladev.moneyjinn.server.controller.mapper;
 
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.comparedata.CompareDataDataset;
@@ -33,10 +34,16 @@ import org.laladev.moneyjinn.server.model.CompareDataDatasetTransport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class)
+@Mapper(config = MapStructConfig.class, uses = {ContractpartnerIdMapper.class})
 public interface CompareDataDatasetTransportMapper
         extends IMapstructMapper<CompareDataDataset, CompareDataDatasetTransport> {
     @Override
+    @Mapping(target = "contractpartner", ignore = true)
     @Mapping(target = "partnerBankAccount", ignore = true)
     CompareDataDataset mapBToA(CompareDataDatasetTransport compareDataDatasetTransport);
+
+    @Override
+    @Mapping(target = "contractpartnerid", source = "contractpartner.id")
+    @Mapping(target = "contractpartnername", source = "contractpartner.name")
+    CompareDataDatasetTransport mapAToB(CompareDataDataset dataset);
 }

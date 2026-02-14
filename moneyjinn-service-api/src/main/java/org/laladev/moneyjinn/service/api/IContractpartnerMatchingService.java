@@ -24,23 +24,38 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.model.comparedata;
+package org.laladev.moneyjinn.service.api;
 
-import lombok.Data;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.ContractpartnerMatching;
+import org.laladev.moneyjinn.model.access.UserID;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+/**
+ * <p>
+ * ContractpartnerMatchingService is the Core Service handling everything around
+ * an {@link ContractpartnerMatching}.
+ * </p>
+ *
+ * <p>
+ * ContractpartnerMatchingService is the Domain Service handling operations
+ * around an {@link ContractpartnerMatching} like getting, creating, updating,
+ * deleting. Before a {@link ContractpartnerMatching} is created or updated, the
+ * {@link ContractpartnerMatching} is validated for correctness.
+ * </p>
+ * <p>
+ * The main datasource is the Table <code>contractpartnermatchings</code>.
+ * </p>
+ *
+ * @author Oliver Lehmann
+ * @since 0.0.1
+ */
+public interface IContractpartnerMatchingService {
 
-@Data
-public class CompareDataDataset {
-    private LocalDate bookingDate;
-    private LocalDate invoiceDate;
-    private BigDecimal amount;
-    private String partner;
-    private Contractpartner contractpartner;
-    private BankAccount partnerBankAccount;
-    private String comment;
-
+    /**
+     * This method a {@link ContractpartnerMatching} for the given searchstring.
+     *
+     * @param userId       {@link UserID}
+     * @param searchString The String to be used for matching.
+     * @return List of all found {@link ContractpartnerMatching}
+     */
+    ContractpartnerMatching getContractpartnerBySearchString(UserID userId, String searchString);
 }

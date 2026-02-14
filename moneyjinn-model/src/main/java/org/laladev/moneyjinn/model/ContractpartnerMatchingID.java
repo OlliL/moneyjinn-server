@@ -24,23 +24,20 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.model.comparedata;
+package org.laladev.moneyjinn.model;
 
-import lombok.Data;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
+import java.io.Serial;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+/**
+ * The unique ID of a {@link Contractpartner}.
+ *
+ * @author Oliver Lehmann
+ */
+public class ContractpartnerMatchingID extends AbstractEntityID<Long> {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-@Data
-public class CompareDataDataset {
-    private LocalDate bookingDate;
-    private LocalDate invoiceDate;
-    private BigDecimal amount;
-    private String partner;
-    private Contractpartner contractpartner;
-    private BankAccount partnerBankAccount;
-    private String comment;
-
+    public ContractpartnerMatchingID(final Long id) {
+        super(id);
+    }
 }
