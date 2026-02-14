@@ -31,11 +31,30 @@ class ShowEditMoneyflowTest extends AbstractWebUserControllerTest {
     }
 
     @Test
-    void test_MoneyflowOwnedBySomeoneElse_emptyResponseObject() throws Exception {
+    void test_MoneyflowOwnedBySomeoneElseAndPrivate_emptyResponseObject() throws Exception {
         super.setUsername(UserTransportBuilder.USER3_NAME);
         super.setPassword(UserTransportBuilder.USER3_PASSWORD);
 
         final ShowEditMoneyflowResponse expected = new ShowEditMoneyflowResponse();
+
+        final ShowEditMoneyflowResponse actual = super.callUsecaseExpect200(ShowEditMoneyflowResponse.class,
+                MoneyflowTransportBuilder.MONEYFLOW3_ID);
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void test_MoneyflowOwnedBySomeoneElseAndNotPrivate_emptyResponseObject() throws Exception {
+        super.setUsername(UserTransportBuilder.USER3_NAME);
+        super.setPassword(UserTransportBuilder.USER3_PASSWORD);
+
+        final ShowEditMoneyflowResponse expected = new ShowEditMoneyflowResponse();
+        expected.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow1().build());
+        final List<MoneyflowSplitEntryTransport> moneyflowSplitEntryTransports = new ArrayList<>();
+        moneyflowSplitEntryTransports.add(new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry1().build());
+        moneyflowSplitEntryTransports.add(new MoneyflowSplitEntryTransportBuilder().forMoneyflowSplitEntry2().build());
+        expected.setMoneyflowSplitEntryTransports(moneyflowSplitEntryTransports);
+        expected.setHasReceipt(true);
 
         final ShowEditMoneyflowResponse actual = super.callUsecaseExpect200(ShowEditMoneyflowResponse.class,
                 MoneyflowTransportBuilder.MONEYFLOW1_ID);

@@ -176,7 +176,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
         final UserID userId = super.getUserId();
         final ShowEditMoneyflowResponse response = new ShowEditMoneyflowResponse();
         final Moneyflow moneyflow = this.moneyflowService.getMoneyflowById(userId, new MoneyflowID(id));
-        if (moneyflow != null && moneyflow.getUser().getId().equals(userId)) {
+        if (moneyflow != null && (moneyflow.getUser().getId().equals(userId) || !moneyflow.isPrivat())) {
             response.setMoneyflowTransport(this.moneyflowTransportMapper.mapAToB(moneyflow));
             final List<MoneyflowSplitEntry> moneyflowSplitEntries = this.moneyflowSplitEntryService
                     .getMoneyflowSplitEntries(userId, moneyflow.getId());
@@ -211,6 +211,11 @@ public class MoneyflowController extends AbstractController implements Moneyflow
 
         final List<Moneyflow> moneyflows = this.moneyflowService.searchMoneyflows(userId, moneyflowSearchParams);
         if (moneyflows != null && !moneyflows.isEmpty()) {
+            final List<MoneyflowID> moneyflowIdsWithReceipts = this.moneyflowReceiptService
+                    .getMoneyflowIdsWithReceipt(userId, moneyflows.stream().map(Moneyflow::getId).toList());
+            final List<Long> moneyflowIdLongs = moneyflowIdsWithReceipts.stream().map(MoneyflowID::getId).toList();
+            response.setMoneyflowsWithReceipt(moneyflowIdLongs);
+
             final List<MoneyflowTransport> moneyflowTransports = moneyflows.stream().filter(mf -> mf.isVisible(userId))
                     .map(this.moneyflowTransportMapper::mapAToB).toList();
             response.setMoneyflowTransports(moneyflowTransports);
