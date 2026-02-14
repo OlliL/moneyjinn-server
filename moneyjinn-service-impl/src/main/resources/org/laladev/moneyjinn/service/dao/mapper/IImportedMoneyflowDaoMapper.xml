@@ -2,19 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IImportedMoneyflowDaoMapper">
 
-    <sql id="importedMoneyflowColumns">
-        impmoneyflowid AS id
-        ,externalid AS externalId
-        ,mcs_capitalsourceid AS mcsCapitalsourceId
+    <sql id="importedMoneyflowColumns"><![CDATA[
+         impmoneyflowid         AS id
+        ,externalid             AS externalId
+        ,mcs_capitalsourceid    AS mcsCapitalsourceId
         ,bookingdate
         ,invoicedate
         ,name
-        ,accountnumber AS accountNumber
-        ,bankcode AS bankCode
+        ,accountnumber          AS accountNumber
+        ,bankcode               AS bankCode
         ,comment
         ,amount
         ,status
-    </sql>
+    ]]></sql>
 
     <select id="getImportedMoneyflowById" resultType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData">
         SELECT

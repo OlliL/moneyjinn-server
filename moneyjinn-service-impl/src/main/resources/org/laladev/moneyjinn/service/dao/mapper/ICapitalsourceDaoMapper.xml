@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.ICapitalsourceDaoMapper">
 
-    <sql id="capitalsourceColumns">
-        mau_userid AS mauUserId
-        ,mag_groupid AS magGroupId
-        ,capitalsourceid AS id
+    <sql id="capitalsourceColumns"><![CDATA[
+         mau_userid         AS mauUserId
+        ,mag_groupid        AS magGroupId
+        ,capitalsourceid    AS id
         ,type
         ,state
-        ,accountnumber AS accountNumber
-        ,bankcode AS bankCode
+        ,accountnumber      AS accountNumber
+        ,bankcode           AS bankCode
         ,comment
-        ,validtil AS validTil
-        ,validfrom AS validFrom
-        ,att_group_use AS attGroupUse
-        ,import_allowed AS importAllowed
-    </sql>
+        ,validtil           AS validTil
+        ,validfrom          AS validFrom
+        ,att_group_use      AS attGroupUse
+        ,import_allowed     AS importAllowed
+    ]]></sql>
 
     <select id="getCapitalsourceById"
             resultType="org.laladev.moneyjinn.service.dao.data.CapitalsourceData">

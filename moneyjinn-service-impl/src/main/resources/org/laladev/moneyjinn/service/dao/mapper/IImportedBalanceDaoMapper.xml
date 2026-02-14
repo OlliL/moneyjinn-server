@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IImportedBalanceDaoMapper">
 
-    <sql id="importedBalanceColumns">
-        balance
-        ,mcs_capitalsourceid AS mcsCapitalsourceId
+    <sql id="importedBalanceColumns"><![CDATA[
+         balance
+        ,mcs_capitalsourceid    AS mcsCapitalsourceId
         ,changedate
-    </sql>
+    ]]></sql>
 
     <select id="getAllImportedBalancesByCapitalsourceIds"
             resultType="org.laladev.moneyjinn.service.dao.data.ImportedBalanceData">

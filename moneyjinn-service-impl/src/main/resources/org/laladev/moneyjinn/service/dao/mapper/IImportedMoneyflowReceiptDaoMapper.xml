@@ -13,14 +13,14 @@
         <result property="mediaType" javaType="java.lang.String" column="mediatype"/>
     </resultMap>
 
-    <sql id="importedMoneyflowReceiptColumns">
-        impmoneyflowreceiptid AS id
-        ,mau_userid AS mauUserId
-        ,mag_groupid AS magGroupId
-        ,receipt AS blob_Data
-        ,filename AS filename
-        ,mediatype AS mediaType
-    </sql>
+    <sql id="importedMoneyflowReceiptColumns"><![CDATA[
+         impmoneyflowreceiptid  AS id
+        ,mau_userid             AS mauUserId
+        ,mag_groupid            AS magGroupId
+        ,receipt                AS blob_Data
+        ,filename               AS filename
+        ,mediatype              AS mediaType
+    ]]></sql>
 
     <insert id="createImportedMoneyflowReceipt"
             parameterType="org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowReceiptData"

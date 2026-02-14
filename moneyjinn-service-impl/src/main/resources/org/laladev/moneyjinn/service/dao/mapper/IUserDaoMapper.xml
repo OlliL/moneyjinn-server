@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IUserDaoMapper">
 
-    <sql id="userColumns">
-        userid
+    <sql id="userColumns"><![CDATA[
+         userid
         ,name
         ,password
         ,role
-        ,change_password as changePassword
-    </sql>
+        ,change_password    AS changePassword
+    ]]></sql>
 
     <select id="getUserById" parameterType="java.lang.Long"
             resultType="org.laladev.moneyjinn.service.dao.data.UserData">

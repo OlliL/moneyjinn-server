@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IContractpartnerDaoMapper">
 
-    <sql id="contractpartnerColumns">
-        mau_userid AS mauUserId
-        ,mag_groupid AS magGroupId
-        ,contractpartnerid AS id
+    <sql id="contractpartnerColumns"><![CDATA[
+         mau_userid             AS mauUserId
+        ,mag_groupid            AS magGroupId
+        ,contractpartnerid      AS id
         ,name
         ,street
         ,postcode
         ,town
         ,country
-        ,validtil AS validTil
-        ,validfrom AS validFrom
-        ,mmf_comment AS mmfComment
-        ,mpa_postingaccountid AS mpaPostingAccountId
-    </sql>
+        ,validtil               AS validTil
+        ,validfrom              AS validFrom
+        ,mmf_comment            AS mmfComment
+        ,mpa_postingaccountid   AS mpaPostingAccountId
+    ]]></sql>
 
 
     <select id="getAllContractpartners"

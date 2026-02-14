@@ -2,19 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IMoneyflowDaoMapper">
 
-    <sql id="moneyflowColumns">
-        moneyflowid AS id
-        ,mau_userid AS mauUserId
-        ,mag_groupid AS magGroupId
+    <sql id="moneyflowColumns"><![CDATA[
+         moneyflowid            AS id
+        ,mau_userid             AS mauUserId
+        ,mag_groupid            AS magGroupId
         ,bookingdate
         ,invoicedate
         ,amount
-        ,mcs_capitalsourceid AS mcsCapitalsourceId
-        ,mcp_contractpartnerid AS mcpContractpartnerId
+        ,mcs_capitalsourceid    AS mcsCapitalsourceId
+        ,mcp_contractpartnerid  AS mcpContractpartnerId
         ,comment
-        ,mpa_postingaccountid AS mpaPostingAccountId
-        ,private AS privat
-    </sql>
+        ,mpa_postingaccountid   AS mpaPostingAccountId
+        ,private                AS privat
+    ]]></sql>
 
     <select id="getMoneyflowById"
             resultType="org.laladev.moneyjinn.service.dao.data.MoneyflowData">
@@ -23,11 +23,7 @@
         FROM vw_moneyflows
         WHERE moneyflowid = #{id}
         AND mar_mau_userid = #{userId}
-        AND (
-        private = 0
-        OR
-        mau_userid = #{userId}
-        )
+        AND ( private = 0 OR mau_userid = #{userId} )
     </select>
 
     <insert id="createMoneyflow"
@@ -98,11 +94,7 @@
         SELECT DISTINCT TO_CHAR(bookingdate, 'YYYY')
           FROM vw_moneyflows
          WHERE mar_mau_userid = #{userId}
-           AND (
-             private = 0
-                 OR
-             mau_userid = #{userId}
-             )
+           AND (private = 0 OR mau_userid = #{userId})
          ORDER BY 1
     </select>
 
@@ -111,11 +103,7 @@
           FROM vw_moneyflows
          WHERE bookingdate BETWEEN #{beginOfYear} AND #{endOfYear}
            AND mar_mau_userid = #{userId}
-           AND (
-             private = 0
-                 OR
-             mau_userid = #{userId}
-             )
+           AND (private = 0 OR mau_userid = #{userId})
          ORDER BY 1
     </select>
 
@@ -148,10 +136,7 @@
         SELECT MIN(bookingdate)
           FROM vw_moneyflows
          WHERE mar_mau_userid = #{userId}
-           AND (
-             private = 0
-                 OR
-             mau_userid = #{userId}
+           AND (private = 0 OR mau_userid = #{userId}
              )
     </select>
 
@@ -160,11 +145,7 @@
           FROM vw_moneyflows
          WHERE bookingdate     <![CDATA[ < ]]> #{date}
            AND mar_mau_userid = #{userId}
-           AND (
-             private = 0
-                 OR
-             mau_userid = #{userId}
-             )
+           AND (private = 0 OR mau_userid = #{userId})
     </select>
 
     <select id="getNextMoneyflowDate" resultType="java.time.LocalDate">
@@ -172,11 +153,7 @@
           FROM vw_moneyflows
          WHERE bookingdate     <![CDATA[ > ]]> #{date}
            AND mar_mau_userid = #{userId}
-           AND (
-             private = 0
-                 OR
-             mau_userid = #{userId}
-             )
+           AND (private = 0 OR mau_userid = #{userId})
     </select>
 
     <select id="getAllMoneyflowsByDateRangeGroupedByYearMonthPostingAccount"
@@ -218,11 +195,7 @@
             #{postingAccountId}
         </foreach>
         AND mmf.mar_mau_userid = #{userId}
-        AND (
-        mmf.private = 0
-        OR
-        mmf.mau_userid = #{userId}
-        )
+        AND ( mmf.private = 0 OR mmf.mau_userid = #{userId} )
         GROUP BY to_char(mmf.invoicedate, 'YYYY')
         ,mpaPostingAccountId
         ORDER BY 1
@@ -258,11 +231,7 @@
         WHERE bookingdate BETWEEN #{dateFrom} AND #{dateTil}
         AND mcs_capitalsourceid = #{capitalsourceId}
         AND mar_mau_userid = #{userId}
-        AND (
-        private = 0
-        OR
-        mau_userid = #{userId}
-        )
+        AND ( private = 0 OR mau_userid = #{userId} )
     </select>
 
 
@@ -316,11 +285,7 @@
         </if>
         mmf.bookingdate BETWEEN #{startDate} AND #{endDate}
         AND mmf.mar_mau_userid = #{userId}
-        AND (
-        mmf.private = 0
-        OR
-        mmf.mau_userid = #{userId}
-        )
+        AND ( mmf.private = 0 OR mmf.mau_userid = #{userId} )
         <if test="featureOnlyMinusAmounts">
             AND COALESCE(mse.amount, mmf.amount) <![CDATA[ < ]]> 0
         </if>

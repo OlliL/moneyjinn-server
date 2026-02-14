@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IImportedMonthlySettlementDaoMapper">
 
-    <sql id="importedMonthlySettlementsColumns">
-        impmonthlysettlementid AS id
+    <sql id="importedMonthlySettlementsColumns"><![CDATA[
+         impmonthlysettlementid     AS id
         ,"year"
         ,"month"
         ,amount
-        ,mcs_capitalsourceid AS mcsCapitalsourceId
-        ,externalid AS externalId
-    </sql>
+        ,mcs_capitalsourceid        AS mcsCapitalsourceId
+        ,externalid                 AS externalId
+    ]]></sql>
 
     <select id="getImportedMonthlySettlementsByMonth"
             resultType="org.laladev.moneyjinn.service.dao.data.ImportedMonthlySettlementData">

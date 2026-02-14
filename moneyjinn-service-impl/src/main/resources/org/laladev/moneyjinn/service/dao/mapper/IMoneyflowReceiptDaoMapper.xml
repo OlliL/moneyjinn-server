@@ -10,12 +10,12 @@
         <result property="receiptType" javaType="java.lang.Integer" column="receiptType"/>
     </resultMap>
 
-    <sql id="moneyflowReceiptColumns">
-        moneyflowreceiptid AS id
-        ,mmf_moneyflowid AS mmfMoneyflowId
-        ,receipt AS blob_Data
-        ,receipt_type AS receiptType
-    </sql>
+    <sql id="moneyflowReceiptColumns"><![CDATA[
+         moneyflowreceiptid AS id
+        ,mmf_moneyflowid    AS mmfMoneyflowId
+        ,receipt            AS blob_Data
+        ,receipt_type       AS receiptType
+    ]]></sql>
 
     <select id="getMoneyflowReceipt"
             resultMap="moneyflowReceiptMap">

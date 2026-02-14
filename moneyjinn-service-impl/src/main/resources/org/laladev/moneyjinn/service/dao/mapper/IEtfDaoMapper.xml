@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IEtfDaoMapper">
 
-    <sql id="etfColumns">
-        mau_userid AS mauUserId
-        ,mag_groupid AS magGroupId
+    <sql id="etfColumns"><![CDATA[
+         mau_userid         AS mauUserId
+        ,mag_groupid        AS magGroupId
         ,etfid
         ,isin
         ,name
         ,wkn
         ,ticker
-        ,chart_url AS chartUrl
-        ,trans_cost_abs AS transCostAbs
-        ,trans_cost_rel AS transCostRel
-        ,trans_cost_max AS transCostMax
-        ,part_tax_exempt AS partTaxExempt
-    </sql>
+        ,chart_url          AS chartUrl
+        ,trans_cost_abs     AS transCostAbs
+        ,trans_cost_rel     AS transCostRel
+        ,trans_cost_max     AS transCostMax
+        ,part_tax_exempt    AS partTaxExempt
+    ]]></sql>
 
     <sql id="etfFlowsColumns">
         etfflowid

@@ -3,11 +3,11 @@
 <mapper
         namespace="org.laladev.moneyjinn.service.dao.mapper.ISettingDaoMapper">
 
-    <sql id="settingColumns">
-        mau_userid as mauUserId
+    <sql id="settingColumns"><![CDATA[
+         mau_userid     AS mauUserId
         ,name
         ,"value"
-    </sql>
+    ]]></sql>
 
     <select id="getSetting"
             resultType="org.laladev.moneyjinn.service.dao.data.SettingData">

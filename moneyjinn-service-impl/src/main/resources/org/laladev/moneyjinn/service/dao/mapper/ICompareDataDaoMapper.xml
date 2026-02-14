@@ -2,29 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.ICompareDataFormatDaoMapper">
 
-    <sql id="compareDataFormatColumns">
-        formatid AS formatId
+    <sql id="compareDataFormatColumns"><![CDATA[
+         formatid                   AS formatId
         ,name
-        ,start_trigger_0 AS startTrigger0
-        ,start_trigger_1 AS startTrigger1
-        ,start_trigger_2 AS startTrigger2
-        ,end_trigger_0 AS endTrigger0
+        ,start_trigger_0            AS startTrigger0
+        ,start_trigger_1            AS startTrigger1
+        ,start_trigger_2            AS startTrigger2
+        ,end_trigger_0              AS endTrigger0
         ,startline
         ,delimiter
-        ,pos_date AS posDate
-        ,pos_invoicedate AS posInvoicedate
-        ,pos_partner AS posPartner
-        ,pos_amount AS posAmount
-        ,pos_comment AS posComment
+        ,pos_date                   AS posDate
+        ,pos_invoicedate            AS posInvoicedate
+        ,pos_partner                AS posPartner
+        ,pos_amount                 AS posAmount
+        ,pos_comment                AS posComment
         ,fmt_date AS fmtDate
-        ,fmt_amount_thousand AS fmtAmountThousand
-        ,fmt_amount_decimal AS fmtAmountDecimal
-        ,pos_partner_alt AS posPartnerAlt
-        ,pos_partner_alt_pos_key AS posPartnerAltPosKey
-        ,pos_partner_alt_keyword AS posPartneraltKeyword
+        ,fmt_amount_thousand        AS fmtAmountThousand
+        ,fmt_amount_decimal         AS fmtAmountDecimal
+        ,pos_partner_alt            AS posPartnerAlt
+        ,pos_partner_alt_pos_key    AS posPartnerAltPosKey
+        ,pos_partner_alt_keyword    AS posPartneraltKeyword
         ,pos_credit_debit_indicator AS posCreditDebitIndicator
-        ,credit_indicator AS creditIndicator
-    </sql>
+        ,credit_indicator           AS creditIndicator
+    ]]></sql>
 
     <select id="getCompareDataFormatById"
             resultType="org.laladev.moneyjinn.service.dao.data.CompareDataFormatData">
