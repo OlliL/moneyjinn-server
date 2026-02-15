@@ -39,8 +39,8 @@ public interface IContractpartnerMatchingDaoMapper {
 
     ContractpartnerMatchingData getContractpartnerMatchingById(@Param("userId") Long userId, @Param("id") Long id);
 
-    Boolean checkIfContractpartnerMatchingAlreadyExists(@Param("contractpartnerId") Long contractpartnerId,
-                                                        @Param("matchingText") String matchingText);
+    ContractpartnerMatchingData getContractpartnerMatchingByValue(@Param("contractpartnerId") Long contractpartnerId,
+                                                                  @Param("matchingText") String matchingText);
 
     void createContractpartnerMatching(ContractpartnerMatchingData contractpartnerMatchingData);
 

@@ -67,6 +67,13 @@ class UpdateContractpartnerMatchingTest extends
     }
 
     @Test
+    void test_ContractpartnerMatchingAlreadyExisting_NotRaisesForUpdatingWithoutChanging() throws Exception {
+        final ContractpartnerMatchingTransport transport = new ContractpartnerMatchingTransportBuilder()
+                .forContractpartnerMatching1().build();
+        super.callUsecaseExpect204(transport);
+    }
+
+    @Test
     void test_standardRequest_DefaultReturn() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
         final ContractpartnerMatchingID contractpartnerMatchingId = new ContractpartnerMatchingID(
@@ -116,24 +123,6 @@ class UpdateContractpartnerMatchingTest extends
 
         Assertions.assertEquals(ContractpartnerMatchingTransportBuilder.CONTRACTPARTNER_MATCHING1_ID,
                 actualTransport.getId());
-
-        final ContractpartnerMatching contractpartnerMatching = this.contractpartnerMatchingService
-                .getContractpartnerMatchingById(userId, contractpartnerMatchingId);
-        Assertions.assertEquals(ContractpartnerMatchingTransportBuilder.CONTRACTPARTNER_MATCHING1_ID,
-                contractpartnerMatching.getId().getId());
-        Assertions.assertEquals("1", contractpartnerMatching.getMatchingText());
-    }
-
-    @Test
-    void test_Bic8Digits_fillesUpTo11Digits() throws Exception {
-        final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
-        final ContractpartnerMatchingID contractpartnerMatchingId = new ContractpartnerMatchingID(
-                ContractpartnerMatchingTransportBuilder.CONTRACTPARTNER_MATCHING1_ID);
-        final ContractpartnerMatchingTransport transport = new ContractpartnerMatchingTransportBuilder()
-                .forContractpartnerMatching1().build();
-        transport.setMatchingText("1");
-
-        super.callUsecaseExpect204(transport);
 
         final ContractpartnerMatching contractpartnerMatching = this.contractpartnerMatchingService
                 .getContractpartnerMatchingById(userId, contractpartnerMatchingId);

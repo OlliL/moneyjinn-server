@@ -45,12 +45,13 @@
         WHERE mcm.contractpartnermatchingid = #{id}
     </select>
 
-    <select id="checkIfContractpartnerMatchingAlreadyExists" resultType="java.lang.Boolean">
-        SELECT 1
-          FROM contractpartnermatchings
-         WHERE mcp_contractpartnerid = #{contractpartnerId}
-           AND matching_text = #{matchingText}
-             FETCH FIRST 1 ROWS ONLY
+    <select id="getContractpartnerMatchingByValue"
+            resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData">
+        SELECT
+        <include refid="contractpartnerMatchingColumns"/>
+        FROM contractpartnermatchings
+        WHERE mcp_contractpartnerid = #{contractpartnerId}
+        AND matching_text = #{matchingText}
     </select>
 
     <insert id="createContractpartnerMatching"

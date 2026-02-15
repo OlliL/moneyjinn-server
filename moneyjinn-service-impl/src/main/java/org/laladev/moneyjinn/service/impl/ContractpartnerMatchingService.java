@@ -19,6 +19,7 @@ import org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerMatchingDataMapper;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 @Named
@@ -72,10 +73,14 @@ public class ContractpartnerMatchingService implements IContractpartnerMatchingS
                     contractpartnerMatching.getContractpartner().getId());
             if (contractpartner == null) {
                 addResult.accept(ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
-            } else if (!matchingTextIsEmpty &&
-                    this.contractpartnerMatchingDao.checkIfContractpartnerMatchingAlreadyExists(
-                            contractpartner.getId().getId(), contractpartnerMatching.getMatchingText())) {
-                addResult.accept(ErrorCode.CONTRACTPARTNER_MAPPING_DUPLICATE);
+            } else if (!matchingTextIsEmpty) {
+                final var data = this.contractpartnerMatchingDao
+                        .getContractpartnerMatchingByValue(contractpartner.getId().getId(),
+                                contractpartnerMatching.getMatchingText());
+                if (data != null && (contractpartnerMatching.getId() == null ||
+                        !Objects.equals(data.getId(), contractpartnerMatching.getId().getId()))) {
+                    addResult.accept(ErrorCode.CONTRACTPARTNER_MAPPING_DUPLICATE);
+                }
             }
         }
 

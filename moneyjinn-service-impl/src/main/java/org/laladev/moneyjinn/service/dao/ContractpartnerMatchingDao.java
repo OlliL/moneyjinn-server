@@ -53,9 +53,9 @@ public class ContractpartnerMatchingDao {
         return this.mapper.getContractpartnerMatchingById(userId, contractpartnerMatchingId);
     }
 
-    public boolean checkIfContractpartnerMatchingAlreadyExists(Long contractpartnerId, String matchingText) {
-        return Boolean.TRUE.equals(
-                this.mapper.checkIfContractpartnerMatchingAlreadyExists(contractpartnerId, matchingText));
+    public ContractpartnerMatchingData getContractpartnerMatchingByValue(final Long contractpartnerId,
+                                                                         final String matchingText) {
+        return this.mapper.getContractpartnerMatchingByValue(contractpartnerId, matchingText);
     }
 
     public Long createContractpartnerMatching(final ContractpartnerMatchingData contractpartnerMatchingData) {
