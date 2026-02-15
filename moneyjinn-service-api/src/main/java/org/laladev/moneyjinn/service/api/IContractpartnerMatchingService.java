@@ -31,6 +31,7 @@ import org.laladev.moneyjinn.model.ContractpartnerMatchingID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -69,9 +70,11 @@ public interface IContractpartnerMatchingService {
      *
      * @param userId       {@link UserID}
      * @param searchString The String to be used for matching.
+     * @param bookingDate  The date the booking took place.
      * @return List of all found {@link ContractpartnerMatching}
      */
-    ContractpartnerMatching getContractpartnerMatchingBySearchString(UserID userId, String searchString);
+    ContractpartnerMatching getContractpartnerMatchingBySearchString(UserID userId, String searchString,
+                                                                     LocalDate bookingDate);
 
     /**
      * This service returns the {@link ContractpartnerMatching} specified by its ID.

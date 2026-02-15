@@ -18,6 +18,7 @@ import org.laladev.moneyjinn.service.dao.ContractpartnerMatchingDao;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerMatchingDataMapper;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -89,9 +90,10 @@ public class ContractpartnerMatchingService implements IContractpartnerMatchingS
 
     @Override
     public ContractpartnerMatching getContractpartnerMatchingBySearchString(@NonNull final UserID userId,
-                                                                            @NonNull final String searchString) {
+                                                                            @NonNull final String searchString,
+                                                                            @NonNull final LocalDate bookingDate) {
         return this.mapContractpartnerMatchingData(userId, this.contractpartnerMatchingDao
-                .getContractpartnerMatchingBySearchString(userId.getId(), searchString));
+                .getContractpartnerMatchingBySearchString(userId.getId(), searchString, bookingDate));
     }
 
     @Override

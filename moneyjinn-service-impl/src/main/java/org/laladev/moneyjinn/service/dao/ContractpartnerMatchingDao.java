@@ -32,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData;
 import org.laladev.moneyjinn.service.dao.mapper.IContractpartnerMatchingDaoMapper;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Named
@@ -40,8 +41,9 @@ public class ContractpartnerMatchingDao {
     private final IContractpartnerMatchingDaoMapper mapper;
 
     public ContractpartnerMatchingData getContractpartnerMatchingBySearchString(final Long userId,
-                                                                                final String searchString) {
-        return this.mapper.getContractpartnerMatchingBySearchString(userId, searchString);
+                                                                                final String searchString,
+                                                                                final LocalDate bookingDate) {
+        return this.mapper.getContractpartnerMatchingBySearchString(userId, searchString, bookingDate);
     }
 
     public List<ContractpartnerMatchingData> getContractpartnerMatchings(final Long userId) {

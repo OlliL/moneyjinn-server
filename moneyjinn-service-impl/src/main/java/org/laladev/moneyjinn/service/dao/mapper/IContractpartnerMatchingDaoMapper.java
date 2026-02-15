@@ -29,11 +29,13 @@ package org.laladev.moneyjinn.service.dao.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IContractpartnerMatchingDaoMapper {
     ContractpartnerMatchingData getContractpartnerMatchingBySearchString(@Param("userId") Long userId,
-                                                                         @Param("searchString") String searchString);
+                                                                         @Param("searchString") String searchString,
+                                                                         @Param("bookingDate") LocalDate bookingDate);
 
     List<ContractpartnerMatchingData> getAllContractpartnerMatching(@Param("userId") Long userId);
 

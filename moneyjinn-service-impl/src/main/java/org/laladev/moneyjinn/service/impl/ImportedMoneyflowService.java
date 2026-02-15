@@ -70,7 +70,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
 
             if (importedMoneyflow.getUsage() != null && !importedMoneyflow.getUsage().isBlank()) {
                 final var contractpartnerMatching = this.contractpartnerMatchingService
-                        .getContractpartnerMatchingBySearchString(userId, importedMoneyflow.getUsage());
+                        .getContractpartnerMatchingBySearchString(userId, importedMoneyflow.getUsage(),
+                                importedMoneyflow.getBookingDate());
                 if (contractpartnerMatching != null) {
                     importedMoneyflow.setContractpartner(contractpartnerMatching.getContractpartner());
                 }

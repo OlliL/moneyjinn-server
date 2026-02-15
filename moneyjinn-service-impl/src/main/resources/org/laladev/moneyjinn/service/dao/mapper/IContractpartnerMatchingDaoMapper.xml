@@ -17,6 +17,7 @@
         ON mcp.contractpartnerid = mcm.mcp_contractpartnerid
         AND mar_mau_userid = #{userId}
         AND NOW() BETWEEN maf_validfrom AND maf_validtil
+        AND #{bookingDate} BETWEEN mcp.validfrom AND mcp.validtil
         WHERE POSITION(matching_text IN #{searchString}) > 0
         FETCH FIRST 1 ROW ONLY
     </select>
