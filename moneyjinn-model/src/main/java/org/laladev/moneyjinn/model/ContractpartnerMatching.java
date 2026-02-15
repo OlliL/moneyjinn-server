@@ -24,23 +24,23 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.model.comparedata;
+package org.laladev.moneyjinn.model;
 
 import lombok.Data;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.io.Serial;
 
 @Data
-public class CompareDataDataset {
-    private LocalDate bookingDate;
-    private LocalDate invoiceDate;
-    private BigDecimal amount;
-    private String partner;
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@NoArgsConstructor
+public class ContractpartnerMatching extends AbstractEntity<ContractpartnerMatchingID>
+        implements IHasContractpartner {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private Contractpartner contractpartner;
-    private BankAccount partnerBankAccount;
-    private String comment;
-
+    private String matchingText;
 }

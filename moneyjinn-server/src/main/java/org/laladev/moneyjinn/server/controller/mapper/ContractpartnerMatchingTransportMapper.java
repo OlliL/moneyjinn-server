@@ -24,23 +24,27 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.model.comparedata;
+package org.laladev.moneyjinn.server.controller.mapper;
 
-import lombok.Data;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerMatchingIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.model.ContractpartnerMatching;
+import org.laladev.moneyjinn.server.model.ContractpartnerMatchingTransport;
+import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+@Mapper(config = MapStructConfig.class, uses = {ContractpartnerMatchingIdMapper.class, ContractpartnerIdMapper.class})
+public interface ContractpartnerMatchingTransportMapper
+        extends IMapstructMapper<ContractpartnerMatching, ContractpartnerMatchingTransport> {
 
-@Data
-public class CompareDataDataset {
-    private LocalDate bookingDate;
-    private LocalDate invoiceDate;
-    private BigDecimal amount;
-    private String partner;
-    private Contractpartner contractpartner;
-    private BankAccount partnerBankAccount;
-    private String comment;
+    @Override
+    @InheritInverseConfiguration
+    ContractpartnerMatching mapBToA(final ContractpartnerMatchingTransport b);
 
+    @Override
+    @Mapping(target = "contractpartnerid", source = "contractpartner.id")
+    ContractpartnerMatchingTransport mapAToB(final ContractpartnerMatching a);
 }

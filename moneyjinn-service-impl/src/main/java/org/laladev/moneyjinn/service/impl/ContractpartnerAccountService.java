@@ -221,6 +221,12 @@ public class ContractpartnerAccountService extends AbstractService implements IC
     }
 
     @Override
+    public ContractpartnerAccount getContractpartnerByAccount(@NonNull final UserID userId,
+                                                              @NonNull final BankAccount bankAccount) {
+        return this.getContractpartnerAccountByBankAccount(userId, bankAccount);
+    }
+
+    @Override
     public List<ContractpartnerAccount> getAllContractpartnerByAccounts(@NonNull final UserID userId,
                                                                         @NonNull final List<BankAccount> bankAccounts) {
         final List<BankAccountData> bankAccountDatas = this.bankAccountDataMapper.mapAToB(bankAccounts);

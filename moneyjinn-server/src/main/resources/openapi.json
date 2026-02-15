@@ -29,6 +29,12 @@
     "/moneyflow/server/contractpartneraccounts/{id}": {
       "$ref": "openapi/contractpartneraccount/paths/CrudContractpartnerAccountId.json"
     },
+    "/moneyflow/server/contractpartnermatchings": {
+      "$ref": "openapi/contractpartnermatching/paths/CrudContractpartnerMatching.json"
+    },
+    "/moneyflow/server/contractpartnermatchings/{id}": {
+      "$ref": "openapi/contractpartnermatching/paths/CrudContractpartnerMatchingId.json"
+    },
     "/moneyflow/server/etf": {
       "$ref": "openapi/etf/paths/CrudEtf.json"
     },

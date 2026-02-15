@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "contractpartnerid",
+    "matchingText"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "contractpartnerid": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "matchingText": {
+      "type": "string"
+    }
+  }
+}

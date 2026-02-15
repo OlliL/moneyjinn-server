@@ -31,6 +31,7 @@ class ShowAddImportedMoneyflowsTest extends AbstractWebUserControllerTest {
         final List<ImportedMoneyflowTransport> importedMoneyflowTransports = new ArrayList<>();
         importedMoneyflowTransports.add(new ImportedMoneyflowTransportBuilder().forImportedMoneyflow1().build());
         importedMoneyflowTransports.add(new ImportedMoneyflowTransportBuilder().forImportedMoneyflow2().build());
+        importedMoneyflowTransports.add(new ImportedMoneyflowTransportBuilder().forImportedMoneyflow8().build());
         expected.setImportedMoneyflowTransports(importedMoneyflowTransports);
 
         final ShowAddImportedMoneyflowsResponse actual = super.callUsecaseExpect200(
@@ -46,6 +47,8 @@ class ShowAddImportedMoneyflowsTest extends AbstractWebUserControllerTest {
                 new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID));
         this.importedMoneyflowService.deleteImportedMoneyflowById(userId,
                 new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW2_ID));
+        this.importedMoneyflowService.deleteImportedMoneyflowById(userId,
+                new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW8_ID));
         final ShowAddImportedMoneyflowsResponse expected = new ShowAddImportedMoneyflowsResponse();
 
         final ShowAddImportedMoneyflowsResponse actual = super.callUsecaseExpect200(

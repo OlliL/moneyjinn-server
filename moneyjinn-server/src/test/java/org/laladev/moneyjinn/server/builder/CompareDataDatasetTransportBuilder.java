@@ -17,6 +17,8 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
         super.setInvoiceDate(LocalDate.parse("2010-05-03"));
         super.setPartner("Partner");
         super.setComment("generated");
+        super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+        super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
         return this;
     }
 
@@ -26,6 +28,8 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
         super.setInvoiceDate(LocalDate.parse("2010-05-20"));
         super.setPartner("Partner");
         super.setComment("generated");
+        super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+        super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
         return this;
     }
 
@@ -35,6 +39,19 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
         super.setInvoiceDate(LocalDate.parse("2010-05-05"));
         super.setPartner("Sartner");
         super.setComment("generated");
+        super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
+        super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER4_NAME);
+        return this;
+    }
+
+    public CompareDataDatasetTransportBuilder forCompareDataImportDataset4() {
+        super.setAmount(new BigDecimal("-5.00"));
+        super.setBookingDate(LocalDate.parse("2010-05-03"));
+        super.setInvoiceDate(LocalDate.parse("2010-05-03"));
+        super.setPartner("Partner");
+        super.setComment(ContractpartnerMatchingTransportBuilder.CONTRACTPARTNER_MATCHING3_MATCHING_TEXT + " ABC");
+        super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
+        super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER4_NAME);
         return this;
     }
 
@@ -66,7 +83,9 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
         super.setAmount(new BigDecimal("-10.00"));
         super.setBookingDate(LocalDate.parse("2010-01-10"));
         super.setPartner("Paul");
-        super.setComment("test1");
+        super.setComment("TEST1");
+        super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+        super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
         return this;
     }
 
@@ -91,6 +110,8 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
         transport.setInvoiceDate(super.getInvoiceDate());
         transport.setPartner(super.getPartner());
         transport.setComment(super.getComment());
+        transport.setContractpartnerid(super.getContractpartnerid());
+        transport.setContractpartnername(super.getContractpartnername());
         return transport;
     }
 }

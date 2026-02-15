@@ -49,6 +49,7 @@ import org.laladev.moneyjinn.sepa.camt.model.CreditDebitCode;
 import org.laladev.moneyjinn.sepa.camt.model.Entry;
 import org.laladev.moneyjinn.service.api.ICompareDataService;
 import org.laladev.moneyjinn.service.api.IContractpartnerAccountService;
+import org.laladev.moneyjinn.service.api.IContractpartnerMatchingService;
 import org.laladev.moneyjinn.service.api.IMoneyflowService;
 import org.laladev.moneyjinn.service.dao.CompareDataFormatDao;
 import org.laladev.moneyjinn.service.dao.data.CompareDataFormatData;
@@ -78,6 +79,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
     private final CompareDataFormatDao compareDataFormatDao;
     private final IMoneyflowService moneyflowService;
     private final IContractpartnerAccountService contractpartnerAccountService;
+    private final IContractpartnerMatchingService contractpartnerMatchingService;
     private final CompareDataFormatDataMapper compareDataFormatDataMapper;
 
     private final DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
@@ -122,7 +124,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         final CompareDataFormat compareDataFormat = this.getCompareDataFormatById(compareDataFormatId);
         List<CompareDataDataset> compareDataDatasets = null;
         if (compareDataFormat.getType() == CompareDataFormatType.CVS) {
-            compareDataDatasets = this.mapCvsFileToCompareData(fileContents, compareDataFormat);
+            compareDataDatasets = this.mapCvsFileToCompareData(userId, fileContents, compareDataFormat);
         } else if (compareDataFormat.getType() == CompareDataFormatType.XML) {
             compareDataDatasets = this.mapCamtFileToCompareData(fileContents);
         }
@@ -156,6 +158,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
             compareDataDataset.setInvoiceDate(importedMoneyflow.getInvoiceDate());
             compareDataDataset.setPartner(importedMoneyflow.getName());
             compareDataDataset.setPartnerBankAccount(importedMoneyflow.getBankAccount());
+            compareDataDataset.setContractpartner(importedMoneyflow.getContractpartner());
             compareDataDatasets.add(compareDataDataset);
         }
         return compareDataDatasets;
@@ -241,10 +244,16 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         if (moneyflow.getCapitalsource().getId().equals(capitalsourceId)) {
             rating += 10;
         }
-        // does our source contain bank account information?
-        rating = this.rateBankAccount(userId, moneyflow, compareDataDataset, rating);
-        // does our input-file contain contractpartner information?
-        rating = this.rateContractpartner(moneyflow, compareDataDataset, rating);
+        if (compareDataDataset.getContractpartner() != null) {
+            if (compareDataDataset.getContractpartner().getId().equals(moneyflow.getContractpartner().getId())) {
+                rating += 60;
+            }
+        } else {
+            // does our source contain bank account information?
+            rating = this.rateBankAccount(userId, moneyflow, compareDataDataset, rating);
+            // does our input-file contain contractpartner information?
+            rating = this.rateContractpartner(moneyflow, compareDataDataset, rating);
+        }
         return rating;
     }
 
@@ -329,7 +338,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         return compareDataDatasets;
     }
 
-    private List<CompareDataDataset> mapCvsFileToCompareData(final String fileContents,
+    private List<CompareDataDataset> mapCvsFileToCompareData(final UserID userId, final String fileContents,
                                                              final CompareDataFormat compareDataFormat) {
         final List<CompareDataDataset> compareDataDatasets = new ArrayList<>();
         final CSVParser parser = new CSVParserBuilder().withSeparator(compareDataFormat.getDelimiter()).build();
@@ -360,7 +369,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
                     break;
                 }
                 if (match) {
-                    compareDataDatasets.add(mapCsvFileMainPart(compareDataFormat, cmpDataRaw));
+                    compareDataDatasets.add(this.mapCsvFileMainPart(userId, compareDataFormat, cmpDataRaw));
                 }
             }
         } catch (final IOException | CsvException e) {
@@ -369,8 +378,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         return compareDataDatasets;
     }
 
-    private static CompareDataDataset mapCsvFileMainPart(final CompareDataFormat compareDataFormat,
-                                                         final String[] cmpDataRaw) {
+    private CompareDataDataset mapCsvFileMainPart(final UserID userId, final CompareDataFormat compareDataFormat,
+                                                  final String[] cmpDataRaw) {
         final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(compareDataFormat.getFormatDate());
         final Pattern partnerAlternativeIndicator = compareDataFormat.getPartnerAlternativeIndicator();
         final Pattern creditIndicator = compareDataFormat.getCreditIndicator();
@@ -418,7 +427,13 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         if (posComment != null) {
             final String comment = cmpDataRaw[posComment - 1];
             data.setComment(comment.trim());
+            final var contractpartnerMatching = this.contractpartnerMatchingService
+                    .getContractpartnerMatchingBySearchString(userId, data.getComment(), data.getBookingDate());
+            if (contractpartnerMatching != null) {
+                data.setContractpartner(contractpartnerMatching.getContractpartner());
+            }
         }
+
         return data;
     }
 }

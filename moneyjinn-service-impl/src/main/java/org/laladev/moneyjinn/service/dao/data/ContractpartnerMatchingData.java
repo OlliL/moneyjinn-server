@@ -24,23 +24,13 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.model.comparedata;
+package org.laladev.moneyjinn.service.dao.data;
 
 import lombok.Data;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Data
-public class CompareDataDataset {
-    private LocalDate bookingDate;
-    private LocalDate invoiceDate;
-    private BigDecimal amount;
-    private String partner;
-    private Contractpartner contractpartner;
-    private BankAccount partnerBankAccount;
-    private String comment;
-
+public class ContractpartnerMatchingData {
+    private Long id;
+    private Long mcpContractpartnerId;
+    private String matchingText;
 }

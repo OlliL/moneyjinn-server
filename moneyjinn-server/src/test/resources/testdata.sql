@@ -1,3 +1,4 @@
+-- @formatter:off
 insert into access_users (userid,name,password,role,change_password) values (3,'user1','$2a$10$PQ54whtOGLu4u/arNe/X3uxTf6SiyaGGbHGzKyZfeZ/5gtdVKeiai','STANDARD',1);
 insert into access_users (userid,name,password,role,change_password) values (4,'user2','$2a$10$9VlC9RqT7luBNCrXtGl5rOnJtvxW78dKx3oafsmm9W0wNnmTi1FQK','INACTIVE',0);
 insert into access_users (userid,name,password,role,change_password) values (5,'user3','$2a$10$9VlC9RqT7luBNCrXtGl5rOnJtvxW78dKx3oafsmm9W0wNnmTi1FQK','STANDARD',0);
@@ -22,18 +23,18 @@ INSERT INTO postingaccounts (postingaccountname) VALUES ('postingaccount2');
 INSERT INTO postingaccounts (postingaccountname) VALUES ('xostingaccount3');
 
 INSERT INTO capitalsources (mau_userid,mag_groupid,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (3             ,6              ,1   ,1    ,'1234567'    ,'765432','Aource1','2999-12-31','1980-01-01',0            ,1             ); 
+                    VALUES (3             ,6              ,1   ,1    ,'1234567'    ,'765432','Aource1','2999-12-31','1980-01-01',0            ,1             );
 INSERT INTO capitalsources (mau_userid,mag_groupid,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (3             ,6              ,2   ,2    ,'1234567'    ,'ABCDEFG','Source2','2799-12-31','1981-01-01',1            ,0             ); 
+                    VALUES (3             ,6              ,2   ,2    ,'1234567'    ,'ABCDEFG','Source2','2799-12-31','1981-01-01',1            ,0             );
 INSERT INTO capitalsources (mau_userid,mag_groupid,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (5             ,6              ,3   ,1    ,'ZUTVEGT1'    ,'765432','Source3','2000-12-31','1982-01-01',1            ,2             ); 
+                    VALUES (5             ,6              ,3   ,1    ,'ZUTVEGT1'    ,'765432','Source3','2000-12-31','1982-01-01',1            ,2             );
 INSERT INTO capitalsources (mau_userid,mag_groupid,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (5             ,6              ,4   ,1    ,'ZUTVEGT'    ,'765432','Xource4','2010-12-31','2000-01-02',1            ,1             ); 
+                    VALUES (5             ,6              ,4   ,1    ,'ZUTVEGT'    ,'765432','Xource4','2010-12-31','2000-01-02',1            ,1             );
 INSERT INTO capitalsources (mau_userid,mag_groupid,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (5             ,6              ,5   ,1    ,'ZRTVEGT'    ,'765433','Xource5','2799-12-31','2014-01-01',1            ,2             ); 
+                    VALUES (5             ,6              ,5   ,1    ,'ZRTVEGT'    ,'765433','Xource5','2799-12-31','2014-01-01',1            ,2             );
 INSERT INTO capitalsources (mau_userid,mag_groupid,type,state,accountnumber,bankcode,comment  ,validtil    ,validfrom   ,att_group_use,import_allowed)
-                    VALUES (5             ,6              ,1   ,1    ,'ZRTVEGT3'   ,'765433','Xource6','2799-12-31','2000-01-01',0            ,2             ); 
-                    
+                    VALUES (5             ,6              ,1   ,1    ,'ZRTVEGT3'   ,'765433','Xource6','2799-12-31','2000-01-01',0            ,2             );
+
 INSERT INTO contractpartners (mau_userid,mag_groupid,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
                       VALUES (3             ,6              ,'Partner1','Street1',12345   ,'Town1','Country1','2000-01-01','2999-12-31','Default Comment 1',1                   );
 INSERT INTO contractpartners (mau_userid,mag_groupid,name      ,street   ,postcode,town    ,country  ,validfrom   ,validtil    ,mmf_comment        ,mpa_postingaccountid)
@@ -52,12 +53,18 @@ INSERT INTO contractpartneraccounts (mcp_contractpartnerid, bankcode, accountnum
 INSERT INTO contractpartneraccounts (mcp_contractpartnerid, bankcode, accountnumber)
                              VALUES (4                    ,'ABC457' , 'DE0987654322');
 
-                             
-INSERT INTO predefmoneyflows (mau_userid,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 
+INSERT INTO contractpartnermatchings (mcp_contractpartnerid, matching_text)
+                              VALUES (1                    ,'TEST1');
+INSERT INTO contractpartnermatchings (mcp_contractpartnerid, matching_text)
+                              VALUES (1                    ,'TEST2');
+INSERT INTO contractpartnermatchings (mcp_contractpartnerid, matching_text)
+                              VALUES (4                    ,'TEST3');
+
+INSERT INTO predefmoneyflows (mau_userid,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid)
                       VALUES (3     ,10.10 ,1                  ,1                    ,'Pre1' ,'2000-10-10',1           ,null     ,1                   );
-INSERT INTO predefmoneyflows (mau_userid,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 
+INSERT INTO predefmoneyflows (mau_userid,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid)
                       VALUES (5     ,11    ,4                  ,3                    ,'Qre2' ,'2000-10-10',1           ,null     ,2                   );
-INSERT INTO predefmoneyflows (mau_userid,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid) 
+INSERT INTO predefmoneyflows (mau_userid,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid)
                       VALUES (3     ,-10   ,2                  ,2                    ,'Rre3' ,'2000-10-10',0           ,null     ,2                   );
 
 INSERT INTO impmoneyflowreceipts (impmoneyflowreceiptid,mau_userid,mag_groupid,filename  ,mediatype   ,receipt)
@@ -87,7 +94,9 @@ INSERT INTO impmoneyflows (externalid,mcs_capitalsourceid,bookingdate ,invoiceda
 INSERT INTO impmoneyflows (externalid,mcs_capitalsourceid,bookingdate ,invoicedate ,name     ,accountnumber ,bankcode,comment    ,amount ,status)
                    VALUES ('newthing',1                  ,'2600-01-02','2600-01-01','Paul'   ,'DE1234567890','ABC123','secret'   ,10.10  ,1);
 
-                   
+INSERT INTO impmoneyflows (externalid,mcs_capitalsourceid,bookingdate ,invoicedate ,name     ,accountnumber ,bankcode,comment    ,amount)
+                   VALUES ('9999999D',2                  ,'2010-05-03','2010-05-03','Partner','DE1234567890','ABC123','TEST3 ABC',-5.00);
+
 INSERT INTO `moneyflows` VALUES (1,3,6,'2009-01-01','2009-01-01',-1.10,1,1,'flow1',1,0);
 INSERT INTO `moneyflows` VALUES (2,3,6,'2008-12-01','2008-12-01',10.10,1,1,'generated',1,0);
 INSERT INTO `moneyflows` VALUES (3,3,6,'2009-02-01','2009-02-01',10.00,2,1,'generated',2,1);

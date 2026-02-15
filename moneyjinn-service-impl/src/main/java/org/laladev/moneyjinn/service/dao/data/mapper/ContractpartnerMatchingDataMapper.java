@@ -24,23 +24,26 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.model.comparedata;
+package org.laladev.moneyjinn.service.dao.data.mapper;
 
-import lombok.Data;
-import org.laladev.moneyjinn.model.BankAccount;
-import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerMatchingIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.model.ContractpartnerMatching;
+import org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+@Mapper(config = MapStructConfig.class, uses = {ContractpartnerMatchingIdMapper.class, ContractpartnerIdMapper.class})
+public interface ContractpartnerMatchingDataMapper
+        extends IMapstructMapper<ContractpartnerMatching, ContractpartnerMatchingData> {
 
-@Data
-public class CompareDataDataset {
-    private LocalDate bookingDate;
-    private LocalDate invoiceDate;
-    private BigDecimal amount;
-    private String partner;
-    private Contractpartner contractpartner;
-    private BankAccount partnerBankAccount;
-    private String comment;
+    @Override
+    @Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
+    ContractpartnerMatching mapBToA(final ContractpartnerMatchingData b);
 
+    @Override
+    @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
+    ContractpartnerMatchingData mapAToB(final ContractpartnerMatching a);
 }

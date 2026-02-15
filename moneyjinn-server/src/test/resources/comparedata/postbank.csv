@@ -9,4 +9,4 @@ Buchungstag;Wert;Umsatzart;Begünstigter / Auftraggeber;Verwendungszweck;IBAN / 
 03.05.2010;03.05.2010;SEPA Überweisung;Qartner2;test1;;;;;;;-5,00;;;-5,00;;EUR
 13.05.2010;13.05.2010;Gutschrift;Finanzkasse Köln-Süd;test2;;;;;;;1000,00;;;;1000,00;EUR
 01.02.2010;01.02.2010;SEPA Überweisung;Hugo;test1;;;;;;;10,00;;;;10,00;EUR
-10.01.2010;10.01.2010;SEPA Überweisung;Paul;test1;;;;;;;-10,00;;;10,00;;EUR
+10.01.2010;10.01.2010;SEPA Überweisung;Paul;TEST1;;;;;;;-10,00;;;10,00;;EUR

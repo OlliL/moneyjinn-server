@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IContractpartnerMatchingDaoMapper">
+
+    <sql id="contractpartnerMatchingColumns"><![CDATA[
+         contractpartnermatchingid  AS id
+        ,mcp_contractpartnerid      AS mcpContractpartnerId
+        ,matching_text              AS matchingText
+    ]]></sql>
+
+    <select id="getContractpartnerMatchingBySearchString"
+            resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData">
+        SELECT
+        <include refid="contractpartnerMatchingColumns"/>
+        FROM contractpartnermatchings AS mcm
+        JOIN vw_contractpartners AS mcp
+        ON mcp.contractpartnerid = mcm.mcp_contractpartnerid
+        AND mar_mau_userid = #{userId}
+        AND NOW() BETWEEN maf_validfrom AND maf_validtil
+        AND #{bookingDate} BETWEEN mcp.validfrom AND mcp.validtil
+        WHERE POSITION(matching_text IN #{searchString}) > 0
+        FETCH FIRST 1 ROW ONLY
+    </select>
+
+    <select id="getAllContractpartnerMatching"
+            resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData">
+        SELECT
+        <include refid="contractpartnerMatchingColumns"/>
+        FROM contractpartnermatchings AS mcm
+        JOIN vw_contractpartners AS mcp
+        ON mcp.contractpartnerid = mcm.mcp_contractpartnerid
+        AND mar_mau_userid = #{userId}
+        AND NOW() BETWEEN maf_validfrom AND maf_validtil
+    </select>
+
+    <select id="getContractpartnerMatchingById"
+            resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData">
+
+        SELECT
+        <include refid="contractpartnerMatchingColumns"/>
+        FROM contractpartnermatchings AS mcm
+        JOIN vw_contractpartners AS mcp
+        ON mcp.contractpartnerid = mcm.mcp_contractpartnerid
+        AND mar_mau_userid = #{userId}
+        AND NOW() BETWEEN maf_validfrom AND maf_validtil
+        WHERE mcm.contractpartnermatchingid = #{id}
+    </select>
+
+    <select id="getContractpartnerMatchingByValue"
+            resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData">
+        SELECT
+        <include refid="contractpartnerMatchingColumns"/>
+        FROM contractpartnermatchings
+        WHERE mcp_contractpartnerid = #{contractpartnerId}
+        AND matching_text = #{matchingText}
+    </select>
+
+    <insert id="createContractpartnerMatching"
+            parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="contractpartnermatchingid">
+        INSERT
+          INTO contractpartnermatchings
+              ( mcp_contractpartnerid
+              , matching_text
+              )
+        VALUES
+            ( #{mcpContractpartnerId}
+            , #{matchingText}
+            )
+    </insert>
+
+    <update id="updateContractpartnerMatching"
+            parameterType="org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData">
+        UPDATE contractpartnermatchings
+           SET mcp_contractpartnerid = #{mcpContractpartnerId}
+             , matching_text         = #{matchingText}
+         WHERE contractpartnermatchingid = #{id}
+    </update>
+
+    <delete id="deleteContractpartnerMatching">
+        DELETE
+          FROM contractpartnermatchings
+         WHERE contractpartnermatchingid = #{id}
+    </delete>
+</mapper>
