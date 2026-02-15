@@ -3,6 +3,7 @@
   "required": [
     "id",
     "contractpartnerid",
+    "contractpartnername",
     "matchingText"
   ],
   "properties": {
@@ -14,8 +15,21 @@
       "type": "integer",
       "format": "int64"
     },
+    "contractpartnername": {
+      "type": "string"
+    },
     "matchingText": {
       "type": "string"
+    },
+    "moneyflowComment": {
+      "type": "string"
+    },
+    "postingAccountName": {
+      "type": "string"
+    },
+    "postingAccountId": {
+      "type": "integer",
+      "format": "int64"
     }
   }
 }

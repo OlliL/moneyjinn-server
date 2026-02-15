@@ -15,6 +15,7 @@ public class ContractpartnerMatchingTransportBuilder extends ContractpartnerMatc
     public ContractpartnerMatchingTransportBuilder forContractpartnerMatching1() {
         super.setId(CONTRACTPARTNER_MATCHING1_ID);
         super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+        super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
         super.setMatchingText(CONTRACTPARTNER_MATCHING1_MATCHING_TEXT);
         return this;
     }
@@ -22,6 +23,7 @@ public class ContractpartnerMatchingTransportBuilder extends ContractpartnerMatc
     public ContractpartnerMatchingTransportBuilder forContractpartnerMatching2() {
         super.setId(CONTRACTPARTNER_MATCHING2_ID);
         super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
+        super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
         super.setMatchingText(CONTRACTPARTNER_MATCHING2_MATCHING_TEXT);
         return this;
     }
@@ -29,7 +31,11 @@ public class ContractpartnerMatchingTransportBuilder extends ContractpartnerMatc
     public ContractpartnerMatchingTransportBuilder forContractpartnerMatching3() {
         super.setId(CONTRACTPARTNER_MATCHING3_ID);
         super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
+        super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER4_NAME);
         super.setMatchingText(CONTRACTPARTNER_MATCHING3_MATCHING_TEXT);
+        super.setMoneyflowComment("mmf-comment");
+        super.setPostingAccountId(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID);
+        super.setPostingAccountName(PostingAccountTransportBuilder.POSTING_ACCOUNT3_NAME);
         return this;
     }
 
@@ -54,7 +60,11 @@ public class ContractpartnerMatchingTransportBuilder extends ContractpartnerMatc
         final ContractpartnerMatchingTransport transport = new ContractpartnerMatchingTransport();
         transport.setId(super.getId());
         transport.setContractpartnerid(super.getContractpartnerid());
+        transport.setContractpartnername(super.getContractpartnername());
         transport.setMatchingText(super.getMatchingText());
+        transport.setMoneyflowComment(super.getMoneyflowComment());
+        transport.setPostingAccountId(super.getPostingAccountId());
+        transport.setPostingAccountName(super.getPostingAccountName());
         return transport;
     }
 }

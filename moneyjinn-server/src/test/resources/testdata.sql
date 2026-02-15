@@ -57,8 +57,8 @@ INSERT INTO contractpartnermatchings (mcp_contractpartnerid, matching_text)
                               VALUES (1                    ,'TEST1');
 INSERT INTO contractpartnermatchings (mcp_contractpartnerid, matching_text)
                               VALUES (1                    ,'TEST2');
-INSERT INTO contractpartnermatchings (mcp_contractpartnerid, matching_text)
-                              VALUES (4                    ,'TEST3');
+INSERT INTO contractpartnermatchings (mcp_contractpartnerid, matching_text, mmf_comment, mpa_postingaccountid)
+                              VALUES (4                    ,'TEST3', 'mmf-comment', 3);
 
 INSERT INTO predefmoneyflows (mau_userid,amount,mcs_capitalsourceid,mcp_contractpartnerid,comment,createdate  ,once_a_month,last_used,mpa_postingaccountid)
                       VALUES (3     ,10.10 ,1                  ,1                    ,'Pre1' ,'2000-10-10',1           ,null     ,1                   );

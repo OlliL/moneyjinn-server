@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict udqqrdwY87f7NnFpNoSJ4THHX5aZLNNO0Ar4vinDm6fQMpo09yCFhkP4RBk3Kny
+\restrict GJyLZx8jIaS4kzc7uTpTOK1T8qdSE1FXo3WMeaFs1JFzlznnOiepPZ1DK9BdPn0
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -48,7 +48,8 @@ ALTER TABLE ONLY moneyjinn.capitalsources DROP CONSTRAINT mcs_mag_pk;
 ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_mpa_pk;
 ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_mau_pk;
 ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_mag_pk;
-ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_mcp_pk_01;
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_mpa_pk;
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_mcp_pk;
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT mca_mcp_pk_01;
 ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_mau_pk;
 ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_mag_pk;
@@ -529,7 +530,9 @@ ALTER SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq OW
 CREATE TABLE moneyjinn.contractpartnermatchings (
     contractpartnermatchingid bigint NOT NULL,
     mcp_contractpartnerid integer NOT NULL,
-    matching_text character varying(50) NOT NULL
+    matching_text character varying(50) NOT NULL,
+    mmf_comment character varying(100),
+    mpa_postingaccountid integer
 );
 
 
@@ -2348,11 +2351,19 @@ ALTER TABLE ONLY moneyjinn.contractpartneraccounts
 
 
 --
--- Name: contractpartnermatchings mcm_mcp_pk_01; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: admin
+-- Name: contractpartnermatchings mcm_mcp_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: admin
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartnermatchings
-    ADD CONSTRAINT mcm_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE CASCADE;
+    ADD CONSTRAINT mcm_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE CASCADE;
+
+
+--
+-- Name: contractpartnermatchings mcm_mpa_pk; Type: FK CONSTRAINT; Schema: moneyjinn; Owner: admin
+--
+
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings
+    ADD CONSTRAINT mcm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts(postingaccountid) ON DELETE CASCADE;
 
 
 --
@@ -3008,7 +3019,7 @@ GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjin
 -- PostgreSQL database dump complete
 --
 
-\unrestrict udqqrdwY87f7NnFpNoSJ4THHX5aZLNNO0Ar4vinDm6fQMpo09yCFhkP4RBk3Kny
+\unrestrict GJyLZx8jIaS4kzc7uTpTOK1T8qdSE1FXo3WMeaFs1JFzlznnOiepPZ1DK9BdPn0
 
 SELECT pg_catalog.set_config('search_path', '', false);
 INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (2, 'Sparda Bank', 'Buchungstag', 'Wertstellungstag', 'Verwendungszweck', NULL, '/^"Buchungstag";"Wertstellungstag";"Verwendungszweck"/', ';', 1, NULL, NULL, 4, 3, 'DD.MM.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);

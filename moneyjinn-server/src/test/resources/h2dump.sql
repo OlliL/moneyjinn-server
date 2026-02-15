@@ -61,7 +61,9 @@ CREATE TABLE contractpartneraccounts (
 CREATE TABLE contractpartnermatchings (
     contractpartnermatchingid bigserial NOT NULL,
     mcp_contractpartnerid integer NOT NULL,
-    matching_text character varying(50) NOT NULL
+    matching_text character varying(50) NOT NULL,
+    mmf_comment character varying(100),
+    mpa_postingaccountid integer
 );
 CREATE TABLE contractpartners (
     contractpartnerid bigserial NOT NULL,
@@ -428,7 +430,9 @@ ALTER TABLE access_relation
 ALTER TABLE contractpartneraccounts
     ADD CONSTRAINT mca_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE contractpartnermatchings
-    ADD CONSTRAINT mcm_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE CASCADE;
+    ADD CONSTRAINT mcm_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE contractpartnermatchings
+    ADD CONSTRAINT mcm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts(postingaccountid) ON DELETE CASCADE;
 ALTER TABLE contractpartners
     ADD CONSTRAINT mcp_mag_pk FOREIGN KEY (mag_groupid) REFERENCES access_groups(groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE contractpartners

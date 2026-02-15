@@ -80,6 +80,9 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
         super.setAmount(new BigDecimal("-5.00"));
         super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
         super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER4_NAME);
+        super.setComment("mmf-comment");
+        super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID);
+        super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT3_NAME);
         return this;
     }
 

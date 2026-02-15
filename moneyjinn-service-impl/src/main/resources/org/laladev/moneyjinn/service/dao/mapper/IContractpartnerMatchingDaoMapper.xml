@@ -3,9 +3,11 @@
 <mapper namespace="org.laladev.moneyjinn.service.dao.mapper.IContractpartnerMatchingDaoMapper">
 
     <sql id="contractpartnerMatchingColumns"><![CDATA[
-         contractpartnermatchingid  AS id
-        ,mcp_contractpartnerid      AS mcpContractpartnerId
-        ,matching_text              AS matchingText
+         mcm.contractpartnermatchingid  AS id
+        ,mcm.matching_text              AS matchingText
+        ,mcm.mcp_contractpartnerid      AS mcpContractpartnerId
+        ,mcm.mmf_comment                AS mmfComment
+        ,mcm.mpa_postingaccountid       AS mpaPostingAccountId
     ]]></sql>
 
     <select id="getContractpartnerMatchingBySearchString"
@@ -50,7 +52,7 @@
             resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData">
         SELECT
         <include refid="contractpartnerMatchingColumns"/>
-        FROM contractpartnermatchings
+        FROM contractpartnermatchings AS mcm
         WHERE mcp_contractpartnerid = #{contractpartnerId}
         AND matching_text = #{matchingText}
     </select>
@@ -62,10 +64,14 @@
           INTO contractpartnermatchings
               ( mcp_contractpartnerid
               , matching_text
+              , mmf_comment
+              , mpa_postingaccountid
               )
         VALUES
             ( #{mcpContractpartnerId}
             , #{matchingText}
+            , #{mmfComment}
+            , #{mpaPostingAccountId}
             )
     </insert>
 
@@ -74,6 +80,8 @@
         UPDATE contractpartnermatchings
            SET mcp_contractpartnerid = #{mcpContractpartnerId}
              , matching_text         = #{matchingText}
+             , mmf_comment           = #{mmfComment}
+             , mpa_postingaccountid  = #{mpaPostingAccountId}
          WHERE contractpartnermatchingid = #{id}
     </update>
 

@@ -10,9 +10,7 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.ContractpartnerMatching;
 import org.laladev.moneyjinn.model.ContractpartnerMatchingID;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.server.builder.ContractpartnerMatchingTransportBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.builder.*;
 import org.laladev.moneyjinn.server.model.ContractpartnerMatchingTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
@@ -44,6 +42,29 @@ class UpdateContractpartnerMatchingTest extends
         expected.setResult(Boolean.FALSE);
         final ValidationResponse actual = super.callUsecaseExpect422(transport, ValidationResponse.class);
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void test_emptyContractpartner_Error() throws Exception {
+        final ContractpartnerMatchingTransport transport = new ContractpartnerMatchingTransportBuilder()
+                .forContractpartnerMatching1().withContractpartnerid(null).build();
+        this.testError(transport, ErrorCode.CONTRACTPARTNER_IS_NOT_SET);
+    }
+
+    @Test
+    void test_nonExistingContractpartner_Error() throws Exception {
+        final ContractpartnerMatchingTransport transport = new ContractpartnerMatchingTransportBuilder()
+                .forContractpartnerMatching1().withContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID)
+                .build();
+        this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+    }
+
+    @Test
+    void test_invalidPostingAccount_Error() throws Exception {
+        final ContractpartnerMatchingTransport transport = new ContractpartnerMatchingTransportBuilder()
+                .forContractpartnerMatching1().build();
+        transport.setPostingAccountId(PostingAccountTransportBuilder.NON_EXISTING_ID);
+        this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
     }
 
     @ParameterizedTest

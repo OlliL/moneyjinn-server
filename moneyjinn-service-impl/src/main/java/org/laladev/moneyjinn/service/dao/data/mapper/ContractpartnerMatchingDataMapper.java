@@ -29,21 +29,27 @@ package org.laladev.moneyjinn.service.dao.data.mapper;
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.converter.ContractpartnerMatchingIdMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.ContractpartnerMatching;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {ContractpartnerMatchingIdMapper.class, ContractpartnerIdMapper.class})
+@Mapper(config = MapStructConfig.class, uses = {ContractpartnerMatchingIdMapper.class, ContractpartnerIdMapper.class,
+        PostingAccountIdMapper.class})
 public interface ContractpartnerMatchingDataMapper
         extends IMapstructMapper<ContractpartnerMatching, ContractpartnerMatchingData> {
 
     @Override
     @Mapping(target = "contractpartner.id", source = "mcpContractpartnerId")
+    @Mapping(target = "postingAccount.id", source = "mpaPostingAccountId")
+    @Mapping(target = "moneyflowComment", source = "mmfComment")
     ContractpartnerMatching mapBToA(final ContractpartnerMatchingData b);
 
     @Override
     @Mapping(target = "mcpContractpartnerId", source = "contractpartner.id")
+    @Mapping(target = "mpaPostingAccountId", source = "postingAccount.id")
+    @Mapping(target = "mmfComment", source = "moneyflowComment")
     ContractpartnerMatchingData mapAToB(final ContractpartnerMatching a);
 }

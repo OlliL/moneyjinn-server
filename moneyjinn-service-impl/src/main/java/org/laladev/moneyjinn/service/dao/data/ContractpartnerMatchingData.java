@@ -33,4 +33,6 @@ public class ContractpartnerMatchingData {
     private Long id;
     private Long mcpContractpartnerId;
     private String matchingText;
+    private String mmfComment;
+    private Long mpaPostingAccountId;
 }

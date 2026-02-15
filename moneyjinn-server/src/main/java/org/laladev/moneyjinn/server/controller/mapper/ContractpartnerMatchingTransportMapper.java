@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.server.controller.mapper;
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
 import org.laladev.moneyjinn.converter.ContractpartnerMatchingIdMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
+import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
 import org.laladev.moneyjinn.model.ContractpartnerMatching;
 import org.laladev.moneyjinn.server.model.ContractpartnerMatchingTransport;
@@ -36,7 +37,8 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {ContractpartnerMatchingIdMapper.class, ContractpartnerIdMapper.class})
+@Mapper(config = MapStructConfig.class,
+        uses = {ContractpartnerMatchingIdMapper.class, ContractpartnerIdMapper.class, PostingAccountIdMapper.class})
 public interface ContractpartnerMatchingTransportMapper
         extends IMapstructMapper<ContractpartnerMatching, ContractpartnerMatchingTransport> {
 
@@ -46,5 +48,8 @@ public interface ContractpartnerMatchingTransportMapper
 
     @Override
     @Mapping(target = "contractpartnerid", source = "contractpartner.id")
+    @Mapping(target = "contractpartnername", source = "contractpartner.name")
+    @Mapping(target = "postingAccountId", source = "postingAccount.id")
+    @Mapping(target = "postingAccountName", source = "postingAccount.name")
     ContractpartnerMatchingTransport mapAToB(final ContractpartnerMatching a);
 }

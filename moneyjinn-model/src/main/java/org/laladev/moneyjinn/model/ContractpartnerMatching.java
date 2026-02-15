@@ -38,9 +38,11 @@ import java.io.Serial;
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class ContractpartnerMatching extends AbstractEntity<ContractpartnerMatchingID>
-        implements IHasContractpartner {
+        implements IHasContractpartner, IHasPostingAccount {
     @Serial
     private static final long serialVersionUID = 1L;
     private Contractpartner contractpartner;
     private String matchingText;
+    private String moneyflowComment;
+    private PostingAccount postingAccount;
 }

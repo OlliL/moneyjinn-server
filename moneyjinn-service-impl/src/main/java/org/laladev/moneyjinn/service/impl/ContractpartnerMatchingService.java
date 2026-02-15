@@ -8,12 +8,14 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerMatching;
 import org.laladev.moneyjinn.model.ContractpartnerMatchingID;
+import org.laladev.moneyjinn.model.PostingAccount;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.exception.BusinessException;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
 import org.laladev.moneyjinn.model.validation.ValidationResultItem;
 import org.laladev.moneyjinn.service.api.IContractpartnerMatchingService;
 import org.laladev.moneyjinn.service.api.IContractpartnerService;
+import org.laladev.moneyjinn.service.api.IPostingAccountService;
 import org.laladev.moneyjinn.service.dao.ContractpartnerMatchingDao;
 import org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ContractpartnerMatchingDataMapper;
@@ -27,9 +29,9 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ContractpartnerMatchingService implements IContractpartnerMatchingService {
     private final IContractpartnerService contractpartnerService;
+    private final IPostingAccountService postingAccountService;
     private final ContractpartnerMatchingDao contractpartnerMatchingDao;
     private final ContractpartnerMatchingDataMapper contractpartnerMatchingDataMapper;
-
 
     private ContractpartnerMatching mapContractpartnerMatchingData(final UserID userId,
                                                                    final ContractpartnerMatchingData contractpartnerMatchingData) {
@@ -42,6 +44,7 @@ public class ContractpartnerMatchingService implements IContractpartnerMatchingS
             // modify its accounts
             if (contractpartner != null) {
                 contractpartnerMatching.setContractpartner(contractpartner);
+                this.postingAccountService.enrichEntity(contractpartnerMatching);
                 return contractpartnerMatching;
             }
         }
@@ -82,6 +85,17 @@ public class ContractpartnerMatchingService implements IContractpartnerMatchingS
                         !Objects.equals(data.getId(), contractpartnerMatching.getId().getId()))) {
                     addResult.accept(ErrorCode.CONTRACTPARTNER_MAPPING_DUPLICATE);
                 }
+            }
+            contractpartnerMatching.setContractpartner(contractpartner);
+        }
+
+        if (contractpartnerMatching.getPostingAccount() != null) {
+            final PostingAccount postingAccount = this.postingAccountService
+                    .getPostingAccountById(contractpartnerMatching.getPostingAccount().getId());
+            if (postingAccount == null) {
+                addResult.accept(ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+            } else {
+                contractpartnerMatching.setPostingAccount(postingAccount);
             }
         }
 

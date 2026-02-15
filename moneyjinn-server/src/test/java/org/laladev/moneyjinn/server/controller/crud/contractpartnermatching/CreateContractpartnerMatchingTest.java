@@ -10,10 +10,7 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.ContractpartnerMatching;
 import org.laladev.moneyjinn.model.ContractpartnerMatchingID;
 import org.laladev.moneyjinn.model.access.UserID;
-import org.laladev.moneyjinn.server.builder.ContractpartnerMatchingTransportBuilder;
-import org.laladev.moneyjinn.server.builder.ContractpartnerTransportBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
-import org.laladev.moneyjinn.server.builder.ValidationItemTransportBuilder;
+import org.laladev.moneyjinn.server.builder.*;
 import org.laladev.moneyjinn.server.model.ContractpartnerMatchingTransport;
 import org.laladev.moneyjinn.server.model.ValidationItemTransport;
 import org.laladev.moneyjinn.server.model.ValidationResponse;
@@ -58,6 +55,14 @@ class CreateContractpartnerMatchingTest extends AbstractContractpartnerMatchingT
                 .forNewContractpartnerMatching().withContractpartnerid(ContractpartnerTransportBuilder.NON_EXISTING_ID)
                 .build();
         this.testError(transport, ErrorCode.CONTRACTPARTNER_DOES_NOT_EXIST);
+    }
+
+    @Test
+    void test_invalidPostingAccount_Error() throws Exception {
+        final ContractpartnerMatchingTransport transport = new ContractpartnerMatchingTransportBuilder()
+                .forNewContractpartnerMatching().build();
+        transport.setPostingAccountId(PostingAccountTransportBuilder.NON_EXISTING_ID);
+        this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
     }
 
     @Test

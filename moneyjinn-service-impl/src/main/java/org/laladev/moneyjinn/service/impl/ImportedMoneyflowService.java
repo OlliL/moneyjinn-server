@@ -74,6 +74,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
                                 importedMoneyflow.getBookingDate());
                 if (contractpartnerMatching != null) {
                     importedMoneyflow.setContractpartner(contractpartnerMatching.getContractpartner());
+                    importedMoneyflow.setComment(contractpartnerMatching.getMoneyflowComment());
+                    importedMoneyflow.setPostingAccount(contractpartnerMatching.getPostingAccount());
                 }
             }
 
