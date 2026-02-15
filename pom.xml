@@ -29,35 +29,35 @@
     <properties>
         <moneyjinn-sepa-camt.version>1.0.2</moneyjinn-sepa-camt.version>
 
-        <spring.boot.version>4.0.0</spring.boot.version>
+        <spring.boot.version>4.1.0-M1</spring.boot.version>
         <mybatis.version>3.5.19</mybatis.version>
         <mybatis-spring.version>4.0.0</mybatis-spring.version>
         <commons.io.version>2.21.0</commons.io.version>
-        <commons.codec.version>1.20.0</commons.codec.version>
+        <commons.codec.version>1.21.0</commons.codec.version>
         <apache.tika.version>3.2.3</apache.tika.version>
         <jjwt.version>0.13.0</jjwt.version>
         <lombok.version>1.18.42</lombok.version>
-        <mapstruct.version>1.6.3</mapstruct.version>
+        <mapstruct.version>1.7.0.Beta1</mapstruct.version>
         <opencsv.version>5.12.0</opencsv.version>
-        <swagger.version>2.2.41</swagger.version>
+        <swagger.version>2.2.42</swagger.version>
 
-        <openapi-generator.version>7.17.0</openapi-generator.version>
+        <openapi-generator.version>7.19.0</openapi-generator.version>
 
         <!--for hbci-batch only-->
-        <hbci4j-core.version>4.1.3</hbci4j-core.version>
+        <hbci4j-core.version>4.1.7</hbci4j-core.version>
 
         <!-- Maven Plugins -->
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-        <maven-release-plugin.version>3.3.0</maven-release-plugin.version>
+        <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
-        <maven-dependency-plugin.version>3.9.0</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.10.0</maven-dependency-plugin.version>
         <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
-        <versions-maven-plugin.version>2.20.1</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <coveralls-maven-plugin.version>5.0.0</coveralls-maven-plugin.version>
-        <pitest-maven.version>1.22.0</pitest-maven.version>
+        <pitest-maven.version>1.22.1</pitest-maven.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
 
         <!-- Test Scope -->
@@ -70,7 +70,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <postgresql.version>42.7.9</postgresql.version>
+        <postgresql.version>42.7.10</postgresql.version>
     </properties>
 
     <dependencyManagement>
