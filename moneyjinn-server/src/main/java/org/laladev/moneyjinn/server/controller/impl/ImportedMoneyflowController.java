@@ -110,7 +110,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
                         .filter(importedMoneyflow -> importedMoneyflow.getComment() != null)
                         .forEach(importedMoneyflow -> {
                             final var contractpartnerMatching = this.contractpartnerMatchingService
-                                    .getContractpartnerBySearchString(userId, importedMoneyflow.getComment());
+                                    .getContractpartnerMatchingBySearchString(userId, importedMoneyflow.getComment());
                             if (contractpartnerMatching != null) {
                                 importedMoneyflow.setContractpartner(contractpartnerMatching.getContractpartner());
                             }

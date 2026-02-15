@@ -27,7 +27,11 @@
 package org.laladev.moneyjinn.service.api;
 
 import org.laladev.moneyjinn.model.ContractpartnerMatching;
+import org.laladev.moneyjinn.model.ContractpartnerMatchingID;
 import org.laladev.moneyjinn.model.access.UserID;
+import org.laladev.moneyjinn.model.validation.ValidationResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -51,11 +55,65 @@ import org.laladev.moneyjinn.model.access.UserID;
 public interface IContractpartnerMatchingService {
 
     /**
+     * This service validates a given {@link ContractpartnerMatching} for
+     * correctness.
+     *
+     * @param userId                  {@link UserID}
+     * @param contractpartnerMatching {@link ContractpartnerMatching}
+     * @return {@link ValidationResult}
+     */
+    ValidationResult validateContractpartnerMatching(UserID userId, ContractpartnerMatching contractpartnerMatching);
+
+    /**
      * This method a {@link ContractpartnerMatching} for the given searchstring.
      *
      * @param userId       {@link UserID}
      * @param searchString The String to be used for matching.
      * @return List of all found {@link ContractpartnerMatching}
      */
-    ContractpartnerMatching getContractpartnerBySearchString(UserID userId, String searchString);
+    ContractpartnerMatching getContractpartnerMatchingBySearchString(UserID userId, String searchString);
+
+    /**
+     * This service returns the {@link ContractpartnerMatching} specified by its ID.
+     *
+     * @param userId                    {@link UserID}
+     * @param contractpartnerMatchingId {@link ContractpartnerMatchingID}
+     * @return {@link ContractpartnerMatching}
+     */
+    ContractpartnerMatching getContractpartnerMatchingById(UserID userId,
+                                                           ContractpartnerMatchingID contractpartnerMatchingId);
+
+    /**
+     * This service returns the {@link ContractpartnerMatching}s
+     *
+     * @param userId {@link UserID}
+     * @return list of {@link ContractpartnerMatching}s
+     */
+    List<ContractpartnerMatching> getContractpartnerMatchings(UserID userId);
+
+    /**
+     * This service persists (creates) the given {@link ContractpartnerMatching}.
+     *
+     * @param userId                  {@link UserID}
+     * @param contractpartnerMatching {@link ContractpartnerMatching}
+     */
+    ContractpartnerMatchingID createContractpartnerMatching(UserID userId,
+                                                            ContractpartnerMatching contractpartnerMatching);
+
+    /**
+     * This method persists (updates) the given {@link ContractpartnerMatching}.
+     *
+     * @param userId                  {@link UserID}
+     * @param contractpartnerMatching {@link ContractpartnerMatching}
+     */
+    void updateContractpartnerMatching(UserID userId, ContractpartnerMatching contractpartnerMatching);
+
+    /**
+     * This method deletes the given {@link ContractpartnerMatchingID}.
+     *
+     * @param userId                    {@link UserID}
+     * @param contractpartnerMatchingId {@link ContractpartnerMatchingID}
+     */
+    void deleteContractpartnerMatchingById(UserID userId, ContractpartnerMatchingID contractpartnerMatchingId);
+
 }

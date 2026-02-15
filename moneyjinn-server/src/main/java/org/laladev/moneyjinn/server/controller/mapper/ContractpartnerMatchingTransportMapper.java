@@ -24,27 +24,27 @@
 // SUCH DAMAGE.
 //
 
-package org.laladev.moneyjinn.service.dao.mapper;
+package org.laladev.moneyjinn.server.controller.mapper;
 
-import org.apache.ibatis.annotations.Param;
-import org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData;
+import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerMatchingIdMapper;
+import org.laladev.moneyjinn.converter.IMapstructMapper;
+import org.laladev.moneyjinn.converter.config.MapStructConfig;
+import org.laladev.moneyjinn.model.ContractpartnerMatching;
+import org.laladev.moneyjinn.server.model.ContractpartnerMatchingTransport;
+import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.List;
+@Mapper(config = MapStructConfig.class, uses = {ContractpartnerMatchingIdMapper.class, ContractpartnerIdMapper.class})
+public interface ContractpartnerMatchingTransportMapper
+        extends IMapstructMapper<ContractpartnerMatching, ContractpartnerMatchingTransport> {
 
-public interface IContractpartnerMatchingDaoMapper {
-    ContractpartnerMatchingData getContractpartnerMatchingBySearchString(@Param("userId") Long userId,
-                                                                         @Param("searchString") String searchString);
+    @Override
+    @InheritInverseConfiguration
+    ContractpartnerMatching mapBToA(final ContractpartnerMatchingTransport b);
 
-    List<ContractpartnerMatchingData> getAllContractpartnerMatching(@Param("userId") Long userId);
-
-    ContractpartnerMatchingData getContractpartnerMatchingById(@Param("userId") Long userId, @Param("id") Long id);
-
-    Boolean checkIfContractpartnerMatchingAlreadyExists(@Param("contractpartnerId") Long contractpartnerId,
-                                                        @Param("matchingText") String matchingText);
-
-    void createContractpartnerMatching(ContractpartnerMatchingData contractpartnerMatchingData);
-
-    void updateContractpartnerMatching(ContractpartnerMatchingData contractpartnerMatchingData);
-
-    void deleteContractpartnerMatching(@Param("id") Long id);
+    @Override
+    @Mapping(target = "contractpartnerid", source = "contractpartner.id")
+    ContractpartnerMatchingTransport mapAToB(final ContractpartnerMatching a);
 }

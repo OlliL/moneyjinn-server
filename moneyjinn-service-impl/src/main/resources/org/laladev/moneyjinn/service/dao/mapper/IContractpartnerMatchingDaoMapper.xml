@@ -25,7 +25,7 @@
             resultType="org.laladev.moneyjinn.service.dao.data.ContractpartnerMatchingData">
         SELECT
         <include refid="contractpartnerMatchingColumns"/>
-        FROM contractpartnermatchings
+        FROM contractpartnermatchings AS mcm
         JOIN vw_contractpartners AS mcp
         ON mcp.contractpartnerid = mcm.mcp_contractpartnerid
         AND mar_mau_userid = #{userId}
@@ -43,6 +43,14 @@
         AND mar_mau_userid = #{userId}
         AND NOW() BETWEEN maf_validfrom AND maf_validtil
         WHERE mcm.contractpartnermatchingid = #{id}
+    </select>
+
+    <select id="checkIfContractpartnerMatchingAlreadyExists" resultType="java.lang.Boolean">
+        SELECT 1
+          FROM contractpartnermatchings
+         WHERE mcp_contractpartnerid = #{contractpartnerId}
+           AND matching_text = #{matchingText}
+             FETCH FIRST 1 ROWS ONLY
     </select>
 
     <insert id="createContractpartnerMatching"

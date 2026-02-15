@@ -421,7 +421,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
             final String comment = cmpDataRaw[posComment - 1];
             data.setComment(comment.trim());
             final var contractpartnerMatching = this.contractpartnerMatchingService
-                    .getContractpartnerBySearchString(userId, data.getComment());
+                    .getContractpartnerMatchingBySearchString(userId, data.getComment());
             if (contractpartnerMatching != null) {
                 data.setContractpartner(contractpartnerMatching.getContractpartner());
             }

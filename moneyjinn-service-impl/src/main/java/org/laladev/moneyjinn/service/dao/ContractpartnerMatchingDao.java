@@ -44,13 +44,18 @@ public class ContractpartnerMatchingDao {
         return this.mapper.getContractpartnerMatchingBySearchString(userId, searchString);
     }
 
-    public List<ContractpartnerMatchingData> getAllContractpartnerMatching(final Long userId) {
+    public List<ContractpartnerMatchingData> getContractpartnerMatchings(final Long userId) {
         return this.mapper.getAllContractpartnerMatching(userId);
     }
 
     public ContractpartnerMatchingData getContractpartnerMatchingById(final Long userId,
                                                                       final Long contractpartnerMatchingId) {
         return this.mapper.getContractpartnerMatchingById(userId, contractpartnerMatchingId);
+    }
+
+    public boolean checkIfContractpartnerMatchingAlreadyExists(Long contractpartnerId, String matchingText) {
+        return Boolean.TRUE.equals(
+                this.mapper.checkIfContractpartnerMatchingAlreadyExists(contractpartnerId, matchingText));
     }
 
     public Long createContractpartnerMatching(final ContractpartnerMatchingData contractpartnerMatchingData) {
