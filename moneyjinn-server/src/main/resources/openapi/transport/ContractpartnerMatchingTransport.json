@@ -3,7 +3,6 @@
   "required": [
     "id",
     "contractpartnerid",
-    "contractpartnername",
     "matchingText"
   ],
   "properties": {
