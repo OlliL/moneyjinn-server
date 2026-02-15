@@ -159,6 +159,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
             compareDataDataset.setPartner(importedMoneyflow.getName());
             compareDataDataset.setPartnerBankAccount(importedMoneyflow.getBankAccount());
             compareDataDataset.setContractpartner(importedMoneyflow.getContractpartner());
+            compareDataDataset.setPostingAccount(importedMoneyflow.getPostingAccount());
+            compareDataDataset.setMoneyflowComment(importedMoneyflow.getComment());
             compareDataDatasets.add(compareDataDataset);
         }
         return compareDataDatasets;
@@ -431,6 +433,8 @@ public class CompareDataService extends AbstractService implements ICompareDataS
                     .getContractpartnerMatchingBySearchString(userId, data.getComment(), data.getBookingDate());
             if (contractpartnerMatching != null) {
                 data.setContractpartner(contractpartnerMatching.getContractpartner());
+                data.setMoneyflowComment(contractpartnerMatching.getMoneyflowComment());
+                data.setPostingAccount(contractpartnerMatching.getPostingAccount());
             }
         }
 

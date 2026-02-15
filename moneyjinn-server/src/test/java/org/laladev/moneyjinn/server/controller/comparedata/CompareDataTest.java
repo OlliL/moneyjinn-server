@@ -398,8 +398,7 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final CompareDataResponse expected = new CompareDataResponse();
 
         // there is a booking with the same amount on the same date as in the file, but
-        // the 100%
-        // matching Contractpartner overrules this so the other moneyflow is picked.
+        // the 100% matching Contractpartner overrules this so the other moneyflow is picked.
         final CompareDataMatchingTransport compareDataMatchingTransport1 = new CompareDataMatchingTransport();
         compareDataMatchingTransport1.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow18().build());
         compareDataMatchingTransport1.setCompareDataDatasetTransport(

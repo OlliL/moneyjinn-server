@@ -29,6 +29,7 @@ package org.laladev.moneyjinn.model.comparedata;
 import lombok.Data;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
+import org.laladev.moneyjinn.model.PostingAccount;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -42,5 +43,6 @@ public class CompareDataDataset {
     private Contractpartner contractpartner;
     private BankAccount partnerBankAccount;
     private String comment;
-
+    private PostingAccount postingAccount;
+    private String moneyflowComment;
 }

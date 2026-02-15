@@ -31,6 +31,16 @@
     },
     "comment": {
       "type": "string"
+    },
+    "moneyflowComment": {
+      "type": "string"
+    },
+    "postingAccountName": {
+      "type": "string"
+    },
+    "postingAccountId": {
+      "type": "integer",
+      "format": "int64"
     }
   }
 }

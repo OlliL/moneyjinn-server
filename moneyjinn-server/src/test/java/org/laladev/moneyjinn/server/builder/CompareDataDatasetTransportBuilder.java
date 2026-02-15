@@ -52,6 +52,9 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
         super.setComment(ContractpartnerMatchingTransportBuilder.CONTRACTPARTNER_MATCHING3_MATCHING_TEXT + " ABC");
         super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
         super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER4_NAME);
+        super.setMoneyflowComment("mmf-comment");
+        super.setPostingAccountId(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID);
+        super.setPostingAccountName(PostingAccountTransportBuilder.POSTING_ACCOUNT3_NAME);
         return this;
     }
 
@@ -112,6 +115,9 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
         transport.setComment(super.getComment());
         transport.setContractpartnerid(super.getContractpartnerid());
         transport.setContractpartnername(super.getContractpartnername());
+        transport.setMoneyflowComment(super.getMoneyflowComment());
+        transport.setPostingAccountId(super.getPostingAccountId());
+        transport.setPostingAccountName(super.getPostingAccountName());
         return transport;
     }
 }
