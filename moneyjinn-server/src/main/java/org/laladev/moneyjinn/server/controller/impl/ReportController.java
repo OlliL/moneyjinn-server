@@ -184,42 +184,47 @@ public class ReportController extends AbstractController implements ReportContro
     public ResponseEntity<ShowTrendsGraphResponse> showTrendsGraph(@RequestBody final ShowTrendsGraphRequest request) {
         final UserID userId = super.getUserId();
         final ShowTrendsGraphResponse response = new ShowTrendsGraphResponse();
-        if (request.getStartDate() != null && request.getEndDate() != null && request.getCapitalSourceIds() != null
-                && !request.getCapitalSourceIds().isEmpty()) {
+        if (request.getStartDate() != null && request.getEndDate() != null) {
             final LocalDate startDate = request.getStartDate();
             final LocalDate endDate = request.getEndDate().with(TemporalAdjusters.lastDayOfMonth());
+            if (request.getCapitalSourceIds() != null && !request.getCapitalSourceIds().isEmpty()) {
+                // Save the selection for the next time the form is shown
+                final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
+                        .map(CapitalsourceID::new).toList();
+                final ClientTrendCapitalsourceIDsSetting setting =
+                        new ClientTrendCapitalsourceIDsSetting(capitalsourceIds);
+                this.settingService.setClientTrendCapitalsourceIDsSetting(userId, setting);
+                final ClientTrendActiveCapitalsourcesSetting settingActiveCapitalsources =
+                        new ClientTrendActiveCapitalsourcesSetting(
+                                Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive()));
+                this.settingService.setClientTrendActiveCapitalsourcesSetting(userId, settingActiveCapitalsources);
 
-            // Save the selection for the next time the form is shown
-            final List<CapitalsourceID> capitalsourceIds = request.getCapitalSourceIds().stream()
-                    .map(CapitalsourceID::new).toList();
-            final ClientTrendCapitalsourceIDsSetting setting = new ClientTrendCapitalsourceIDsSetting(capitalsourceIds);
-            this.settingService.setClientTrendCapitalsourceIDsSetting(userId, setting);
-            final List<EtfID> etfIds = request.getEtfIds().stream().map(EtfID::new).toList();
-            final ClientTrendEtfIDsSetting settingEtf = new ClientTrendEtfIDsSetting(etfIds);
-            this.settingService.setClientTrendEtfIDsSetting(userId, settingEtf);
-            final ClientTrendActiveCapitalsourcesSetting settingActiveCapitalsources =
-                    new ClientTrendActiveCapitalsourcesSetting(
-                            Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive()));
-            this.settingService.setClientTrendActiveCapitalsourcesSetting(userId, settingActiveCapitalsources);
-            final ClientTrendActiveEtfsSetting settingActiveEtfs = new ClientTrendActiveEtfsSetting(
-                    Boolean.TRUE.equals(request.getSettingTrendEtfsActive()));
-            this.settingService.setClientTrendActiveEtfsSetting(userId, settingActiveEtfs);
+                if (Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive())) {
+                    final List<TrendsTransport> trendsSettledTransports = this.prepareSettledTrends(userId, startDate,
+                            endDate,
+                            capitalsourceIds);
+                    response.setTrendsSettledTransports(trendsSettledTransports);
 
-            if (Boolean.TRUE.equals(request.getSettingTrendCapitalsourcesActive())) {
-                final List<TrendsTransport> trendsSettledTransports = this.prepareSettledTrends(userId, startDate,
-                        endDate,
-                        capitalsourceIds);
-                response.setTrendsSettledTransports(trendsSettledTransports);
-
-                final List<TrendsTransport> trendsCalculatedTransports = this.prepareCalculatedTrends(userId, startDate,
-                        endDate, capitalsourceIds, trendsSettledTransports);
-                response.setTrendsCalculatedTransports(trendsCalculatedTransports);
+                    final List<TrendsTransport> trendsCalculatedTransports =
+                            this.prepareCalculatedTrends(userId, startDate,
+                                    endDate, capitalsourceIds, trendsSettledTransports);
+                    response.setTrendsCalculatedTransports(trendsCalculatedTransports);
+                }
             }
 
-            if (Boolean.TRUE.equals(request.getSettingTrendEtfsActive())) {
-                final List<TrendsTransport> trendsEtfTransports = this.preparEtfTrends(userId, startDate, endDate,
-                        etfIds);
-                response.setTrendsEtfTransports(trendsEtfTransports);
+            if (request.getEtfIds() != null && !request.getEtfIds().isEmpty()) {
+                final List<EtfID> etfIds = request.getEtfIds().stream().map(EtfID::new).toList();
+                final ClientTrendEtfIDsSetting settingEtf = new ClientTrendEtfIDsSetting(etfIds);
+                this.settingService.setClientTrendEtfIDsSetting(userId, settingEtf);
+                final ClientTrendActiveEtfsSetting settingActiveEtfs = new ClientTrendActiveEtfsSetting(
+                        Boolean.TRUE.equals(request.getSettingTrendEtfsActive()));
+                this.settingService.setClientTrendActiveEtfsSetting(userId, settingActiveEtfs);
+
+                if (Boolean.TRUE.equals(request.getSettingTrendEtfsActive())) {
+                    final List<TrendsTransport> trendsEtfTransports = this.preparEtfTrends(userId, startDate, endDate,
+                            etfIds);
+                    response.setTrendsEtfTransports(trendsEtfTransports);
+                }
             }
         }
         return ResponseEntity.ok(response);

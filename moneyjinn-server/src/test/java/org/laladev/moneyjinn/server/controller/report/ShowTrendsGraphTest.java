@@ -7,26 +7,25 @@ import org.laladev.moneyjinn.model.access.GroupID;
 import org.laladev.moneyjinn.model.access.UserID;
 import org.laladev.moneyjinn.model.capitalsource.Capitalsource;
 import org.laladev.moneyjinn.model.capitalsource.CapitalsourceID;
-import org.laladev.moneyjinn.server.builder.CapitalsourceTransportBuilder;
-import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
-import org.laladev.moneyjinn.server.builder.TrendsTransportBuilder;
-import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
+import org.laladev.moneyjinn.server.builder.*;
 import org.laladev.moneyjinn.server.controller.AbstractWebUserControllerTest;
 import org.laladev.moneyjinn.server.controller.api.ReportControllerApi;
 import org.laladev.moneyjinn.server.model.ShowTrendsGraphRequest;
 import org.laladev.moneyjinn.server.model.ShowTrendsGraphResponse;
 import org.laladev.moneyjinn.server.model.TrendsTransport;
 import org.laladev.moneyjinn.service.api.ICapitalsourceService;
+import org.laladev.moneyjinn.service.api.ISettingService;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
     @Inject
     private ICapitalsourceService capitalsourceService;
+    @Inject
+    private ISettingService settingService;
 
     @Override
     protected void loadMethod() {
@@ -39,7 +38,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
         request.setStartDate(LocalDate.parse("1970-01-01"));
         request.setEndDate(LocalDate.parse("2099-12-31"));
         request.setSettingTrendCapitalsourcesActive(true);
-        request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
+        request.setCapitalSourceIds(List.of(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
                 CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
                 CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
         final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
@@ -95,7 +94,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
         request.setStartDate(LocalDate.parse("2009-01-01"));
         request.setEndDate(LocalDate.parse("2009-12-31"));
         request.setSettingTrendCapitalsourcesActive(true);
-        request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
+        request.setCapitalSourceIds(List.of(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
                 CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
                 CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
         final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
@@ -125,8 +124,53 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
         trendsSettledTransports
                 .add(new TrendsTransportBuilder().withYear(2009).withMonth(12).withAmount("1118.90").build());
         expected.setTrendsSettledTransports(trendsSettledTransports);
+
+        final UserID userID = new UserID(UserTransportBuilder.USER1_ID);
+        var settingEtf = this.settingService.getClientTrendActiveEtfsSetting(userID);
+        Assertions.assertFalse(settingEtf.isPresent());
+        var settingMcs = this.settingService.getClientTrendActiveCapitalsourcesSetting(userID);
+        Assertions.assertFalse(settingMcs.isPresent());
+
         final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request, ShowTrendsGraphResponse.class);
         Assertions.assertEquals(expected, actual);
+
+        settingEtf = this.settingService.getClientTrendActiveEtfsSetting(userID);
+        Assertions.assertFalse(settingEtf.isPresent());
+
+        settingMcs = this.settingService.getClientTrendActiveCapitalsourcesSetting(userID);
+        Assertions.assertTrue(settingMcs.isPresent());
+        Assertions.assertTrue(settingMcs.get().getSetting());
+    }
+
+    @Test
+    void test_etfFlows_response() throws Exception {
+        final ShowTrendsGraphRequest request = new ShowTrendsGraphRequest();
+        request.setStartDate(LocalDate.parse("2008-12-01"));
+        request.setEndDate(LocalDate.parse("2009-01-31"));
+        request.setSettingTrendEtfsActive(true);
+        request.setEtfIds(List.of(EtfTransportBuilder.ETF_ID_1));
+        final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
+        final List<TrendsTransport> trendsEtfTransports = new ArrayList<>();
+        trendsEtfTransports
+                .add(new TrendsTransportBuilder().withYear(2008).withMonth(12).withAmount("71364.07").build());
+        // no etfvalue for 01/2009 in DB
+        trendsEtfTransports.add(new TrendsTransportBuilder().withYear(2009).withMonth(1).build());
+        expected.setTrendsEtfTransports(trendsEtfTransports);
+
+        final UserID userID = new UserID(UserTransportBuilder.USER1_ID);
+        var settingEtf = this.settingService.getClientTrendActiveEtfsSetting(userID);
+        Assertions.assertFalse(settingEtf.isPresent());
+        var settingMcs = this.settingService.getClientTrendActiveCapitalsourcesSetting(userID);
+        Assertions.assertFalse(settingMcs.isPresent());
+
+        final ShowTrendsGraphResponse actual = super.callUsecaseExpect200(request, ShowTrendsGraphResponse.class);
+        Assertions.assertEquals(expected, actual);
+
+        settingEtf = this.settingService.getClientTrendActiveEtfsSetting(userID);
+        Assertions.assertTrue(settingEtf.isPresent());
+        Assertions.assertTrue(settingEtf.get().getSetting());
+        settingMcs = this.settingService.getClientTrendActiveCapitalsourcesSetting(userID);
+        Assertions.assertFalse(settingMcs.isPresent());
     }
 
     @Test
@@ -135,7 +179,7 @@ class ShowTrendsGraphTest extends AbstractWebUserControllerTest {
         request.setStartDate(LocalDate.parse("2010-05-01"));
         request.setEndDate(LocalDate.parse("2010-12-31"));
         request.setSettingTrendCapitalsourcesActive(true);
-        request.setCapitalSourceIds(Arrays.asList(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
+        request.setCapitalSourceIds(List.of(CapitalsourceTransportBuilder.CAPITALSOURCE1_ID,
                 CapitalsourceTransportBuilder.CAPITALSOURCE2_ID, CapitalsourceTransportBuilder.CAPITALSOURCE3_ID,
                 CapitalsourceTransportBuilder.CAPITALSOURCE4_ID));
         final ShowTrendsGraphResponse expected = new ShowTrendsGraphResponse();
