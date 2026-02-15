@@ -38,10 +38,7 @@ import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflow;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowID;
 import org.laladev.moneyjinn.model.moneyflow.ImportedMoneyflowStatus;
 import org.laladev.moneyjinn.model.validation.ValidationResult;
-import org.laladev.moneyjinn.service.api.IAccessRelationService;
-import org.laladev.moneyjinn.service.api.ICapitalsourceService;
-import org.laladev.moneyjinn.service.api.IImportedMoneyflowService;
-import org.laladev.moneyjinn.service.api.IUserService;
+import org.laladev.moneyjinn.service.api.*;
 import org.laladev.moneyjinn.service.dao.ImportedMoneyflowDao;
 import org.laladev.moneyjinn.service.dao.data.ImportedMoneyflowData;
 import org.laladev.moneyjinn.service.dao.data.mapper.ImportedMoneyflowDataMapper;
@@ -58,6 +55,8 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
     private final ICapitalsourceService capitalsourceService;
     private final IAccessRelationService accessRelationService;
     private final ImportedMoneyflowDataMapper importedMoneyflowDataMapper;
+    private final IContractpartnerAccountService contractpartnerAccountService;
+    private final IContractpartnerMatchingService contractpartnerMatchingService;
 
     private ImportedMoneyflow mapImportedMoneyflowData(final UserID userId,
                                                        final ImportedMoneyflowData importedMoneyflowData) {
@@ -68,6 +67,22 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
             this.userService.enrichEntity(importedMoneyflow);
             this.accessRelationService.enrichEntity(importedMoneyflow, importedMoneyflow.getBookingDate());
             this.capitalsourceService.enrichEntity(importedMoneyflow);
+
+            if (importedMoneyflow.getUsage() != null && !importedMoneyflow.getUsage().isBlank()) {
+                final var contractpartnerMatching = this.contractpartnerMatchingService
+                        .getContractpartnerMatchingBySearchString(userId, importedMoneyflow.getUsage());
+                if (contractpartnerMatching != null) {
+                    importedMoneyflow.setContractpartner(contractpartnerMatching.getContractpartner());
+                }
+            }
+
+            if (importedMoneyflow.getContractpartner() == null && importedMoneyflow.getBankAccount() != null) {
+                final var contractpartnerAccount = this.contractpartnerAccountService
+                        .getContractpartnerByAccount(userId, importedMoneyflow.getBankAccount());
+                if (contractpartnerAccount != null) {
+                    importedMoneyflow.setContractpartner(contractpartnerAccount.getContractpartner());
+                }
+            }
 
             return importedMoneyflow;
         }

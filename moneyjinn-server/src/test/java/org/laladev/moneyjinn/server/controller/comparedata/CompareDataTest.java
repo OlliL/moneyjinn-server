@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.List;
 
 class CompareDataTest extends AbstractWebUserControllerTest {
     @Value("classpath:comparedata/postbank.csv")
@@ -162,7 +163,7 @@ class CompareDataTest extends AbstractWebUserControllerTest {
     }
 
     @Test
-    void test_moneyflowIsOutOfSearchFrame_missingReported() throws Exception {
+    void test_moneyflowIsOutOfSearchFrame_missingReportedContractpartnerMatched() throws Exception {
         final CompareDataRequest request = new CompareDataRequest();
         request.setCapitalsourceId(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
         request.setStartDate(LocalDate.parse("2010-01-01"));
@@ -276,8 +277,7 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         final CompareDataResponse expected = new CompareDataResponse();
 
         // there is a booking with the same amount on the same date as in the file, but
-        // the 100%
-        // matching Contractpartner overrules this so the other moneyflow is picked.
+        // the 100% matching Contractpartner overrules this so the other moneyflow is picked.
         final CompareDataMatchingTransport compareDataMatchingTransport = new CompareDataMatchingTransport();
         compareDataMatchingTransport.setMoneyflowTransport(new MoneyflowTransportBuilder().forMoneyflow19().build());
         compareDataMatchingTransport.setCompareDataDatasetTransport(
@@ -412,11 +412,17 @@ class CompareDataTest extends AbstractWebUserControllerTest {
         expected.setCompareDataMatchingTransports(
                 Arrays.asList(compareDataMatchingTransport1, compareDataMatchingTransport2));
 
-        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport =
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport1 =
                 new CompareDataNotInDatabaseTransport();
-        compareDataNotInDatabaseTransport.setCompareDataDatasetTransport(
+        compareDataNotInDatabaseTransport1.setCompareDataDatasetTransport(
                 new CompareDataDatasetTransportBuilder().forCompareDataImportDataset2().build());
-        expected.setCompareDataNotInDatabaseTransports(Collections.singletonList(compareDataNotInDatabaseTransport));
+        final CompareDataNotInDatabaseTransport compareDataNotInDatabaseTransport2 =
+                new CompareDataNotInDatabaseTransport();
+        compareDataNotInDatabaseTransport2.setCompareDataDatasetTransport(
+                new CompareDataDatasetTransportBuilder().forCompareDataImportDataset4().build());
+
+        expected.setCompareDataNotInDatabaseTransports(
+                List.of(compareDataNotInDatabaseTransport1, compareDataNotInDatabaseTransport2));
         final CompareDataResponse actual = super.callUsecaseExpect200(request, CompareDataResponse.class);
         Assertions.assertEquals(expected, actual);
     }

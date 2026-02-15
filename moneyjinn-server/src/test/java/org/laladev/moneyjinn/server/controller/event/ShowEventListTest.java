@@ -44,7 +44,7 @@ class ShowEventListTest extends AbstractWebUserControllerTest {
         expected.setMonthlySettlementMissing(true);
         expected.setMonthlySettlementMonth((lastMonth.getMonthValue()));
         expected.setMonthlySettlementYear((lastMonth.getYear()));
-        expected.setNumberOfImportedMoneyflows(2);
+        expected.setNumberOfImportedMoneyflows(3);
 
         final ShowEventListResponse actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
@@ -67,7 +67,7 @@ class ShowEventListTest extends AbstractWebUserControllerTest {
         expected.setMonthlySettlementMissing(false);
         expected.setMonthlySettlementMonth((lastMonth.getMonthValue()));
         expected.setMonthlySettlementYear((lastMonth.getYear()));
-        expected.setNumberOfImportedMoneyflows(2);
+        expected.setNumberOfImportedMoneyflows(3);
 
         final ShowEventListResponse actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
@@ -79,13 +79,13 @@ class ShowEventListTest extends AbstractWebUserControllerTest {
 
         ShowEventListResponse actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
-        Assertions.assertEquals(Integer.valueOf(2), actual.getNumberOfImportedMoneyflows());
+        Assertions.assertEquals(Integer.valueOf(3), actual.getNumberOfImportedMoneyflows());
         this.importedMoneyflowService.deleteImportedMoneyflowById(new UserID(UserTransportBuilder.USER1_ID),
                 new ImportedMoneyflowID(ImportedMoneyflowTransportBuilder.IMPORTED_MONEYFLOW1_ID));
 
         actual = super.callUsecaseExpect200(ShowEventListResponse.class);
 
-        Assertions.assertEquals(Integer.valueOf(1), actual.getNumberOfImportedMoneyflows());
+        Assertions.assertEquals(Integer.valueOf(2), actual.getNumberOfImportedMoneyflows());
     }
 
     @Test

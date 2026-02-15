@@ -94,6 +94,8 @@ INSERT INTO impmoneyflows (externalid,mcs_capitalsourceid,bookingdate ,invoiceda
 INSERT INTO impmoneyflows (externalid,mcs_capitalsourceid,bookingdate ,invoicedate ,name     ,accountnumber ,bankcode,comment    ,amount ,status)
                    VALUES ('newthing',1                  ,'2600-01-02','2600-01-01','Paul'   ,'DE1234567890','ABC123','secret'   ,10.10  ,1);
 
+INSERT INTO impmoneyflows (externalid,mcs_capitalsourceid,bookingdate ,invoicedate ,name     ,accountnumber ,bankcode,comment    ,amount)
+                   VALUES ('9999999D',2                  ,'2010-05-03','2010-05-03','Partner','DE1234567890','ABC123','TEST3 ABC',-5.00);
 
 INSERT INTO `moneyflows` VALUES (1,3,6,'2009-01-01','2009-01-01',-1.10,1,1,'flow1',1,0);
 INSERT INTO `moneyflows` VALUES (2,3,6,'2008-12-01','2008-12-01',10.10,1,1,'generated',1,0);

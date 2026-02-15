@@ -119,6 +119,16 @@ public interface IContractpartnerAccountService {
     void deleteContractpartnerAccounts(UserID userId, ContractpartnerID contractpartnerId);
 
     /**
+     * This method selects a {@link ContractpartnerAccount} for the given
+     * {@link BankAccount}.
+     *
+     * @param userId      {@link UserID}
+     * @param bankAccount {@link BankAccount}
+     * @return found {@link ContractpartnerAccount}
+     */
+    ContractpartnerAccount getContractpartnerByAccount(UserID userId, BankAccount bankAccount);
+
+    /**
      * This method selects all {@link ContractpartnerAccount}s for the given
      * {@link BankAccount}s.
      *

@@ -59,7 +59,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 @RestController
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -104,47 +106,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
             final List<ImportedMoneyflow> importedMoneyflows = this.importedMoneyflowService
                     .getAllImportedMoneyflowsByCapitalsourceIds(userId, capitalsourceIds,
                             ImportedMoneyflowStatus.CREATED);
-            if (!importedMoneyflows.isEmpty()) {
-
-                importedMoneyflows.stream()
-                        .filter(importedMoneyflow -> importedMoneyflow.getComment() != null)
-                        .forEach(importedMoneyflow -> {
-                            final var contractpartnerMatching = this.contractpartnerMatchingService
-                                    .getContractpartnerMatchingBySearchString(userId, importedMoneyflow.getComment());
-                            if (contractpartnerMatching != null) {
-                                importedMoneyflow.setContractpartner(contractpartnerMatching.getContractpartner());
-                            }
-                        });
-
-                final List<BankAccount> contractpartnerBankAccounts = importedMoneyflows.stream()
-                        .filter(importedMoneyflow -> importedMoneyflow.getContractpartner() == null)
-                        .map(ImportedMoneyflow::getBankAccount)
-                        .filter(Objects::nonNull)
-                        .toList();
-
-                final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
-                        .getAllContractpartnerByAccounts(userId, contractpartnerBankAccounts);
-
-                if (!contractpartnerAccounts.isEmpty()) {
-                    final Map<BankAccount, Contractpartner> bankAccountToContractpartner = new HashMap<>();
-
-                    for (final ContractpartnerAccount contractpartnerAccount : contractpartnerAccounts) {
-                        bankAccountToContractpartner.put(contractpartnerAccount.getBankAccount(),
-                                contractpartnerAccount.getContractpartner());
-                    }
-
-                    // match IBAN/BIC from the imported moneyflows to contractpartners via the
-                    // contractpartneraccounts
-                    for (final ImportedMoneyflow importedMoneyflow : importedMoneyflows) {
-                        final Contractpartner contractpartner = bankAccountToContractpartner
-                                .get(importedMoneyflow.getBankAccount());
-                        importedMoneyflow.setContractpartner(contractpartner);
-                    }
-                }
-
-                response.setImportedMoneyflowTransports(
-                        this.importedMoneyflowTransportMapper.mapAToB(importedMoneyflows));
-            }
+            response.setImportedMoneyflowTransports(this.importedMoneyflowTransportMapper.mapAToB(importedMoneyflows));
         }
     }
 

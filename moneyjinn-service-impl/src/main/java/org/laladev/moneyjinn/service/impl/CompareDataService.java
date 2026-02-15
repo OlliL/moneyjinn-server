@@ -158,6 +158,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
             compareDataDataset.setInvoiceDate(importedMoneyflow.getInvoiceDate());
             compareDataDataset.setPartner(importedMoneyflow.getName());
             compareDataDataset.setPartnerBankAccount(importedMoneyflow.getBankAccount());
+            compareDataDataset.setContractpartner(importedMoneyflow.getContractpartner());
             compareDataDatasets.add(compareDataDataset);
         }
         return compareDataDatasets;
@@ -243,10 +244,16 @@ public class CompareDataService extends AbstractService implements ICompareDataS
         if (moneyflow.getCapitalsource().getId().equals(capitalsourceId)) {
             rating += 10;
         }
-        // does our source contain bank account information?
-        rating = this.rateBankAccount(userId, moneyflow, compareDataDataset, rating);
-        // does our input-file contain contractpartner information?
-        rating = this.rateContractpartner(moneyflow, compareDataDataset, rating);
+        if (compareDataDataset.getContractpartner() != null) {
+            if (compareDataDataset.getContractpartner().getId().equals(moneyflow.getContractpartner().getId())) {
+                rating += 60;
+            }
+        } else {
+            // does our source contain bank account information?
+            rating = this.rateBankAccount(userId, moneyflow, compareDataDataset, rating);
+            // does our input-file contain contractpartner information?
+            rating = this.rateContractpartner(moneyflow, compareDataDataset, rating);
+        }
         return rating;
     }
 

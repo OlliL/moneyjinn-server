@@ -10,6 +10,7 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
     public static final String NEW_IMPORTED_MONEYFLOW_COMMENT = "flownew";
     public static final Long IMPORTED_MONEYFLOW1_ID = 1L;
     public static final Long IMPORTED_MONEYFLOW2_ID = 2L;
+    public static final Long IMPORTED_MONEYFLOW8_ID = 8L;
     public static final Long NON_EXISTING_ID = 666L;
 
     public ImportedMoneyflowTransportBuilder withPrivat(final Integer privat) {
@@ -27,7 +28,7 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
         super.setName("Paul");
         super.setAccountNumber(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ACCOUNT_NUMBER);
         super.setBankCode(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_BANK_CODE);
-        super.setContractpartnerid(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
+        super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
         super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
         super.setUsage("secret");
         super.setAmount(new BigDecimal("10.10"));
@@ -60,8 +61,25 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
         this.forImportedMoneyflow2();
         super.setComment("test");
         super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT1_ID);
-        super.setContractpartnerid(ContractpartnerAccountTransportBuilder.CONTRACTPARTNER_ACCOUNT1_ID);
+        super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
         super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+        return this;
+    }
+
+    public ImportedMoneyflowTransportBuilder forImportedMoneyflow8() {
+        super.setId(IMPORTED_MONEYFLOW8_ID);
+        super.setExternalid("9999999D");
+        super.setCapitalsourceid(CapitalsourceTransportBuilder.CAPITALSOURCE2_ID);
+        super.setCapitalsourcecomment(CapitalsourceTransportBuilder.CAPITALSOURCE2_COMMENT);
+        super.setBookingdate(LocalDate.parse("2010-05-03"));
+        super.setInvoicedate(LocalDate.parse("2010-05-03"));
+        super.setName("Partner");
+        super.setAccountNumber("DE1234567890");
+        super.setBankCode("ABC123");
+        super.setUsage(ContractpartnerMatchingTransportBuilder.CONTRACTPARTNER_MATCHING3_MATCHING_TEXT + " ABC");
+        super.setAmount(new BigDecimal("-5.00"));
+        super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER4_ID);
+        super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER4_NAME);
         return this;
     }
 
