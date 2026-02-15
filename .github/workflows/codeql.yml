@@ -21,7 +21,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'java-kotlin' ]
+        include:
+          - language: [ 'java-kotlin' ]
+            build-mode: none
 
     steps:
       - name: Checkout repository
@@ -37,6 +39,7 @@ jobs:
         uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
+          dependency-caching: true
 
       - name: Configure GitHub maven repository
         uses: s4u/maven-settings-action@v4.0.0
