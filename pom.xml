@@ -318,6 +318,7 @@
                     <excludes>
                         <!-- Mapstruct generated mapper -->
                         <exclude>org/laladev/moneyjinn/converter/*Impl.class</exclude>
+                        <exclude>org/laladev/moneyjinn/converter/fixes/*Impl.class</exclude>
                         <exclude>org/laladev/moneyjinn/converter/javatypes/*Impl.class</exclude>
                         <exclude>org/laladev/moneyjinn/server/controller/mapper/*Impl.class</exclude>
                         <exclude>org/laladev/moneyjinn/service/dao/data/mapper/*Impl.class</exclude>
