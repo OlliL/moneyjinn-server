@@ -52,6 +52,8 @@ import org.laladev.moneyjinn.service.dao.data.mapper.EtfDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfFlowDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfPreliminaryLumpSumDataMapper;
 import org.laladev.moneyjinn.service.dao.data.mapper.EtfValueDataMapper;
+import org.laladev.moneyjinn.service.event.EtfChangedEvent;
+import org.laladev.moneyjinn.service.event.EventType;
 import org.springframework.cache.interceptor.SimpleKey;
 
 import java.math.BigDecimal;
@@ -165,6 +167,9 @@ public class EtfService extends AbstractService implements IEtfService {
         final EtfData etfData = this.etfDataMapper.mapAToB(etf);
         this.etfDao.updateEtf(etfData);
         this.evictEtfCache(etf.getUser().getId(), etf.getId());
+
+        final var event = new EtfChangedEvent(this, EventType.UPDATE, etf);
+        super.publishEvent(event);
     }
 
     @Override
@@ -179,6 +184,10 @@ public class EtfService extends AbstractService implements IEtfService {
         final Long etfIdLong = this.etfDao.createEtf(etfData);
         final EtfID etfId = new EtfID(etfIdLong);
         etf.setId(etfId);
+
+        final var event = new EtfChangedEvent(this, EventType.CREATE, etf);
+        super.publishEvent(event);
+
         return etfId;
     }
 
@@ -189,6 +198,10 @@ public class EtfService extends AbstractService implements IEtfService {
             try {
                 this.etfDao.deleteEtf(groupId.getId(), etfId.getId());
                 this.evictEtfCache(userId, etfId);
+
+                final var event = new EtfChangedEvent(this, EventType.DELETE, etf);
+                super.publishEvent(event);
+
             } catch (final Exception e) {
                 log.log(Level.INFO, STILL_REFERENCED, e);
                 throw new BusinessException(STILL_REFERENCED, ErrorCode.ETF_STILL_REFERENCED);
