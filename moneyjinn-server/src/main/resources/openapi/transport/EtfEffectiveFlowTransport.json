@@ -30,6 +30,9 @@
     },
     "price": {
       "type": "number"
+    },
+    "accumulatedPreliminaryLumpSum": {
+      "type": "number"
     }
   }
 }

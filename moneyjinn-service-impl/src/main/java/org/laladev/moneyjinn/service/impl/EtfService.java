@@ -332,10 +332,11 @@ public class EtfService extends AbstractService implements IEtfService {
                             .atTime(LocalTime.MAX);
 
                     if (month.equals(Month.JANUARY)) {
-                        etfFlowWithTaxInfos.stream().filter(efwti -> !efwti.getTime().isAfter(endOfMonth))
-                                .forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(
-                                        efwti.getAccumulatedPreliminaryLumpSum().add(efwti.getAmount()
-                                                .multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
+                        etfFlowWithTaxInfos.stream().filter(
+                                        efwti -> !efwti.getTime().isAfter(endOfMonth))
+                                .forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(efwti
+                                        .getAccumulatedPreliminaryLumpSum()
+                                        .add(efwti.getAmount().multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
                     } else {
                         final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atDay(1)
                                 .atStartOfDay();
