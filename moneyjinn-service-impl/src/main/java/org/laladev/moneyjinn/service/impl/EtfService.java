@@ -516,9 +516,16 @@ public class EtfService extends AbstractService implements IEtfService {
                 || mep.getAmountFebruary() != null || mep.getAmountMarch() != null || mep.getAmountApril() != null
                 || mep.getAmountMay() != null || mep.getAmountJune() != null || mep.getAmountJuly() != null
                 || mep.getAmountAugust() != null || mep.getAmountSeptember() != null || mep.getAmountOctober() != null
-                || mep.getAmountNovember() != null || mep.getAmountDecember() != null)) {
+                || mep.getAmountNovember() != null || mep.getAmountDecember() != null ||
+                mep.getAmountPerPiece() == null)) {
             addResult.accept(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_MONTHLY_PRICES_MUST_BE_NULL);
-
+        } else if (mep.getType() == EtfPreliminaryLumpSumType.AMOUNT_PER_YEAR && (mep.getAmountJanuary() != null
+                || mep.getAmountFebruary() != null || mep.getAmountMarch() != null || mep.getAmountApril() != null
+                || mep.getAmountMay() != null || mep.getAmountJune() != null || mep.getAmountJuly() != null
+                || mep.getAmountAugust() != null || mep.getAmountSeptember() != null || mep.getAmountOctober() != null
+                || mep.getAmountNovember() != null || mep.getAmountDecember() == null ||
+                mep.getAmountPerPiece() != null)) {
+            addResult.accept(ErrorCode.ETF_PRELIMINARY_LUMP_SUM_ONLY_YEARLY_PRICE_MUST_BE_SET);
         }
 
         return validationResult;

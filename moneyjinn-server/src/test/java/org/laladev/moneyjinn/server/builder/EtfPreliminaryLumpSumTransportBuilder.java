@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public class EtfPreliminaryLumpSumTransportBuilder extends EtfPreliminaryLumpSumTransport {
     public static final Long ID_2009 = 1L;
     public static final Long ID_2010 = 2L;
-    public static final Long NEXT_ID = 3L;
+    public static final Long NEXT_ID = 4L;
     public static final Long NON_EXISTING_ID = 4L;
     private final BigDecimal zero = new BigDecimal("0.00");
 

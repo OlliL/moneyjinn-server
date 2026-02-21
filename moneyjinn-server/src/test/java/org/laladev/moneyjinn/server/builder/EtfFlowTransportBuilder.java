@@ -18,7 +18,7 @@ public class EtfFlowTransportBuilder extends EtfFlowTransport {
     public static final Long ETF_FLOW_9ID = 9L;
     public static final Long ETF_FLOW_10ID = 10L;
     public static final Long ETF_FLOW_11ID = 11L;
-    public static final Long NEXT_ID = 12L;
+    public static final Long NEXT_ID = 30L;
     public static final Long NON_EXISTING_ID = 0L;
     private static final Long ETF_ID_1 = EtfTransportBuilder.ETF_ID_1;
 
