@@ -39,6 +39,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.time.Year;
+
 @Mapper(config = MapStructConfig.class, uses = {EtfFlowIdMapper.class, EtfIdMapper.class,
         LocalDateTimeToOffsetDateTimeMapper.class})
 public interface EtfEffectiveFlowTransportMapper
@@ -56,6 +58,14 @@ public interface EtfEffectiveFlowTransportMapper
     @Mapping(target = "nanoseconds", source = "time.nano")
     @Mapping(target = "timestamp", source = "time")
     EtfEffectiveFlowTransport mapAToB(EtfFlowWithTaxInfo etfFlow);
+
+    default String mapYear(final Year year) {
+        return year == null ? null : year.toString();
+    }
+
+    default Year mapYear(final String year) {
+        return Year.parse(year);
+    }
 
     @AfterMapping
     @SuppressWarnings("java:S2583")

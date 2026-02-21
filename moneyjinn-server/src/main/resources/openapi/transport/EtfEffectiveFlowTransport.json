@@ -33,6 +33,12 @@
     },
     "accumulatedPreliminaryLumpSum": {
       "type": "number"
+    },
+    "preliminaryLumpSumPerYear": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
     }
   }
 }

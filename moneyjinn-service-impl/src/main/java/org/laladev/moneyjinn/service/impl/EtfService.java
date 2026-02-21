@@ -334,18 +334,14 @@ public class EtfService extends AbstractService implements IEtfService {
                     if (month.equals(Month.JANUARY)) {
                         etfFlowWithTaxInfos.stream().filter(
                                         efwti -> !efwti.getTime().isAfter(endOfMonth))
-                                .forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(efwti
-                                        .getAccumulatedPreliminaryLumpSum()
-                                        .add(efwti.getAmount().multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
+                                .forEach(efwti -> addTaxToFlow(etfPreliminaryLumpSum, efwti, pieceTax));
                     } else {
                         final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atDay(1)
                                 .atStartOfDay();
 
                         etfFlowWithTaxInfos.stream().filter(
                                         efwti -> !efwti.getTime().isAfter(endOfMonth) && !startOfMonth.isAfter(efwti.getTime()))
-                                .forEach(efwti -> efwti.setAccumulatedPreliminaryLumpSum(efwti
-                                        .getAccumulatedPreliminaryLumpSum()
-                                        .add(efwti.getAmount().multiply(pieceTax).setScale(3, RoundingMode.HALF_UP))));
+                                .forEach(efwti -> addTaxToFlow(etfPreliminaryLumpSum, efwti, pieceTax));
                     }
                 }
             }
@@ -354,6 +350,16 @@ public class EtfService extends AbstractService implements IEtfService {
         }
 
         return relevantEtfFlows;
+    }
+
+    private static void addTaxToFlow(final EtfPreliminaryLumpSum etfPreliminaryLumpSum, final EtfFlowWithTaxInfo efwti,
+                                     final BigDecimal pieceTax) {
+        final var tax =
+                efwti.getAmount().multiply(pieceTax).setScale(3, RoundingMode.HALF_UP);
+        efwti.getPreliminaryLumpSumPerYear().put(etfPreliminaryLumpSum.getYear(), tax);
+        efwti.setAccumulatedPreliminaryLumpSum(efwti
+                .getAccumulatedPreliminaryLumpSum()
+                .add(tax));
     }
 
     private BigDecimal getPieceTaxAmountPerPiece(@NonNull final Month month,
@@ -389,6 +395,9 @@ public class EtfService extends AbstractService implements IEtfService {
             return BigDecimal.ZERO;
         }
 
+        // FIXME pretty sure this is wrong if a partial sale has happened after the tax was payed.
+        //   The Piece-Tax needs to be calculated considering the amount of pieces relevant at the
+        //   time of payment, not relevant now. - see issue #69
         if (month.equals(Month.JANUARY)) {
             return this.calculatePieceTax(amount, relevantTaxFlows);
         } else {
