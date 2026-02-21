@@ -58,7 +58,10 @@ import org.springframework.cache.interceptor.SimpleKey;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.Year;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -297,8 +300,8 @@ public class EtfService extends AbstractService implements IEtfService {
     }
 
     @Override
-    public List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(final UserID userId, final List<EtfFlow> allEtfFlows) {
-        final LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
+    public List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(final UserID userId, final List<EtfFlow> allEtfFlows,
+                                                               final LocalDateTime untilDate) {
         final Map<EtfID, List<EtfFlow>> etfFlowsByEtfIdMap = allEtfFlows.stream()
                 .collect(Collectors.groupingBy(EtfFlow::getEtfId));
 
@@ -307,7 +310,7 @@ public class EtfService extends AbstractService implements IEtfService {
             final var etfFlows = etfFlowsByEtfIdMapEntry.getValue();
             final var etfPreliminaryLumpSums = this.getAllEtfPreliminaryLumpSums(userId,
                     etfFlowsByEtfIdMapEntry.getKey());
-            final List<EtfFlow> etfBuyFlows = this.calculateEffectiveEtfFlowsUntil(etfFlows, now);
+            final List<EtfFlow> etfBuyFlows = this.calculateEffectiveEtfFlowsUntil(etfFlows, untilDate);
 
             // initialize accumulated preliminary lump sum to 0 for each effective flow
             final List<EtfFlowWithTaxInfo> etfFlowWithTaxInfos = etfBuyFlows.stream().map(ef -> {
@@ -319,6 +322,10 @@ public class EtfService extends AbstractService implements IEtfService {
             // delete all preliminary lump sums older than the earliest effective flow
             final Year yearOfEarliestEtfBuyFlow = Year.from(etfFlowWithTaxInfos.getFirst().getTime());
             etfPreliminaryLumpSums.removeIf(epls -> epls.getYear().isBefore(yearOfEarliestEtfBuyFlow));
+
+            // delete all preliminary lump sums newer than the latest effective flow
+            final Year yearOfLatestEtfBuyFlow = Year.from(etfFlowWithTaxInfos.getLast().getTime());
+            etfPreliminaryLumpSums.removeIf(epls -> epls.getYear().isAfter(yearOfLatestEtfBuyFlow));
 
             for (final var etfPreliminaryLumpSum : etfPreliminaryLumpSums) {
                 for (final Month month : Month.values()) {
@@ -354,8 +361,7 @@ public class EtfService extends AbstractService implements IEtfService {
 
     private static void addTaxToFlow(final EtfPreliminaryLumpSum etfPreliminaryLumpSum, final EtfFlowWithTaxInfo efwti,
                                      final BigDecimal pieceTax) {
-        final var tax =
-                efwti.getAmount().multiply(pieceTax).setScale(3, RoundingMode.HALF_UP);
+        final var tax = efwti.getAmount().multiply(pieceTax).setScale(8, RoundingMode.HALF_UP);
         efwti.getPreliminaryLumpSumPerYear().put(etfPreliminaryLumpSum.getYear(), tax);
         efwti.setAccumulatedPreliminaryLumpSum(efwti
                 .getAccumulatedPreliminaryLumpSum()
@@ -373,7 +379,13 @@ public class EtfService extends AbstractService implements IEtfService {
         final LocalDateTime startOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atDay(1).atStartOfDay();
         final LocalDateTime endOfMonth = etfPreliminaryLumpSum.getYear().atMonth(month).atEndOfMonth()
                 .atTime(LocalTime.MAX);
-        final List<EtfFlow> relevantTaxFlows = this.calculateEffectiveEtfFlowsUntil(allEtfFlows, endOfMonth);
+        final LocalDateTime endOfYear = etfPreliminaryLumpSum.getYear().atMonth(12).atEndOfMonth()
+                .atTime(LocalTime.MAX);
+
+        // Consider the whole year because of sales happened later this year
+        final List<EtfFlow> relevantTaxFlows = this.calculateEffectiveEtfFlowsUntil(allEtfFlows, endOfYear);
+        // after the sales consideration remove all flows after this month because the sum paid is only for stuff until this month
+        relevantTaxFlows.removeIf(tf -> tf.getTime().isAfter(endOfMonth));
 
         final BigDecimal amount = switch (month) {
             case JANUARY -> etfPreliminaryLumpSum.getAmountJanuary();
@@ -390,14 +402,10 @@ public class EtfService extends AbstractService implements IEtfService {
             case DECEMBER -> etfPreliminaryLumpSum.getAmountDecember();
         };
 
-        // TODO Test this if statement
         if (BigDecimal.ZERO.compareTo(amount) == 0) {
             return BigDecimal.ZERO;
         }
 
-        // FIXME pretty sure this is wrong if a partial sale has happened after the tax was payed.
-        //   The Piece-Tax needs to be calculated considering the amount of pieces relevant at the
-        //   time of payment, not relevant now. - see issue #69
         if (month.equals(Month.JANUARY)) {
             return this.calculatePieceTax(amount, relevantTaxFlows);
         } else {

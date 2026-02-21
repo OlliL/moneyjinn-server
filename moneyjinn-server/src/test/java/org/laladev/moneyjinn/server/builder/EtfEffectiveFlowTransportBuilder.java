@@ -20,8 +20,9 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
         super.setAmount(new BigDecimal("2.234000"));
         super.setNanoseconds(999000000);
         super.setPrice(new BigDecimal("889.123000"));
-        super.setAccumulatedPreliminaryLumpSum(new BigDecimal("6.910"));
-        super.setPreliminaryLumpSumPerYear(Map.of("2009", new BigDecimal("3.169"), "2010", new BigDecimal("3.741")));
+        super.setAccumulatedPreliminaryLumpSum(new BigDecimal("6.90942849"));
+        super.setPreliminaryLumpSumPerYear(
+                Map.of("2009", new BigDecimal("3.16884308"), "2010", new BigDecimal("3.74058541")));
         super.setTimestamp(OffsetDateTime.of(2009, 2, 20, 23, 59, 59, 999000000, ZoneOffset.UTC));
         return this;
     }
@@ -32,8 +33,8 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
         super.setAmount(new BigDecimal("81.000000"));
         super.setNanoseconds(320000000);
         super.setPrice(new BigDecimal("777.000000"));
-        super.setAccumulatedPreliminaryLumpSum(new BigDecimal("135.626"));
-        super.setPreliminaryLumpSumPerYear(Map.of("2010", new BigDecimal("135.626")));
+        super.setAccumulatedPreliminaryLumpSum(new BigDecimal("135.62552277"));
+        super.setPreliminaryLumpSumPerYear(Map.of("2010", new BigDecimal("135.62552277")));
         super.setTimestamp(OffsetDateTime.of(2010, 1, 1, 15, 16, 20, 320000000, ZoneOffset.UTC));
         return this;
     }
@@ -44,8 +45,8 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
         super.setAmount(new BigDecimal("80.000000"));
         super.setNanoseconds(320000000);
         super.setPrice(new BigDecimal("777.000000"));
-        super.setAccumulatedPreliminaryLumpSum(new BigDecimal("122.789"));
-        super.setPreliminaryLumpSumPerYear(Map.of("2010", new BigDecimal("122.789")));
+        super.setAccumulatedPreliminaryLumpSum(new BigDecimal("122.78853913"));
+        super.setPreliminaryLumpSumPerYear(Map.of("2010", new BigDecimal("122.78853913")));
         super.setTimestamp(OffsetDateTime.of(2010, 2, 2, 15, 16, 20, 320000000, ZoneOffset.UTC));
         return this;
     }
@@ -56,8 +57,8 @@ public class EtfEffectiveFlowTransportBuilder extends EtfEffectiveFlowTransport 
         super.setAmount(new BigDecimal("30.000000"));
         super.setNanoseconds(320000000);
         super.setPrice(new BigDecimal("750.000000"));
-        super.setAccumulatedPreliminaryLumpSum(new BigDecimal("46.046"));
-        super.setPreliminaryLumpSumPerYear(Map.of("2010", new BigDecimal("46.046")));
+        super.setAccumulatedPreliminaryLumpSum(new BigDecimal("46.04570217"));
+        super.setPreliminaryLumpSumPerYear(Map.of("2010", new BigDecimal("46.04570217")));
         super.setTimestamp(OffsetDateTime.of(2010, 2, 4, 15, 16, 20, 320000000, ZoneOffset.UTC));
         return this;
     }

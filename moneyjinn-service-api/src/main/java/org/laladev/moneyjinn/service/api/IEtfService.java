@@ -70,7 +70,7 @@ public interface IEtfService {
 
     void deleteEtfFlow(UserID userId, EtfFlowID etfFlowId);
 
-    List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(UserID userId, List<EtfFlow> etfFlows);
+    List<EtfFlowWithTaxInfo> calculateEffectiveEtfFlows(UserID userId, List<EtfFlow> etfFlows, LocalDateTime untilDate);
 
     //
     // ETF Preliminary Lump Sum

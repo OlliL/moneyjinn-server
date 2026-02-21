@@ -48,10 +48,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.Year;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +83,8 @@ public class EtfController extends AbstractController implements EtfControllerAp
         for (final Etf etf : etfs) {
             final EtfValue etfValue = this.etfService.getEtfValueEndOfMonth(etf.getIsin(), year, month);
             final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(userId, etf.getId(), endOfMonth);
-            final List<EtfFlowWithTaxInfo> etfFlows = this.etfService.calculateEffectiveEtfFlows(userId, allEtfFlows);
+            final List<EtfFlowWithTaxInfo> etfFlows = this.etfService.calculateEffectiveEtfFlows(userId, allEtfFlows,
+                    LocalDate.now().atTime(LocalTime.MAX));
             if (etfFlows != null && !etfFlows.isEmpty()) {
                 final EtfSummaryTransport transport = this.getEtfSummaryTransportForEtf(etf, etfValue, etfFlows);
                 transports.add(transport);
@@ -115,7 +113,7 @@ public class EtfController extends AbstractController implements EtfControllerAp
         response.setEtfFlowTransports(etfFlowTransports);
 
         final List<EtfFlowWithTaxInfo> etfEffectiveFlows = new ArrayList<>(
-                this.etfService.calculateEffectiveEtfFlows(userId, etfFlows));
+                this.etfService.calculateEffectiveEtfFlows(userId, etfFlows, LocalDate.now().atTime(LocalTime.MAX)));
         etfEffectiveFlows.sort(Collections.reverseOrder(new EtfFlowComparator()));
         final List<EtfEffectiveFlowTransport> etfEffectiveFlowTransports = this.etfEffectiveFlowTransportMapper
                 .mapAToB(etfEffectiveFlows);
@@ -185,7 +183,8 @@ public class EtfController extends AbstractController implements EtfControllerAp
         BigDecimal overallPreliminaryLumpSum = BigDecimal.ZERO;
 
         final var etfFlows = this.etfService.getAllEtfFlowsUntil(parms.userId, parms.etf.getId(), LocalDateTime.now());
-        final var effectiveEtfFlows = this.etfService.calculateEffectiveEtfFlows(parms.userId, etfFlows);
+        final var effectiveEtfFlows = this.etfService.calculateEffectiveEtfFlows(parms.userId, etfFlows,
+                LocalDate.now().atTime(LocalTime.MAX));
 
         for (final EtfFlowWithTaxInfo etfFlow : effectiveEtfFlows) {
             BigDecimal useablePieces = etfFlow.getAmount();

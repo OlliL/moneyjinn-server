@@ -255,7 +255,8 @@ public class ReportController extends AbstractController implements ReportContro
 
                 final List<EtfFlow> allEtfFlows = this.etfService.getAllEtfFlowsUntil(userId, etf.getId(), endOfMonth);
                 final List<EtfFlowWithTaxInfo> etfFlows =
-                        this.etfService.calculateEffectiveEtfFlows(userId, allEtfFlows);
+                        this.etfService.calculateEffectiveEtfFlows(userId, allEtfFlows,
+                                LocalDate.now().atTime(LocalTime.MAX));
 
                 return etfFlows.stream().mapToDouble(
                         etfFlow -> etfFlow.getAmount().multiply(etfValue.getSellPrice()).doubleValue()).sum();

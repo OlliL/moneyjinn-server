@@ -17,6 +17,10 @@ import org.laladev.moneyjinn.server.builder.GroupTransportBuilder;
 import org.laladev.moneyjinn.server.builder.UserTransportBuilder;
 import org.laladev.moneyjinn.service.api.IEtfService;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.Year;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EtfServiceTest extends AbstractTest {
@@ -105,5 +109,50 @@ class EtfServiceTest extends AbstractTest {
         final EtfPreliminaryLumpSum etfPreliminaryLumpSum = new EtfPreliminaryLumpSum();
         assertThrows(BusinessException.class,
                 () -> this.etfService.updateEtfPreliminaryLumpSum(USER_ID, etfPreliminaryLumpSum));
+    }
+
+    @Test
+    void test_calculateEffectiveEtfFlows_LumpSumConsidersSalesLaterThisYear() {
+        final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+        final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
+        final LocalDateTime untilDate = LocalDateTime.of(2009, 12, 31, 23, 59, 59);
+        final var etfFlows = this.etfService.getAllEtfFlowsUntil(userId, etfId, untilDate);
+        final var effectiveFlows = this.etfService.calculateEffectiveEtfFlows(userId, etfFlows, untilDate);
+        assertNotNull(effectiveFlows);
+        assertEquals(3, effectiveFlows.size());
+        assertEquals(0,
+                new BigDecimal("5.47782002").compareTo(effectiveFlows.getFirst().getAccumulatedPreliminaryLumpSum()));
+        assertEquals(0,
+                new BigDecimal("128.75217998").compareTo(effectiveFlows.get(1).getAccumulatedPreliminaryLumpSum()));
+        assertEquals(0,
+                new BigDecimal("9.22").compareTo(effectiveFlows.get(2).getAccumulatedPreliminaryLumpSum()));
+    }
+
+    @Test
+    void test_calculateEffectiveEtfFlows_LumpSumConsidersSalesNextYear() {
+        final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+        final var etfId = new EtfID(EtfTransportBuilder.ETF_ID_1);
+        final LocalDateTime untilDate = LocalDateTime.of(2010, 12, 31, 23, 59, 59);
+        final var etfFlows = this.etfService.getAllEtfFlowsUntil(userId, etfId, untilDate);
+        final var effectiveFlows = this.etfService.calculateEffectiveEtfFlows(userId, etfFlows, untilDate);
+        assertNotNull(effectiveFlows);
+        assertEquals(4, effectiveFlows.size());
+
+        assertEquals(0,
+                new BigDecimal("6.90942849").compareTo(effectiveFlows.getFirst().getAccumulatedPreliminaryLumpSum()));
+        assertEquals(2, effectiveFlows.getFirst().getPreliminaryLumpSumPerYear().size());
+        assertEquals(0,
+                new BigDecimal("3.16884308").compareTo(effectiveFlows.getFirst().getPreliminaryLumpSumPerYear().get(
+                        Year.of(2009))));
+        assertEquals(0,
+                new BigDecimal("3.74058541").compareTo(effectiveFlows.getFirst().getPreliminaryLumpSumPerYear().get(
+                        Year.of(2010))));
+
+        assertEquals(0,
+                new BigDecimal("135.62552277").compareTo(effectiveFlows.get(1).getAccumulatedPreliminaryLumpSum()));
+        assertEquals(0,
+                new BigDecimal("122.78853913").compareTo(effectiveFlows.get(2).getAccumulatedPreliminaryLumpSum()));
+        assertEquals(0,
+                new BigDecimal("46.04570217").compareTo(effectiveFlows.get(3).getAccumulatedPreliminaryLumpSum()));
     }
 }
