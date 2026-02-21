@@ -35,15 +35,16 @@ import org.laladev.moneyjinn.model.exception.TechnicalException;
 public class EtfPreliminaryLumpSumTypeMapper {
     private static final int AMOUNT_PER_MONTH = 1;
     private static final int AMOUNT_PER_PIECE = 2;
+    private static final int AMOUNT_PER_YEAR = 3;
 
     public static EtfPreliminaryLumpSumType map(final Integer type) {
         return type == null ? null :
                 switch (type) {
                     case AMOUNT_PER_MONTH -> EtfPreliminaryLumpSumType.AMOUNT_PER_MONTH;
                     case AMOUNT_PER_PIECE -> EtfPreliminaryLumpSumType.AMOUNT_PER_PIECE;
+                    case AMOUNT_PER_YEAR -> EtfPreliminaryLumpSumType.AMOUNT_PER_YEAR;
                     default -> throw new TechnicalException("Type " + type + " not defined!", ErrorCode.UNKNOWN);
                 };
-
     }
 
     public static Integer map(final EtfPreliminaryLumpSumType type) {
@@ -51,6 +52,7 @@ public class EtfPreliminaryLumpSumTypeMapper {
                 switch (type) {
                     case AMOUNT_PER_MONTH -> AMOUNT_PER_MONTH;
                     case AMOUNT_PER_PIECE -> AMOUNT_PER_PIECE;
+                    case AMOUNT_PER_YEAR -> AMOUNT_PER_YEAR;
                 };
     }
 }
