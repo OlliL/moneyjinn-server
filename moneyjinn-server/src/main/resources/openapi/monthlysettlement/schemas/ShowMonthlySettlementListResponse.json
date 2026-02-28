@@ -1,7 +1,11 @@
 {
   "type": "object",
   "required": [
-    "monthlySettlementTransports"
+    "monthlySettlementTransports",
+    "prevYear",
+    "prevMonth",
+    "nextYear",
+    "nextMonth"
   ],
   "properties": {
     "monthlySettlementTransports": {
@@ -9,6 +13,22 @@
       "items": {
         "$ref": "../../transport/MonthlySettlementTransport.json"
       }
+    },
+    "prevYear": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "prevMonth": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "nextYear": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "nextMonth": {
+      "type": "integer",
+      "format": "int32"
     }
   }
 }

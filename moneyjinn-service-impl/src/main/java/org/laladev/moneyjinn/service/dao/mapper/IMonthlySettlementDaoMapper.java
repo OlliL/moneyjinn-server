@@ -41,6 +41,14 @@ public interface IMonthlySettlementDaoMapper {
                                                                     @Param("year") Integer year,
                                                                     @Param("month") Integer month);
 
+    LocalDate getPrevSettlementDate(@Param("userId") Long userId,
+                                    @Param("year") Integer year,
+                                    @Param("month") Integer month);
+
+    LocalDate getNextSettlementDate(@Param("userId") Long userId,
+                                    @Param("year") Integer year,
+                                    @Param("month") Integer month);
+
     LocalDate getMaxSettlementDate(Long userId);
 
     LocalDate getMinSettlementDate(Long userId);

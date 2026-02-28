@@ -85,6 +85,18 @@ public interface IMonthlySettlementService {
     List<MonthlySettlement> getAllMonthlySettlementsByYearMonth(UserID userId, Integer year, Month month);
 
     /**
+     * Retrieves the previous monthlysettlement date for the given year/month combination.
+     *
+     */
+    LocalDate getPrevSettlementDate(UserID userId, Integer year, Month month);
+
+    /**
+     * Retrieves the next monthlysettlement date for the given year/month combination.
+     *
+     */
+    LocalDate getNextSettlementDate(UserID userId, Integer year, Month month);
+
+    /**
      * Returns the last date a {@link MonthlySettlement} was created by the given
      * {@link UserID}.
      */

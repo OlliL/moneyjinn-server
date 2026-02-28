@@ -53,6 +53,14 @@ public class MonthlySettlementDao {
         return this.mapper.getAllMonthlySettlementsByYearMonth(userId, year, month);
     }
 
+    public LocalDate getPrevSettlementDate(final Long userId, final Integer year, final Integer month) {
+        return this.mapper.getPrevSettlementDate(userId, year, month);
+    }
+
+    public LocalDate getNextSettlementDate(final Long userId, final Integer year, final Integer month) {
+        return this.mapper.getNextSettlementDate(userId, year, month);
+    }
+
     public LocalDate getMaxSettlementDate(final Long userId) {
         return this.mapper.getMaxSettlementDate(userId);
     }

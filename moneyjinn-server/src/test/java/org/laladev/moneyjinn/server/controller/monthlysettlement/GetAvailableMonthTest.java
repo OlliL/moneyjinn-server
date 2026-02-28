@@ -20,6 +20,7 @@ class GetAvailableMonthTest extends AbstractWebUserControllerTest {
         expected.setAllMonth(Arrays.asList(1, 2, 3, 4));
         expected.setAllYears(Arrays.asList(2008, 2009, 2010));
         expected.setYear(2010);
+        expected.setMonth(4);
         return expected;
     }
 

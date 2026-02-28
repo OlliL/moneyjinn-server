@@ -51,6 +51,10 @@ class ShowMonthlySettlementListV2Test extends AbstractWebUserControllerTest {
         monthlySettlementTransports.add(new MonthlySettlementTransportBuilder().forMonthlySettlement3().build());
         final ShowMonthlySettlementListResponse expected = new ShowMonthlySettlementListResponse();
         expected.setMonthlySettlementTransports(monthlySettlementTransports);
+        expected.setPrevMonth(11);
+        expected.setPrevYear(2008);
+        expected.setNextMonth(1);
+        expected.setNextYear(2009);
 
         final ShowMonthlySettlementListResponse actual = super.callUsecaseExpect200(
                 ShowMonthlySettlementListResponse.class, 2008, 12);

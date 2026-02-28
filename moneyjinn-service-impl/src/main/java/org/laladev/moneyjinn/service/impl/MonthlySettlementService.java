@@ -135,6 +135,18 @@ public class MonthlySettlementService extends AbstractService implements IMonthl
     }
 
     @Override
+    public LocalDate getPrevSettlementDate(@NonNull final UserID userId, @NonNull final Integer year,
+                                           @NonNull final Month month) {
+        return this.monthlySettlementDao.getPrevSettlementDate(userId.getId(), year, month.getValue());
+    }
+
+    @Override
+    public LocalDate getNextSettlementDate(@NonNull final UserID userId, @NonNull final Integer year,
+                                           @NonNull final Month month) {
+        return this.monthlySettlementDao.getNextSettlementDate(userId.getId(), year, month.getValue());
+    }
+
+    @Override
     public LocalDate getMaxSettlementDate(@NonNull final UserID userId) {
         return this.monthlySettlementDao.getMaxSettlementDate(userId.getId());
     }

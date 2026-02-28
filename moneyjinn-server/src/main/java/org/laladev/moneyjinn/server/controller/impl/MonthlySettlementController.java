@@ -96,6 +96,8 @@ public class MonthlySettlementController extends AbstractController implements M
                 response.setAllMonth(allMonth.stream().map(Month::getValue).toList());
                 if (month != null && allMonth.contains(month)) {
                     response.setMonth(month.getValue());
+                } else {
+                    response.setMonth(allMonth.getLast().getValue());
                 }
             }
             response.setYear(year);
@@ -116,9 +118,23 @@ public class MonthlySettlementController extends AbstractController implements M
         if (month != null && requestYear != null) {
             final List<MonthlySettlement> monthlySettlements = this.monthlySettlementService
                     .getAllMonthlySettlementsByYearMonth(userId, requestYear, month);
-            final List<MonthlySettlementTransport> monthlySettlementTransports = this.monthlySettlementTransportMapper
-                    .mapAToB(monthlySettlements);
-            response.setMonthlySettlementTransports(monthlySettlementTransports);
+            if (!monthlySettlements.isEmpty()) {
+                final List<MonthlySettlementTransport> monthlySettlementTransports =
+                        this.monthlySettlementTransportMapper
+                                .mapAToB(monthlySettlements);
+                response.setMonthlySettlementTransports(monthlySettlementTransports);
+                final var previousDate =
+                        this.monthlySettlementService.getPrevSettlementDate(userId, requestYear, month);
+                if (previousDate != null) {
+                    response.setPrevYear(previousDate.getYear());
+                    response.setPrevMonth(previousDate.getMonthValue());
+                }
+                final var nextDate = this.monthlySettlementService.getNextSettlementDate(userId, requestYear, month);
+                if (nextDate != null) {
+                    response.setNextYear(nextDate.getYear());
+                    response.setNextMonth(nextDate.getMonthValue());
+                }
+            }
         }
         return ResponseEntity.ok(response);
     }

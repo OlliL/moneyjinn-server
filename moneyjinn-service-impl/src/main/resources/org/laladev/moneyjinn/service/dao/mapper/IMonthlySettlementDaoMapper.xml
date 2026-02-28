@@ -48,6 +48,30 @@
              FETCH FIRST 1 ROWS ONLY
     </select>
 
+    <select id="getPrevSettlementDate" resultType="java.time.LocalDate">
+        <![CDATA[
+        SELECT CONCAT("year", '-', LPAD("month"::TEXT, 2, '0'), '-01')::DATE
+          FROM monthlysettlements
+         WHERE mau_userid = #{userId}
+           AND (("year" = #{year} AND "month" < #{month}) OR "year" < #{year})
+         ORDER BY "year" DESC
+                , "month" DESC
+             FETCH FIRST 1 ROW ONLY
+        ]]>
+    </select>
+
+    <select id="getNextSettlementDate" resultType="java.time.LocalDate">
+        <![CDATA[
+        SELECT CONCAT("year", '-', LPAD("month"::TEXT, 2, '0'), '-01')::DATE
+          FROM monthlysettlements
+         WHERE mau_userid = #{userId}
+           AND (("year" = #{year} AND "month" > #{month}) OR "year" > #{year})
+         ORDER BY "year"
+                , "month"
+             FETCH FIRST 1 ROW ONLY
+        ]]>
+    </select>
+
     <select id="getMaxSettlementDate" resultType="java.time.LocalDate">
         SELECT CONCAT("year", '-', LPAD("month"::TEXT, 2, '0'), '-01')::DATE
           FROM monthlysettlements
