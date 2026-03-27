@@ -319,6 +319,10 @@ public class EtfService extends AbstractService implements IEtfService {
                 return etfFlowWithTaxInfo;
             }).toList();
 
+            if (etfFlowWithTaxInfos.isEmpty()) {
+                return Collections.emptyList();
+            }
+
             // delete all preliminary lump sums older than the earliest effective flow
             final Year yearOfEarliestEtfBuyFlow = Year.from(etfFlowWithTaxInfos.getFirst().getTime());
             etfPreliminaryLumpSums.removeIf(epls -> epls.getYear().isBefore(yearOfEarliestEtfBuyFlow));
