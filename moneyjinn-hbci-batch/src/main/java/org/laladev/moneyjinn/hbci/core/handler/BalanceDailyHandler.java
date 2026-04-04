@@ -1,6 +1,6 @@
 //
-// Copyright (c) 2015-2025 Dennis Garske <d.garske@gmx.de>
-// Copyright (c) 2017-2025 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2015-2026 Dennis Garske <d.garske@gmx.de>
+// Copyright (c) 2017-2026 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without

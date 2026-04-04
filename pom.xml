@@ -39,12 +39,12 @@
         <lombok.version>1.18.44</lombok.version>
         <mapstruct.version>1.7.0.Beta1</mapstruct.version>
         <opencsv.version>5.12.0</opencsv.version>
-        <swagger.version>2.2.45</swagger.version>
+        <swagger.version>2.2.46</swagger.version>
 
         <openapi-generator.version>7.21.0</openapi-generator.version>
 
         <!--for hbci-batch only-->
-        <hbci4j-core.version>4.1.7</hbci4j-core.version>
+        <hbci4j-core.version>4.1.8</hbci4j-core.version>
 
         <!-- Maven Plugins -->
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
