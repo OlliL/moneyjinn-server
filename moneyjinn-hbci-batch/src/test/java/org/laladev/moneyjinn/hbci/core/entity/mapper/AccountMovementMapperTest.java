@@ -42,7 +42,7 @@ class AccountMovementMapperTest {
     static Stream<Arguments> test_InvoiceTimestampELVOLV_withYear() {
         return Stream.of(
                 Arguments.of(List.of("2025-06-10T01:03:00"), "106"),
-                Arguments.of(List.of("BLAH BLAH 10-06-2026T01:03:00 BLAH"), "106"),
+                Arguments.of(List.of("BLAH BLAH 10-06-2025T01:03:00 BLAH"), "106"),
                 Arguments.of(List.of("BLAH", "BLAH BLAH 10-06-20", "25T01:03:00 BLAH", "BLAH"), "106"),
                 Arguments.of(List.of("EC XXXXXXXX 100625010300IC1"), "5")
         );
