@@ -17,4 +17,8 @@ public abstract class BooleanToIntegerMapper {
     public Integer mapAToB(final boolean a) {
         return a ? TRUE : null;
     }
+
+    public Integer mapAToB(final Boolean a) {
+        return (a != null && a) ? TRUE : null;
+    }
 }
