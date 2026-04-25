@@ -29,14 +29,14 @@
     <properties>
         <moneyjinn-sepa-camt.version>1.0.2</moneyjinn-sepa-camt.version>
 
-        <spring.boot.version>4.1.0-M4</spring.boot.version>
+        <spring.boot.version>4.1.0-RC1</spring.boot.version>
         <mybatis.version>3.5.19</mybatis.version>
         <mybatis-spring.version>4.0.0</mybatis-spring.version>
-        <commons.io.version>2.21.0</commons.io.version>
-        <commons.codec.version>1.21.0</commons.codec.version>
+        <commons.io.version>2.22.0</commons.io.version>
+        <commons.codec.version>1.22.0</commons.codec.version>
         <apache.tika.version>3.3.0</apache.tika.version>
         <jjwt.version>0.13.0</jjwt.version>
-        <lombok.version>1.18.44</lombok.version>
+        <lombok.version>1.18.46</lombok.version>
         <mapstruct.version>1.7.0.Beta1</mapstruct.version>
         <opencsv.version>5.12.0</opencsv.version>
         <swagger.version>2.2.48</swagger.version>
@@ -57,11 +57,11 @@
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <coveralls-maven-plugin.version>5.0.0</coveralls-maven-plugin.version>
-        <pitest-maven.version>1.23.0</pitest-maven.version>
+        <pitest-maven.version>1.23.1</pitest-maven.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
 
         <!-- Test Scope -->
-        <junit.version>6.1.0-M1</junit.version>
+        <junit.version>6.1.0-RC1</junit.version>
         <mockito.version>5.23.0</mockito.version>
         <juniversalchardet.version>2.5.0</juniversalchardet.version>
 
