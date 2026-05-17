@@ -182,7 +182,7 @@
 
     <select id="getAllMoneyflowsByDateRangeGroupedByYearPostingAccount"
             resultType="org.laladev.moneyjinn.service.dao.data.PostingAccountAmountData">
-        SELECT CONCAT(to_char(MIN(mmf.invoicedate), 'YYYY'),'-01-01') date
+        SELECT CAST(CONCAT(to_char(MIN(mmf.invoicedate), 'YYYY'),'-01-01') AS DATE) date
         ,COALESCE(mse.mpa_postingaccountid, mmf.mpa_postingaccountid) mpaPostingAccountId
         ,SUM(COALESCE(mse.amount, mmf.amount)) amount
         FROM vw_moneyflows mmf
