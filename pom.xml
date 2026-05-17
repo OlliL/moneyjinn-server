@@ -34,12 +34,12 @@
         <mybatis-spring.version>4.0.0</mybatis-spring.version>
         <commons.io.version>2.22.0</commons.io.version>
         <commons.codec.version>1.22.0</commons.codec.version>
-        <apache.tika.version>3.3.0</apache.tika.version>
+        <apache.tika.version>4.0.0-alpha-1</apache.tika.version>
         <jjwt.version>0.13.0</jjwt.version>
         <lombok.version>1.18.46</lombok.version>
         <mapstruct.version>1.7.0.Beta1</mapstruct.version>
         <opencsv.version>5.12.0</opencsv.version>
-        <swagger.version>2.2.49</swagger.version>
+        <swagger.version>2.2.50</swagger.version>
         <postgresql.version>42.7.11</postgresql.version>
         <openapi-generator.version>7.22.0</openapi-generator.version>
 
