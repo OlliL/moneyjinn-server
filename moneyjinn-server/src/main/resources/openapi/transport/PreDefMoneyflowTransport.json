@@ -56,6 +56,16 @@
     },
     "postingaccountname": {
       "type": "string"
+    },
+    "isFavorite": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "favoriteColor": {
+      "type": "string"
+    },
+    "favoriteAbbreviation": {
+      "type": "string"
     }
   }
 }

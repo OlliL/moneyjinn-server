@@ -13,6 +13,9 @@
         ,once_a_month           AS onceAMonth
         ,last_used              AS lastUsed
         ,mpa_postingaccountid   AS mpaPostingAccountId
+        ,is_favorite            AS isFavorite
+        ,favorite_color         AS favoriteColor
+        ,favorite_abbreviation  AS favoriteAbbreviation
     ]]></sql>
 
     <select id="getPreDefMoneyflowById" parameterType="java.lang.Long"
@@ -45,6 +48,9 @@
               , comment
               , once_a_month
               , mpa_postingaccountid
+              , is_favorite
+              , favorite_color
+              , favorite_abbreviation
               )
         VALUES
             ( #{mauUserId}
@@ -54,6 +60,9 @@
             , #{comment}
             , #{onceAMonth}
             , #{mpaPostingAccountId}
+            , #{isFavorite}
+            , #{favoriteColor}
+            , #{favoriteAbbreviation}
             )
     </insert>
 
@@ -66,6 +75,9 @@
              , comment               = #{comment}
              , once_a_month          = #{onceAMonth}
              , mpa_postingaccountid  = #{mpaPostingAccountId}
+             , is_favorite           = #{isFavorite}
+             , favorite_color        = #{favoriteColor}
+             , favorite_abbreviation = #{favoriteAbbreviation}
          WHERE predefmoneyflowid = #{id}
            AND mau_userid = #{mauUserId}
     </update>

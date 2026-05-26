@@ -73,4 +73,7 @@ public class PreDefMoneyflow extends AbstractEntity<PreDefMoneyflowID>
     private boolean onceAMonth;
     private LocalDate lastUsedDate;
     private PostingAccount postingAccount;
+    private boolean isFavorite;
+    private String favoriteColor;
+    private String favoriteAbbreviation;
 }

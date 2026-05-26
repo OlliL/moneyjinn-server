@@ -43,4 +43,7 @@ public class PreDefMoneyflowData {
     private int onceAMonth;
     private LocalDate lastUsed;
     private Long mpaPostingAccountId;
+    private int isFavorite;
+    private String favoriteColor;
+    private String favoriteAbbreviation;
 }

@@ -226,7 +226,10 @@ CREATE TABLE predefmoneyflows (
     createdate date DEFAULT '1970-01-01'::date NOT NULL,
     once_a_month smallint DEFAULT '0'::smallint NOT NULL,
     last_used date,
-    mpa_postingaccountid integer NOT NULL
+    mpa_postingaccountid integer NOT NULL,
+    is_favorite smallint DEFAULT 0 NOT NULL,
+    favorite_color character(7),
+    favorite_abbreviation character(2)
 );
 CREATE TABLE settings (
     mau_userid integer NOT NULL,

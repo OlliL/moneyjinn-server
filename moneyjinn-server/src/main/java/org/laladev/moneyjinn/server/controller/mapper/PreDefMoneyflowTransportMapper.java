@@ -53,5 +53,6 @@ public interface PreDefMoneyflowTransportMapper extends IMapstructMapper<PreDefM
     @Mapping(target = "createdate", source = "creationDate")
     @Mapping(target = "lastUsed", source = "lastUsedDate")
     @Mapping(target = "userid", source = "user.id")
+    @Mapping(target = "isFavorite", source = "favorite")
     PreDefMoneyflowTransport mapAToB(PreDefMoneyflow preDefMoneyflow);
 }

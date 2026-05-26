@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
-\restrict GJyLZx8jIaS4kzc7uTpTOK1T8qdSE1FXo3WMeaFs1JFzlznnOiepPZ1DK9BdPn0
+\restrict 8cY39vRMe6z45IMBQOre5a2qYt3sZV4WSn5KBxmEkweBiPHUjcozAoVLN6rq6m2
 
--- Dumped from database version 18.1
--- Dumped by pg_dump version 18.1
+-- Dumped from database version 18.3
+-- Dumped by pg_dump version 18.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1259,7 +1259,10 @@ CREATE TABLE moneyjinn.predefmoneyflows (
     createdate date DEFAULT '1970-01-01'::date NOT NULL,
     once_a_month smallint DEFAULT '0'::smallint NOT NULL,
     last_used date,
-    mpa_postingaccountid integer NOT NULL
+    mpa_postingaccountid integer NOT NULL,
+    is_favorite smallint DEFAULT 0 NOT NULL,
+    favorite_color character(7),
+    favorite_abbreviation character(2)
 );
 
 
@@ -3019,7 +3022,7 @@ GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjin
 -- PostgreSQL database dump complete
 --
 
-\unrestrict GJyLZx8jIaS4kzc7uTpTOK1T8qdSE1FXo3WMeaFs1JFzlznnOiepPZ1DK9BdPn0
+\unrestrict 8cY39vRMe6z45IMBQOre5a2qYt3sZV4WSn5KBxmEkweBiPHUjcozAoVLN6rq6m2
 
 SELECT pg_catalog.set_config('search_path', '', false);
 INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (2, 'Sparda Bank', 'Buchungstag', 'Wertstellungstag', 'Verwendungszweck', NULL, '/^"Buchungstag";"Wertstellungstag";"Verwendungszweck"/', ';', 1, NULL, NULL, 4, 3, 'DD.MM.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
