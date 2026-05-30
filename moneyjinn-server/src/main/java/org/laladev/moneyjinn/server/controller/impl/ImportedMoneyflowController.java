@@ -76,7 +76,6 @@ public class ImportedMoneyflowController extends AbstractController implements I
     private final IMoneyflowService moneyflowService;
     private final IImportedMoneyflowService importedMoneyflowService;
     private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
-    private final IContractpartnerMatchingService contractpartnerMatchingService;
 
     private final ImportedMoneyflowTransportMapper importedMoneyflowTransportMapper;
     private final MoneyflowSplitEntryTransportMapper moneyflowSplitEntryTransportMapper;
