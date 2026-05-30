@@ -13,46 +13,80 @@ SET idle_in_transaction_session_timeout = 0;
 SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
+SELECT pg_catalog.set_config('search_path', '', FALSE);
 SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-ALTER TABLE ONLY moneyjinn.settings DROP CONSTRAINT mst_mau_pk;
-ALTER TABLE ONLY moneyjinn.moneyflowsplitentries DROP CONSTRAINT mse_mpa_pk;
-ALTER TABLE ONLY moneyjinn.moneyflowsplitentries DROP CONSTRAINT mse_mmf_pk;
-ALTER TABLE ONLY moneyjinn.moneyflowreceipts DROP CONSTRAINT mrp_mmf_pk;
-ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT mpm_mpa_pk;
-ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT mpm_mcs_pk;
-ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT mpm_mcp_pk;
-ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT mpm_mau_pk;
-ALTER TABLE ONLY moneyjinn.monthlysettlements DROP CONSTRAINT mms_mcs_pk;
-ALTER TABLE ONLY moneyjinn.monthlysettlements DROP CONSTRAINT mms_mau_pk;
-ALTER TABLE ONLY moneyjinn.monthlysettlements DROP CONSTRAINT mms_mag_pk;
-ALTER TABLE ONLY moneyjinn.moneyflows DROP CONSTRAINT mmf_mpa_pk;
-ALTER TABLE ONLY moneyjinn.moneyflows DROP CONSTRAINT mmf_mcs_pk;
-ALTER TABLE ONLY moneyjinn.moneyflows DROP CONSTRAINT mmf_mcp_pk;
-ALTER TABLE ONLY moneyjinn.moneyflows DROP CONSTRAINT mmf_mau_pk;
-ALTER TABLE ONLY moneyjinn.moneyflows DROP CONSTRAINT mmf_mag_pk;
-ALTER TABLE ONLY moneyjinn.impmonthlysettlements DROP CONSTRAINT mis_mcs_pk;
-ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts DROP CONSTRAINT mir_mau_pk;
-ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts DROP CONSTRAINT mir_mag_pk;
-ALTER TABLE ONLY moneyjinn.impmoneyflows DROP CONSTRAINT mim_mcs_pk;
-ALTER TABLE ONLY moneyjinn.etf DROP CONSTRAINT met_mau_pk;
-ALTER TABLE ONLY moneyjinn.etf DROP CONSTRAINT met_mag_pk;
-ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum DROP CONSTRAINT mep_met_pk;
-ALTER TABLE ONLY moneyjinn.etfflows DROP CONSTRAINT mef_met_pk;
-ALTER TABLE ONLY moneyjinn.capitalsources DROP CONSTRAINT mcs_mau_pk;
-ALTER TABLE ONLY moneyjinn.capitalsources DROP CONSTRAINT mcs_mag_pk;
-ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_mpa_pk;
-ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_mau_pk;
-ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_mag_pk;
-ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_mpa_pk;
-ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_mcp_pk;
-ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT mca_mcp_pk_01;
-ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_mau_pk;
-ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_mag_pk;
+ALTER TABLE ONLY moneyjinn.settings
+    DROP CONSTRAINT mst_mau_pk;
+ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
+    DROP CONSTRAINT mse_mpa_pk;
+ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
+    DROP CONSTRAINT mse_mmf_pk;
+ALTER TABLE ONLY moneyjinn.moneyflowreceipts
+    DROP CONSTRAINT mrp_mmf_pk;
+ALTER TABLE ONLY moneyjinn.predefmoneyflows
+    DROP CONSTRAINT mpm_mpa_pk;
+ALTER TABLE ONLY moneyjinn.predefmoneyflows
+    DROP CONSTRAINT mpm_mcs_pk;
+ALTER TABLE ONLY moneyjinn.predefmoneyflows
+    DROP CONSTRAINT mpm_mcp_pk;
+ALTER TABLE ONLY moneyjinn.predefmoneyflows
+    DROP CONSTRAINT mpm_mau_pk;
+ALTER TABLE ONLY moneyjinn.monthlysettlements
+    DROP CONSTRAINT mms_mcs_pk;
+ALTER TABLE ONLY moneyjinn.monthlysettlements
+    DROP CONSTRAINT mms_mau_pk;
+ALTER TABLE ONLY moneyjinn.monthlysettlements
+    DROP CONSTRAINT mms_mag_pk;
+ALTER TABLE ONLY moneyjinn.moneyflows
+    DROP CONSTRAINT mmf_mpa_pk;
+ALTER TABLE ONLY moneyjinn.moneyflows
+    DROP CONSTRAINT mmf_mcs_pk;
+ALTER TABLE ONLY moneyjinn.moneyflows
+    DROP CONSTRAINT mmf_mcp_pk;
+ALTER TABLE ONLY moneyjinn.moneyflows
+    DROP CONSTRAINT mmf_mau_pk;
+ALTER TABLE ONLY moneyjinn.moneyflows
+    DROP CONSTRAINT mmf_mag_pk;
+ALTER TABLE ONLY moneyjinn.impmonthlysettlements
+    DROP CONSTRAINT mis_mcs_pk;
+ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
+    DROP CONSTRAINT mir_mau_pk;
+ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
+    DROP CONSTRAINT mir_mag_pk;
+ALTER TABLE ONLY moneyjinn.impmoneyflows
+    DROP CONSTRAINT mim_mcs_pk;
+ALTER TABLE ONLY moneyjinn.etf
+    DROP CONSTRAINT met_mau_pk;
+ALTER TABLE ONLY moneyjinn.etf
+    DROP CONSTRAINT met_mag_pk;
+ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
+    DROP CONSTRAINT mep_met_pk;
+ALTER TABLE ONLY moneyjinn.etfflows
+    DROP CONSTRAINT mef_met_pk;
+ALTER TABLE ONLY moneyjinn.capitalsources
+    DROP CONSTRAINT mcs_mau_pk;
+ALTER TABLE ONLY moneyjinn.capitalsources
+    DROP CONSTRAINT mcs_mag_pk;
+ALTER TABLE ONLY moneyjinn.contractpartners
+    DROP CONSTRAINT mcp_mpa_pk;
+ALTER TABLE ONLY moneyjinn.contractpartners
+    DROP CONSTRAINT mcp_mau_pk;
+ALTER TABLE ONLY moneyjinn.contractpartners
+    DROP CONSTRAINT mcp_mag_pk;
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings
+    DROP CONSTRAINT mcm_mpa_pk;
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings
+    DROP CONSTRAINT mcm_mcp_pk;
+ALTER TABLE ONLY moneyjinn.contractpartneraccounts
+    DROP CONSTRAINT mca_mcp_pk_01;
+ALTER TABLE ONLY moneyjinn.access_relation
+    DROP CONSTRAINT mar_mau_pk;
+ALTER TABLE ONLY moneyjinn.access_relation
+    DROP CONSTRAINT mar_mag_pk;
 DROP TRIGGER mpm_trg_01 ON moneyjinn.predefmoneyflows;
 DROP TRIGGER mib_trg_02 ON moneyjinn.impbalance;
 DROP TRIGGER mib_trg_01 ON moneyjinn.impbalance;
@@ -87,72 +121,138 @@ DROP INDEX moneyjinn.mcp_mau_pk;
 DROP INDEX moneyjinn.mcp_mag_pk;
 DROP INDEX moneyjinn.mca_mcp_pk_01;
 DROP INDEX moneyjinn.mar_i_01;
-ALTER TABLE ONLY moneyjinn_hbci.balance_daily DROP CONSTRAINT hbci_i_04;
-ALTER TABLE ONLY moneyjinn_hbci.account_movements DROP CONSTRAINT hbci_i_03;
-ALTER TABLE ONLY moneyjinn_hbci.balance_monthly DROP CONSTRAINT hbci_i_02;
-ALTER TABLE ONLY moneyjinn_hbci.balance_monthly DROP CONSTRAINT balance_monthly_pkey;
-ALTER TABLE ONLY moneyjinn_hbci.balance_daily DROP CONSTRAINT balance_daily_pkey;
-ALTER TABLE ONLY moneyjinn_hbci.account_movements DROP CONSTRAINT account_movements_pkey;
-ALTER TABLE ONLY moneyjinn.settings DROP CONSTRAINT mst_pk;
-ALTER TABLE ONLY moneyjinn.moneyflowsplitentries DROP CONSTRAINT mse_pk;
-ALTER TABLE ONLY moneyjinn.moneyflowreceipts DROP CONSTRAINT mrp_pk;
-ALTER TABLE ONLY moneyjinn.moneyflowreceipts DROP CONSTRAINT mrp_i_01;
-ALTER TABLE ONLY moneyjinn.predefmoneyflows DROP CONSTRAINT mpm_pk;
-ALTER TABLE ONLY moneyjinn.postingaccounts DROP CONSTRAINT mpa_pk;
-ALTER TABLE ONLY moneyjinn.monthlysettlements DROP CONSTRAINT mms_pk;
-ALTER TABLE ONLY moneyjinn.monthlysettlements DROP CONSTRAINT mms_i_01;
-ALTER TABLE ONLY moneyjinn.moneyflows DROP CONSTRAINT mmf_pk;
-ALTER TABLE ONLY moneyjinn.impmonthlysettlements DROP CONSTRAINT mit_pk;
-ALTER TABLE ONLY moneyjinn.impmonthlysettlements DROP CONSTRAINT mit_i_01;
-ALTER TABLE ONLY moneyjinn.imp_mapping_source DROP CONSTRAINT mis_pk;
-ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts DROP CONSTRAINT mir_pk;
-ALTER TABLE ONLY moneyjinn.imp_mapping_partner DROP CONSTRAINT mip_pk;
-ALTER TABLE ONLY moneyjinn.impmoneyflows DROP CONSTRAINT mim_pk;
-ALTER TABLE ONLY moneyjinn.impmoneyflows DROP CONSTRAINT mim_i_01;
-ALTER TABLE ONLY moneyjinn.imp_data DROP CONSTRAINT mid_pk;
-ALTER TABLE ONLY moneyjinn.impbalance DROP CONSTRAINT mib_pk;
-ALTER TABLE ONLY moneyjinn.etfvalues DROP CONSTRAINT mev_pk;
-ALTER TABLE ONLY moneyjinn.etf DROP CONSTRAINT met_pk;
-ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum DROP CONSTRAINT mep_pk;
-ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum DROP CONSTRAINT mep_i_01;
-ALTER TABLE ONLY moneyjinn.etfflows DROP CONSTRAINT mef_pk;
-ALTER TABLE ONLY moneyjinn.capitalsources DROP CONSTRAINT mcs_pk;
-ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_pk;
-ALTER TABLE ONLY moneyjinn.contractpartners DROP CONSTRAINT mcp_i_01;
-ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_pk;
-ALTER TABLE ONLY moneyjinn.contractpartnermatchings DROP CONSTRAINT mcm_i_01;
-ALTER TABLE ONLY moneyjinn.cmp_data_formats DROP CONSTRAINT mcf_pk;
-ALTER TABLE ONLY moneyjinn.cmp_data_formats DROP CONSTRAINT mcf_i_01;
-ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT mca_pk;
-ALTER TABLE ONLY moneyjinn.contractpartneraccounts DROP CONSTRAINT mca_i_01;
-ALTER TABLE ONLY moneyjinn.access_users DROP CONSTRAINT mau_pk;
-ALTER TABLE ONLY moneyjinn.access_users DROP CONSTRAINT mau_i_01;
-ALTER TABLE ONLY moneyjinn.access_relation DROP CONSTRAINT mar_pk;
-ALTER TABLE ONLY moneyjinn.access_groups DROP CONSTRAINT mag_pk;
-ALTER TABLE ONLY moneyjinn.access_groups DROP CONSTRAINT mag_i_01;
-ALTER TABLE moneyjinn_hbci.balance_monthly ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE moneyjinn_hbci.balance_daily ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE moneyjinn_hbci.account_movements ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE moneyjinn.predefmoneyflows ALTER COLUMN predefmoneyflowid DROP DEFAULT;
-ALTER TABLE moneyjinn.postingaccounts ALTER COLUMN postingaccountid DROP DEFAULT;
-ALTER TABLE moneyjinn.monthlysettlements ALTER COLUMN monthlysettlementid DROP DEFAULT;
-ALTER TABLE moneyjinn.moneyflowsplitentries ALTER COLUMN moneyflowsplitentryid DROP DEFAULT;
-ALTER TABLE moneyjinn.moneyflows ALTER COLUMN moneyflowid DROP DEFAULT;
-ALTER TABLE moneyjinn.moneyflowreceipts ALTER COLUMN moneyflowreceiptid DROP DEFAULT;
-ALTER TABLE moneyjinn.impmonthlysettlements ALTER COLUMN impmonthlysettlementid DROP DEFAULT;
-ALTER TABLE moneyjinn.impmoneyflows ALTER COLUMN impmoneyflowid DROP DEFAULT;
-ALTER TABLE moneyjinn.impmoneyflowreceipts ALTER COLUMN impmoneyflowreceiptid DROP DEFAULT;
-ALTER TABLE moneyjinn.imp_data ALTER COLUMN dataid DROP DEFAULT;
-ALTER TABLE moneyjinn.etfpreliminarylumpsum ALTER COLUMN etfpreliminarylumpsumid DROP DEFAULT;
-ALTER TABLE moneyjinn.etfflows ALTER COLUMN etfflowid DROP DEFAULT;
-ALTER TABLE moneyjinn.etf ALTER COLUMN etfid DROP DEFAULT;
-ALTER TABLE moneyjinn.contractpartners ALTER COLUMN contractpartnerid DROP DEFAULT;
-ALTER TABLE moneyjinn.contractpartnermatchings ALTER COLUMN contractpartnermatchingid DROP DEFAULT;
-ALTER TABLE moneyjinn.contractpartneraccounts ALTER COLUMN contractpartneraccountid DROP DEFAULT;
-ALTER TABLE moneyjinn.cmp_data_formats ALTER COLUMN formatid DROP DEFAULT;
-ALTER TABLE moneyjinn.capitalsources ALTER COLUMN capitalsourceid DROP DEFAULT;
-ALTER TABLE moneyjinn.access_users ALTER COLUMN userid DROP DEFAULT;
-ALTER TABLE moneyjinn.access_groups ALTER COLUMN groupid DROP DEFAULT;
+ALTER TABLE ONLY moneyjinn_hbci.balance_daily
+    DROP CONSTRAINT hbci_i_04;
+ALTER TABLE ONLY moneyjinn_hbci.account_movements
+    DROP CONSTRAINT hbci_i_03;
+ALTER TABLE ONLY moneyjinn_hbci.balance_monthly
+    DROP CONSTRAINT hbci_i_02;
+ALTER TABLE ONLY moneyjinn_hbci.balance_monthly
+    DROP CONSTRAINT balance_monthly_pkey;
+ALTER TABLE ONLY moneyjinn_hbci.balance_daily
+    DROP CONSTRAINT balance_daily_pkey;
+ALTER TABLE ONLY moneyjinn_hbci.account_movements
+    DROP CONSTRAINT account_movements_pkey;
+ALTER TABLE ONLY moneyjinn.settings
+    DROP CONSTRAINT mst_pk;
+ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
+    DROP CONSTRAINT mse_pk;
+ALTER TABLE ONLY moneyjinn.moneyflowreceipts
+    DROP CONSTRAINT mrp_pk;
+ALTER TABLE ONLY moneyjinn.moneyflowreceipts
+    DROP CONSTRAINT mrp_i_01;
+ALTER TABLE ONLY moneyjinn.predefmoneyflows
+    DROP CONSTRAINT mpm_pk;
+ALTER TABLE ONLY moneyjinn.postingaccounts
+    DROP CONSTRAINT mpa_pk;
+ALTER TABLE ONLY moneyjinn.monthlysettlements
+    DROP CONSTRAINT mms_pk;
+ALTER TABLE ONLY moneyjinn.monthlysettlements
+    DROP CONSTRAINT mms_i_01;
+ALTER TABLE ONLY moneyjinn.moneyflows
+    DROP CONSTRAINT mmf_pk;
+ALTER TABLE ONLY moneyjinn.impmonthlysettlements
+    DROP CONSTRAINT mit_pk;
+ALTER TABLE ONLY moneyjinn.impmonthlysettlements
+    DROP CONSTRAINT mit_i_01;
+ALTER TABLE ONLY moneyjinn.imp_mapping_source
+    DROP CONSTRAINT mis_pk;
+ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
+    DROP CONSTRAINT mir_pk;
+ALTER TABLE ONLY moneyjinn.imp_mapping_partner
+    DROP CONSTRAINT mip_pk;
+ALTER TABLE ONLY moneyjinn.impmoneyflows
+    DROP CONSTRAINT mim_pk;
+ALTER TABLE ONLY moneyjinn.impmoneyflows
+    DROP CONSTRAINT mim_i_01;
+ALTER TABLE ONLY moneyjinn.imp_data
+    DROP CONSTRAINT mid_pk;
+ALTER TABLE ONLY moneyjinn.impbalance
+    DROP CONSTRAINT mib_pk;
+ALTER TABLE ONLY moneyjinn.etfvalues
+    DROP CONSTRAINT mev_pk;
+ALTER TABLE ONLY moneyjinn.etf
+    DROP CONSTRAINT met_pk;
+ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
+    DROP CONSTRAINT mep_pk;
+ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
+    DROP CONSTRAINT mep_i_01;
+ALTER TABLE ONLY moneyjinn.etfflows
+    DROP CONSTRAINT mef_pk;
+ALTER TABLE ONLY moneyjinn.capitalsources
+    DROP CONSTRAINT mcs_pk;
+ALTER TABLE ONLY moneyjinn.contractpartners
+    DROP CONSTRAINT mcp_pk;
+ALTER TABLE ONLY moneyjinn.contractpartners
+    DROP CONSTRAINT mcp_i_01;
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings
+    DROP CONSTRAINT mcm_pk;
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings
+    DROP CONSTRAINT mcm_i_01;
+ALTER TABLE ONLY moneyjinn.cmp_data_formats
+    DROP CONSTRAINT mcf_pk;
+ALTER TABLE ONLY moneyjinn.cmp_data_formats
+    DROP CONSTRAINT mcf_i_01;
+ALTER TABLE ONLY moneyjinn.contractpartneraccounts
+    DROP CONSTRAINT mca_pk;
+ALTER TABLE ONLY moneyjinn.contractpartneraccounts
+    DROP CONSTRAINT mca_i_01;
+ALTER TABLE ONLY moneyjinn.access_users
+    DROP CONSTRAINT mau_pk;
+ALTER TABLE ONLY moneyjinn.access_users
+    DROP CONSTRAINT mau_i_01;
+ALTER TABLE ONLY moneyjinn.access_relation
+    DROP CONSTRAINT mar_pk;
+ALTER TABLE ONLY moneyjinn.access_groups
+    DROP CONSTRAINT mag_pk;
+ALTER TABLE ONLY moneyjinn.access_groups
+    DROP CONSTRAINT mag_i_01;
+ALTER TABLE moneyjinn_hbci.balance_monthly
+    ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE moneyjinn_hbci.balance_daily
+    ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE moneyjinn_hbci.account_movements
+    ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE moneyjinn.predefmoneyflows
+    ALTER COLUMN predefmoneyflowid DROP DEFAULT;
+ALTER TABLE moneyjinn.postingaccounts
+    ALTER COLUMN postingaccountid DROP DEFAULT;
+ALTER TABLE moneyjinn.monthlysettlements
+    ALTER COLUMN monthlysettlementid DROP DEFAULT;
+ALTER TABLE moneyjinn.moneyflowsplitentries
+    ALTER COLUMN moneyflowsplitentryid DROP DEFAULT;
+ALTER TABLE moneyjinn.moneyflows
+    ALTER COLUMN moneyflowid DROP DEFAULT;
+ALTER TABLE moneyjinn.moneyflowreceipts
+    ALTER COLUMN moneyflowreceiptid DROP DEFAULT;
+ALTER TABLE moneyjinn.impmonthlysettlements
+    ALTER COLUMN impmonthlysettlementid DROP DEFAULT;
+ALTER TABLE moneyjinn.impmoneyflows
+    ALTER COLUMN impmoneyflowid DROP DEFAULT;
+ALTER TABLE moneyjinn.impmoneyflowreceipts
+    ALTER COLUMN impmoneyflowreceiptid DROP DEFAULT;
+ALTER TABLE moneyjinn.imp_data
+    ALTER COLUMN dataid DROP DEFAULT;
+ALTER TABLE moneyjinn.etfpreliminarylumpsum
+    ALTER COLUMN etfpreliminarylumpsumid DROP DEFAULT;
+ALTER TABLE moneyjinn.etfflows
+    ALTER COLUMN etfflowid DROP DEFAULT;
+ALTER TABLE moneyjinn.etf
+    ALTER COLUMN etfid DROP DEFAULT;
+ALTER TABLE moneyjinn.contractpartners
+    ALTER COLUMN contractpartnerid DROP DEFAULT;
+ALTER TABLE moneyjinn.contractpartnermatchings
+    ALTER COLUMN contractpartnermatchingid DROP DEFAULT;
+ALTER TABLE moneyjinn.contractpartneraccounts
+    ALTER COLUMN contractpartneraccountid DROP DEFAULT;
+ALTER TABLE moneyjinn.cmp_data_formats
+    ALTER COLUMN formatid DROP DEFAULT;
+ALTER TABLE moneyjinn.capitalsources
+    ALTER COLUMN capitalsourceid DROP DEFAULT;
+ALTER TABLE moneyjinn.access_users
+    ALTER COLUMN userid DROP DEFAULT;
+ALTER TABLE moneyjinn.access_groups
+    ALTER COLUMN groupid DROP DEFAULT;
 DROP SEQUENCE moneyjinn_hbci.balance_monthly_id_seq;
 DROP TABLE moneyjinn_hbci.balance_monthly;
 DROP SEQUENCE moneyjinn_hbci.balance_daily_id_seq;
@@ -236,12 +336,13 @@ ALTER SCHEMA moneyjinn_hbci OWNER TO postgres;
 -- Name: upd_changedate(); Type: FUNCTION; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE FUNCTION moneyjinn.upd_changedate() RETURNS trigger
+CREATE FUNCTION moneyjinn.upd_changedate() RETURNS TRIGGER
     LANGUAGE plpgsql
-    AS $$
+AS
+$$
 BEGIN
-   NEW.changedate = now(); 
-   RETURN NEW;
+    NEW.changedate = NOW();
+    RETURN NEW;
 END;
 $$;
 
@@ -252,12 +353,13 @@ ALTER FUNCTION moneyjinn.upd_changedate() OWNER TO moneyjinn_owner;
 -- Name: upd_createdate(); Type: FUNCTION; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE FUNCTION moneyjinn.upd_createdate() RETURNS trigger
+CREATE FUNCTION moneyjinn.upd_createdate() RETURNS TRIGGER
     LANGUAGE plpgsql
-    AS $$
+AS
+$$
 BEGIN
-   NEW.createdate = now(); 
-   RETURN NEW;
+    NEW.createdate = NOW();
+    RETURN NEW;
 END;
 $$;
 
@@ -272,13 +374,15 @@ SET default_table_access_method = heap;
 -- Name: access_groups; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.access_groups (
-    groupid bigint NOT NULL,
-    name character varying(20) NOT NULL
+CREATE TABLE moneyjinn.access_groups
+(
+    groupid BIGINT                NOT NULL,
+    name    CHARACTER VARYING(20) NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.access_groups OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.access_groups
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE access_groups; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -312,15 +416,17 @@ ALTER SEQUENCE moneyjinn.access_groups_groupid_seq OWNED BY moneyjinn.access_gro
 -- Name: access_relation; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.access_relation (
-    mau_userid integer NOT NULL,
-    mag_groupid integer NOT NULL,
-    validfrom date NOT NULL,
-    validtil date NOT NULL
+CREATE TABLE moneyjinn.access_relation
+(
+    mau_userid  INTEGER NOT NULL,
+    mag_groupid INTEGER NOT NULL,
+    validfrom   DATE    NOT NULL,
+    validtil    DATE    NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.access_relation OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.access_relation
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE access_relation; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -333,16 +439,18 @@ COMMENT ON TABLE moneyjinn.access_relation IS 'mar';
 -- Name: access_users; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.access_users (
-    userid bigint NOT NULL,
-    name character varying(20) NOT NULL,
-    password character varying(60) NOT NULL,
-    role character varying(8) NOT NULL,
-    change_password smallint NOT NULL
+CREATE TABLE moneyjinn.access_users
+(
+    userid          BIGINT                NOT NULL,
+    name            CHARACTER VARYING(20) NOT NULL,
+    password        CHARACTER VARYING(60) NOT NULL,
+    role            CHARACTER VARYING(8)  NOT NULL,
+    change_password SMALLINT              NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.access_users OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.access_users
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE access_users; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -376,23 +484,25 @@ ALTER SEQUENCE moneyjinn.access_users_userid_seq OWNED BY moneyjinn.access_users
 -- Name: capitalsources; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.capitalsources (
-    capitalsourceid bigint NOT NULL,
-    mau_userid integer NOT NULL,
-    mag_groupid integer NOT NULL,
-    type smallint DEFAULT '1'::smallint NOT NULL,
-    state smallint DEFAULT '1'::smallint NOT NULL,
-    accountnumber character varying(34) DEFAULT NULL::character varying,
-    bankcode character varying(11) DEFAULT NULL::character varying,
-    comment character varying(255) NOT NULL,
-    validtil date DEFAULT '2999-12-31'::date NOT NULL,
-    validfrom date DEFAULT '1970-01-01'::date NOT NULL,
-    att_group_use smallint DEFAULT '0'::smallint NOT NULL,
-    import_allowed smallint DEFAULT '0'::smallint NOT NULL
+CREATE TABLE moneyjinn.capitalsources
+(
+    capitalsourceid BIGINT                                           NOT NULL,
+    mau_userid      INTEGER                                          NOT NULL,
+    mag_groupid     INTEGER                                          NOT NULL,
+    type            SMALLINT              DEFAULT '1'::SMALLINT      NOT NULL,
+    state           SMALLINT              DEFAULT '1'::SMALLINT      NOT NULL,
+    accountnumber   CHARACTER VARYING(34) DEFAULT NULL::CHARACTER VARYING,
+    bankcode        CHARACTER VARYING(11) DEFAULT NULL::CHARACTER VARYING,
+    comment         CHARACTER VARYING(255)                           NOT NULL,
+    validtil        DATE                  DEFAULT '2999-12-31'::DATE NOT NULL,
+    validfrom       DATE                  DEFAULT '1970-01-01'::DATE NOT NULL,
+    att_group_use   SMALLINT              DEFAULT '0'::SMALLINT      NOT NULL,
+    import_allowed  SMALLINT              DEFAULT '0'::SMALLINT      NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.capitalsources OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.capitalsources
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE capitalsources; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -426,32 +536,34 @@ ALTER SEQUENCE moneyjinn.capitalsources_capitalsourceid_seq OWNED BY moneyjinn.c
 -- Name: cmp_data_formats; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.cmp_data_formats (
-    formatid bigint NOT NULL,
-    name character varying(50) NOT NULL,
-    start_trigger_0 character varying(50) DEFAULT NULL::character varying,
-    start_trigger_1 character varying(50) DEFAULT NULL::character varying,
-    start_trigger_2 character varying(50) DEFAULT NULL::character varying,
-    end_trigger_0 character varying(50) DEFAULT NULL::character varying,
-    startline character varying(255) NOT NULL,
-    delimiter character varying(1) NOT NULL,
-    pos_date smallint NOT NULL,
-    pos_invoicedate smallint,
-    pos_partner smallint,
-    pos_amount smallint NOT NULL,
-    pos_comment smallint,
-    fmt_date character varying(10) NOT NULL,
-    fmt_amount_decimal character varying(1) NOT NULL,
-    fmt_amount_thousand character varying(1) DEFAULT NULL::character varying,
-    pos_partner_alt smallint,
-    pos_partner_alt_pos_key smallint,
-    pos_partner_alt_keyword character varying(255) DEFAULT NULL::character varying,
-    pos_credit_debit_indicator smallint,
-    credit_indicator character varying(2) DEFAULT NULL::character varying
+CREATE TABLE moneyjinn.cmp_data_formats
+(
+    formatid                   BIGINT                 NOT NULL,
+    name                       CHARACTER VARYING(50)  NOT NULL,
+    start_trigger_0            CHARACTER VARYING(50)  DEFAULT NULL::CHARACTER VARYING,
+    start_trigger_1            CHARACTER VARYING(50)  DEFAULT NULL::CHARACTER VARYING,
+    start_trigger_2            CHARACTER VARYING(50)  DEFAULT NULL::CHARACTER VARYING,
+    end_trigger_0              CHARACTER VARYING(50)  DEFAULT NULL::CHARACTER VARYING,
+    startline                  CHARACTER VARYING(255) NOT NULL,
+    delimiter                  CHARACTER VARYING(1)   NOT NULL,
+    pos_date                   SMALLINT               NOT NULL,
+    pos_invoicedate            SMALLINT,
+    pos_partner                SMALLINT,
+    pos_amount                 SMALLINT               NOT NULL,
+    pos_comment                SMALLINT,
+    fmt_date                   CHARACTER VARYING(10)  NOT NULL,
+    fmt_amount_decimal         CHARACTER VARYING(1)   NOT NULL,
+    fmt_amount_thousand        CHARACTER VARYING(1)   DEFAULT NULL::CHARACTER VARYING,
+    pos_partner_alt            SMALLINT,
+    pos_partner_alt_pos_key    SMALLINT,
+    pos_partner_alt_keyword    CHARACTER VARYING(255) DEFAULT NULL::CHARACTER VARYING,
+    pos_credit_debit_indicator SMALLINT,
+    credit_indicator           CHARACTER VARYING(2)   DEFAULT NULL::CHARACTER VARYING
 );
 
 
-ALTER TABLE moneyjinn.cmp_data_formats OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.cmp_data_formats
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE cmp_data_formats; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -485,15 +597,17 @@ ALTER SEQUENCE moneyjinn.cmp_data_formats_formatid_seq OWNED BY moneyjinn.cmp_da
 -- Name: contractpartneraccounts; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.contractpartneraccounts (
-    contractpartneraccountid bigint NOT NULL,
-    mcp_contractpartnerid integer NOT NULL,
-    accountnumber character varying(34) NOT NULL,
-    bankcode character varying(11) DEFAULT NULL::character varying
+CREATE TABLE moneyjinn.contractpartneraccounts
+(
+    contractpartneraccountid BIGINT                NOT NULL,
+    mcp_contractpartnerid    INTEGER               NOT NULL,
+    accountnumber            CHARACTER VARYING(34) NOT NULL,
+    bankcode                 CHARACTER VARYING(11) DEFAULT NULL::CHARACTER VARYING
 );
 
 
-ALTER TABLE moneyjinn.contractpartneraccounts OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.contractpartneraccounts
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE contractpartneraccounts; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -527,16 +641,18 @@ ALTER SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq OW
 -- Name: contractpartnermatchings; Type: TABLE; Schema: moneyjinn; Owner: admin
 --
 
-CREATE TABLE moneyjinn.contractpartnermatchings (
-    contractpartnermatchingid bigint NOT NULL,
-    mcp_contractpartnerid integer NOT NULL,
-    matching_text character varying(50) NOT NULL,
-    mmf_comment character varying(100),
-    mpa_postingaccountid integer
+CREATE TABLE moneyjinn.contractpartnermatchings
+(
+    contractpartnermatchingid BIGINT                NOT NULL,
+    mcp_contractpartnerid     INTEGER               NOT NULL,
+    matching_text             CHARACTER VARYING(50) NOT NULL,
+    mmf_comment               CHARACTER VARYING(100),
+    mpa_postingaccountid      INTEGER
 );
 
 
-ALTER TABLE moneyjinn.contractpartnermatchings OWNER TO admin;
+ALTER TABLE moneyjinn.contractpartnermatchings
+    OWNER TO admin;
 
 --
 -- Name: TABLE contractpartnermatchings; Type: COMMENT; Schema: moneyjinn; Owner: admin
@@ -570,23 +686,25 @@ ALTER SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq 
 -- Name: contractpartners; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.contractpartners (
-    contractpartnerid bigint NOT NULL,
-    mau_userid integer NOT NULL,
-    mag_groupid integer NOT NULL,
-    name character varying(100) DEFAULT ''::character varying NOT NULL,
-    street character varying(100) DEFAULT ''::character varying,
-    postcode integer DEFAULT 0,
-    town character varying(100) DEFAULT ''::character varying,
-    country character varying(100) DEFAULT ''::character varying,
-    validfrom date NOT NULL,
-    validtil date NOT NULL,
-    mmf_comment character varying(100) DEFAULT NULL::character varying,
-    mpa_postingaccountid integer
+CREATE TABLE moneyjinn.contractpartners
+(
+    contractpartnerid    BIGINT                                               NOT NULL,
+    mau_userid           INTEGER                                              NOT NULL,
+    mag_groupid          INTEGER                                              NOT NULL,
+    name                 CHARACTER VARYING(100) DEFAULT ''::CHARACTER VARYING NOT NULL,
+    street               CHARACTER VARYING(100) DEFAULT ''::CHARACTER VARYING,
+    postcode             INTEGER                DEFAULT 0,
+    town                 CHARACTER VARYING(100) DEFAULT ''::CHARACTER VARYING,
+    country              CHARACTER VARYING(100) DEFAULT ''::CHARACTER VARYING,
+    validfrom            DATE                                                 NOT NULL,
+    validtil             DATE                                                 NOT NULL,
+    mmf_comment          CHARACTER VARYING(100) DEFAULT NULL::CHARACTER VARYING,
+    mpa_postingaccountid INTEGER
 );
 
 
-ALTER TABLE moneyjinn.contractpartners OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.contractpartners
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE contractpartners; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -620,23 +738,25 @@ ALTER SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq OWNED BY moneyji
 -- Name: etf; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.etf (
-    etfid bigint NOT NULL,
-    mau_userid integer NOT NULL,
-    mag_groupid integer NOT NULL,
-    isin character varying(30) NOT NULL,
-    name character varying(60) NOT NULL,
-    wkn character varying(10) NOT NULL,
-    ticker character varying(10) NOT NULL,
-    chart_url character varying(255) DEFAULT NULL::character varying,
-    trans_cost_abs numeric(5,2) DEFAULT NULL::numeric,
-    trans_cost_rel numeric(5,2) DEFAULT NULL::numeric,
-    trans_cost_max numeric(8,2) DEFAULT NULL::numeric,
-    part_tax_exempt numeric(5,2) DEFAULT NULL::numeric
+CREATE TABLE moneyjinn.etf
+(
+    etfid           BIGINT                NOT NULL,
+    mau_userid      INTEGER               NOT NULL,
+    mag_groupid     INTEGER               NOT NULL,
+    isin            CHARACTER VARYING(30) NOT NULL,
+    name            CHARACTER VARYING(60) NOT NULL,
+    wkn             CHARACTER VARYING(10) NOT NULL,
+    ticker          CHARACTER VARYING(10) NOT NULL,
+    chart_url       CHARACTER VARYING(255) DEFAULT NULL::CHARACTER VARYING,
+    trans_cost_abs  NUMERIC(5, 2)          DEFAULT NULL::NUMERIC,
+    trans_cost_rel  NUMERIC(5, 2)          DEFAULT NULL::NUMERIC,
+    trans_cost_max  NUMERIC(8, 2)          DEFAULT NULL::NUMERIC,
+    part_tax_exempt NUMERIC(5, 2)          DEFAULT NULL::NUMERIC
 );
 
 
-ALTER TABLE moneyjinn.etf OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.etf
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE etf; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -670,16 +790,18 @@ ALTER SEQUENCE moneyjinn.etf_etfid_seq OWNED BY moneyjinn.etf.etfid;
 -- Name: etfflows; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.etfflows (
-    etfflowid bigint NOT NULL,
-    met_etfid integer NOT NULL,
-    flowdate timestamp without time zone NOT NULL,
-    amount numeric(12,6) NOT NULL,
-    price numeric(11,6) NOT NULL
+CREATE TABLE moneyjinn.etfflows
+(
+    etfflowid BIGINT                      NOT NULL,
+    met_etfid INTEGER                     NOT NULL,
+    flowdate  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    amount    NUMERIC(12, 6)              NOT NULL,
+    price     NUMERIC(11, 6)              NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.etfflows OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.etfflows
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE etfflows; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -713,28 +835,30 @@ ALTER SEQUENCE moneyjinn.etfflows_etfflowid_seq OWNED BY moneyjinn.etfflows.etff
 -- Name: etfpreliminarylumpsum; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.etfpreliminarylumpsum (
-    etfpreliminarylumpsumid bigint NOT NULL,
-    met_etfid integer NOT NULL,
-    year smallint NOT NULL,
-    type smallint NOT NULL,
-    amount_per_piece numeric(12,8) DEFAULT NULL::numeric,
-    amount01 numeric(8,2) DEFAULT NULL::numeric,
-    amount02 numeric(8,2) DEFAULT NULL::numeric,
-    amount03 numeric(8,2) DEFAULT NULL::numeric,
-    amount04 numeric(8,2) DEFAULT NULL::numeric,
-    amount05 numeric(8,2) DEFAULT NULL::numeric,
-    amount06 numeric(8,2) DEFAULT NULL::numeric,
-    amount07 numeric(8,2) DEFAULT NULL::numeric,
-    amount08 numeric(8,2) DEFAULT NULL::numeric,
-    amount09 numeric(8,2) DEFAULT NULL::numeric,
-    amount10 numeric(8,2) DEFAULT NULL::numeric,
-    amount11 numeric(8,2) DEFAULT NULL::numeric,
-    amount12 numeric(8,2) DEFAULT NULL::numeric
+CREATE TABLE moneyjinn.etfpreliminarylumpsum
+(
+    etfpreliminarylumpsumid BIGINT   NOT NULL,
+    met_etfid               INTEGER  NOT NULL,
+    year                    SMALLINT NOT NULL,
+    type                    SMALLINT NOT NULL,
+    amount_per_piece        NUMERIC(12, 8) DEFAULT NULL::NUMERIC,
+    amount01                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount02                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount03                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount04                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount05                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount06                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount07                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount08                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount09                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount10                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount11                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC,
+    amount12                NUMERIC(8, 2)  DEFAULT NULL::NUMERIC
 );
 
 
-ALTER TABLE moneyjinn.etfpreliminarylumpsum OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.etfpreliminarylumpsum
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE etfpreliminarylumpsum; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -768,16 +892,18 @@ ALTER SEQUENCE moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq OWNED
 -- Name: etfvalues; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.etfvalues (
-    isin character varying(30) NOT NULL,
-    date date NOT NULL,
-    buy_price numeric(10,3) NOT NULL,
-    sell_price numeric(10,3) NOT NULL,
-    changedate timestamp without time zone NOT NULL
+CREATE TABLE moneyjinn.etfvalues
+(
+    isin       CHARACTER VARYING(30)       NOT NULL,
+    date       DATE                        NOT NULL,
+    buy_price  NUMERIC(10, 3)              NOT NULL,
+    sell_price NUMERIC(10, 3)              NOT NULL,
+    changedate TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.etfvalues OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.etfvalues
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE etfvalues; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -790,18 +916,20 @@ COMMENT ON TABLE moneyjinn.etfvalues IS 'mev';
 -- Name: imp_data; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.imp_data (
-    dataid bigint NOT NULL,
-    date character varying(10) NOT NULL,
-    amount character varying(20) NOT NULL,
-    source character varying(100) NOT NULL,
-    partner character varying(100) NOT NULL,
-    comment character varying(100) NOT NULL,
-    status smallint DEFAULT '1'::smallint NOT NULL
+CREATE TABLE moneyjinn.imp_data
+(
+    dataid  BIGINT                         NOT NULL,
+    date    CHARACTER VARYING(10)          NOT NULL,
+    amount  CHARACTER VARYING(20)          NOT NULL,
+    source  CHARACTER VARYING(100)         NOT NULL,
+    partner CHARACTER VARYING(100)         NOT NULL,
+    comment CHARACTER VARYING(100)         NOT NULL,
+    status  SMALLINT DEFAULT '1'::SMALLINT NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.imp_data OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.imp_data
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE imp_data; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -835,13 +963,15 @@ ALTER SEQUENCE moneyjinn.imp_data_dataid_seq OWNED BY moneyjinn.imp_data.dataid;
 -- Name: imp_mapping_partner; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.imp_mapping_partner (
-    partner_from character varying(100) NOT NULL,
-    partner_to character varying(100) NOT NULL
+CREATE TABLE moneyjinn.imp_mapping_partner
+(
+    partner_from CHARACTER VARYING(100) NOT NULL,
+    partner_to   CHARACTER VARYING(100) NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.imp_mapping_partner OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.imp_mapping_partner
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE imp_mapping_partner; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -854,13 +984,15 @@ COMMENT ON TABLE moneyjinn.imp_mapping_partner IS 'mip';
 -- Name: imp_mapping_source; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.imp_mapping_source (
-    source_from character varying(100) NOT NULL,
-    source_to character varying(100) NOT NULL
+CREATE TABLE moneyjinn.imp_mapping_source
+(
+    source_from CHARACTER VARYING(100) NOT NULL,
+    source_to   CHARACTER VARYING(100) NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.imp_mapping_source OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.imp_mapping_source
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE imp_mapping_source; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -873,14 +1005,16 @@ COMMENT ON TABLE moneyjinn.imp_mapping_source IS 'mis';
 -- Name: impbalance; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.impbalance (
-    mcs_capitalsourceid integer NOT NULL,
-    balance numeric(8,2) NOT NULL,
-    changedate timestamp without time zone NOT NULL
+CREATE TABLE moneyjinn.impbalance
+(
+    mcs_capitalsourceid INTEGER                     NOT NULL,
+    balance             NUMERIC(8, 2)               NOT NULL,
+    changedate          TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.impbalance OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.impbalance
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE impbalance; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -893,17 +1027,19 @@ COMMENT ON TABLE moneyjinn.impbalance IS 'mib';
 -- Name: impmoneyflowreceipts; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.impmoneyflowreceipts (
-    impmoneyflowreceiptid bigint NOT NULL,
-    mau_userid integer NOT NULL,
-    mag_groupid integer NOT NULL,
-    receipt bytea NOT NULL,
-    filename character varying(255) NOT NULL,
-    mediatype character varying(255) NOT NULL
+CREATE TABLE moneyjinn.impmoneyflowreceipts
+(
+    impmoneyflowreceiptid BIGINT                 NOT NULL,
+    mau_userid            INTEGER                NOT NULL,
+    mag_groupid           INTEGER                NOT NULL,
+    receipt               bytea                  NOT NULL,
+    filename              CHARACTER VARYING(255) NOT NULL,
+    mediatype             CHARACTER VARYING(255) NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.impmoneyflowreceipts OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.impmoneyflowreceipts
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE impmoneyflowreceipts; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -937,22 +1073,24 @@ ALTER SEQUENCE moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq OWNED BY
 -- Name: impmoneyflows; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.impmoneyflows (
-    impmoneyflowid bigint NOT NULL,
-    externalid character varying(10) NOT NULL,
-    mcs_capitalsourceid integer NOT NULL,
-    bookingdate date NOT NULL,
-    invoicedate date NOT NULL,
-    name character varying(100) NOT NULL,
-    accountnumber character varying(34) NOT NULL,
-    bankcode character varying(11) NOT NULL,
-    comment character varying(512) DEFAULT NULL::character varying,
-    amount numeric(8,2) NOT NULL,
-    status smallint DEFAULT '0'::smallint NOT NULL
+CREATE TABLE moneyjinn.impmoneyflows
+(
+    impmoneyflowid      BIGINT                                       NOT NULL,
+    externalid          CHARACTER VARYING(10)                        NOT NULL,
+    mcs_capitalsourceid INTEGER                                      NOT NULL,
+    bookingdate         DATE                                         NOT NULL,
+    invoicedate         DATE                                         NOT NULL,
+    name                CHARACTER VARYING(100)                       NOT NULL,
+    accountnumber       CHARACTER VARYING(34)                        NOT NULL,
+    bankcode            CHARACTER VARYING(11)                        NOT NULL,
+    comment             CHARACTER VARYING(512) DEFAULT NULL::CHARACTER VARYING,
+    amount              NUMERIC(8, 2)                                NOT NULL,
+    status              SMALLINT               DEFAULT '0'::SMALLINT NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.impmoneyflows OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.impmoneyflows
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE impmoneyflows; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -986,17 +1124,19 @@ ALTER SEQUENCE moneyjinn.impmoneyflows_impmoneyflowid_seq OWNED BY moneyjinn.imp
 -- Name: impmonthlysettlements; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.impmonthlysettlements (
-    impmonthlysettlementid bigint NOT NULL,
-    externalid character varying(10) NOT NULL,
-    mcs_capitalsourceid integer NOT NULL,
-    month smallint NOT NULL,
-    year smallint NOT NULL,
-    amount numeric(8,2) NOT NULL
+CREATE TABLE moneyjinn.impmonthlysettlements
+(
+    impmonthlysettlementid BIGINT                NOT NULL,
+    externalid             CHARACTER VARYING(10) NOT NULL,
+    mcs_capitalsourceid    INTEGER               NOT NULL,
+    month                  SMALLINT              NOT NULL,
+    year                   SMALLINT              NOT NULL,
+    amount                 NUMERIC(8, 2)         NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.impmonthlysettlements OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.impmonthlysettlements
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE impmonthlysettlements; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -1030,15 +1170,17 @@ ALTER SEQUENCE moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq OWNED 
 -- Name: moneyflowreceipts; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.moneyflowreceipts (
-    moneyflowreceiptid bigint NOT NULL,
-    mmf_moneyflowid integer NOT NULL,
-    receipt bytea NOT NULL,
-    receipt_type smallint DEFAULT '1'::smallint NOT NULL
+CREATE TABLE moneyjinn.moneyflowreceipts
+(
+    moneyflowreceiptid BIGINT                         NOT NULL,
+    mmf_moneyflowid    INTEGER                        NOT NULL,
+    receipt            bytea                          NOT NULL,
+    receipt_type       SMALLINT DEFAULT '1'::SMALLINT NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.moneyflowreceipts OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.moneyflowreceipts
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE moneyflowreceipts; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -1072,22 +1214,24 @@ ALTER SEQUENCE moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq OWNED BY money
 -- Name: moneyflows; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.moneyflows (
-    moneyflowid bigint NOT NULL,
-    mau_userid integer NOT NULL,
-    mag_groupid integer NOT NULL,
-    bookingdate date DEFAULT '1970-01-01'::date NOT NULL,
-    invoicedate date DEFAULT '1970-01-01'::date NOT NULL,
-    amount numeric(8,2) DEFAULT 0.00 NOT NULL,
-    mcs_capitalsourceid integer NOT NULL,
-    mcp_contractpartnerid integer NOT NULL,
-    comment character varying(100) DEFAULT ''::character varying NOT NULL,
-    mpa_postingaccountid integer NOT NULL,
-    private smallint DEFAULT '0'::smallint NOT NULL
+CREATE TABLE moneyjinn.moneyflows
+(
+    moneyflowid           BIGINT                                               NOT NULL,
+    mau_userid            INTEGER                                              NOT NULL,
+    mag_groupid           INTEGER                                              NOT NULL,
+    bookingdate           DATE                   DEFAULT '1970-01-01'::DATE    NOT NULL,
+    invoicedate           DATE                   DEFAULT '1970-01-01'::DATE    NOT NULL,
+    amount                NUMERIC(8, 2)          DEFAULT 0.00                  NOT NULL,
+    mcs_capitalsourceid   INTEGER                                              NOT NULL,
+    mcp_contractpartnerid INTEGER                                              NOT NULL,
+    comment               CHARACTER VARYING(100) DEFAULT ''::CHARACTER VARYING NOT NULL,
+    mpa_postingaccountid  INTEGER                                              NOT NULL,
+    private               SMALLINT               DEFAULT '0'::SMALLINT         NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.moneyflows OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.moneyflows
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE moneyflows; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -1121,16 +1265,18 @@ ALTER SEQUENCE moneyjinn.moneyflows_moneyflowid_seq OWNED BY moneyjinn.moneyflow
 -- Name: moneyflowsplitentries; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.moneyflowsplitentries (
-    moneyflowsplitentryid bigint NOT NULL,
-    mmf_moneyflowid integer NOT NULL,
-    amount numeric(8,2) NOT NULL,
-    comment character varying(100) NOT NULL,
-    mpa_postingaccountid integer NOT NULL
+CREATE TABLE moneyjinn.moneyflowsplitentries
+(
+    moneyflowsplitentryid BIGINT                 NOT NULL,
+    mmf_moneyflowid       INTEGER                NOT NULL,
+    amount                NUMERIC(8, 2)          NOT NULL,
+    comment               CHARACTER VARYING(100) NOT NULL,
+    mpa_postingaccountid  INTEGER                NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.moneyflowsplitentries OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.moneyflowsplitentries
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE moneyflowsplitentries; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -1164,18 +1310,20 @@ ALTER SEQUENCE moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq OWNED B
 -- Name: monthlysettlements; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.monthlysettlements (
-    monthlysettlementid bigint NOT NULL,
-    mau_userid integer NOT NULL,
-    mag_groupid integer NOT NULL,
-    mcs_capitalsourceid integer NOT NULL,
-    month smallint NOT NULL,
-    year smallint NOT NULL,
-    amount numeric(8,2) NOT NULL
+CREATE TABLE moneyjinn.monthlysettlements
+(
+    monthlysettlementid BIGINT        NOT NULL,
+    mau_userid          INTEGER       NOT NULL,
+    mag_groupid         INTEGER       NOT NULL,
+    mcs_capitalsourceid INTEGER       NOT NULL,
+    month               SMALLINT      NOT NULL,
+    year                SMALLINT      NOT NULL,
+    amount              NUMERIC(8, 2) NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.monthlysettlements OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.monthlysettlements
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE monthlysettlements; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -1209,13 +1357,15 @@ ALTER SEQUENCE moneyjinn.monthlysettlements_monthlysettlementid_seq OWNED BY mon
 -- Name: postingaccounts; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.postingaccounts (
-    postingaccountid bigint NOT NULL,
-    postingaccountname character varying(60) NOT NULL
+CREATE TABLE moneyjinn.postingaccounts
+(
+    postingaccountid   BIGINT                NOT NULL,
+    postingaccountname CHARACTER VARYING(60) NOT NULL
 );
 
 
-ALTER TABLE moneyjinn.postingaccounts OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.postingaccounts
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE postingaccounts; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -1249,24 +1399,26 @@ ALTER SEQUENCE moneyjinn.postingaccounts_postingaccountid_seq OWNED BY moneyjinn
 -- Name: predefmoneyflows; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.predefmoneyflows (
-    predefmoneyflowid bigint NOT NULL,
-    mau_userid integer NOT NULL,
-    amount numeric(8,2) DEFAULT 0.00 NOT NULL,
-    mcs_capitalsourceid integer NOT NULL,
-    mcp_contractpartnerid integer NOT NULL,
-    comment character varying(100) DEFAULT ''::character varying NOT NULL,
-    createdate date DEFAULT '1970-01-01'::date NOT NULL,
-    once_a_month smallint DEFAULT '0'::smallint NOT NULL,
-    last_used date,
-    mpa_postingaccountid integer NOT NULL,
-    is_favorite smallint DEFAULT 0 NOT NULL,
-    favorite_color character(7),
-    favorite_abbreviation character(2)
+CREATE TABLE moneyjinn.predefmoneyflows
+(
+    predefmoneyflowid     BIGINT                                               NOT NULL,
+    mau_userid            INTEGER                                              NOT NULL,
+    amount                NUMERIC(8, 2)          DEFAULT 0.00                  NOT NULL,
+    mcs_capitalsourceid   INTEGER                                              NOT NULL,
+    mcp_contractpartnerid INTEGER                                              NOT NULL,
+    comment               CHARACTER VARYING(100) DEFAULT ''::CHARACTER VARYING NOT NULL,
+    createdate            DATE                   DEFAULT '1970-01-01'::DATE    NOT NULL,
+    once_a_month          SMALLINT               DEFAULT '0'::SMALLINT         NOT NULL,
+    last_used             DATE,
+    mpa_postingaccountid  INTEGER                                              NOT NULL,
+    is_favorite           SMALLINT               DEFAULT 0                     NOT NULL,
+    favorite_color        CHARACTER(7),
+    favorite_abbreviation CHARACTER(3)
 );
 
 
-ALTER TABLE moneyjinn.predefmoneyflows OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.predefmoneyflows
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE predefmoneyflows; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -1300,14 +1452,16 @@ ALTER SEQUENCE moneyjinn.predefmoneyflows_predefmoneyflowid_seq OWNED BY moneyji
 -- Name: settings; Type: TABLE; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TABLE moneyjinn.settings (
-    mau_userid integer NOT NULL,
-    name character varying(50) DEFAULT ''::character varying NOT NULL,
-    value character varying(2048) DEFAULT NULL::character varying
+CREATE TABLE moneyjinn.settings
+(
+    mau_userid INTEGER                                               NOT NULL,
+    name       CHARACTER VARYING(50)   DEFAULT ''::CHARACTER VARYING NOT NULL,
+    value      CHARACTER VARYING(2048) DEFAULT NULL::CHARACTER VARYING
 );
 
 
-ALTER TABLE moneyjinn.settings OWNER TO moneyjinn_owner;
+ALTER TABLE moneyjinn.settings
+    OWNER TO moneyjinn_owner;
 
 --
 -- Name: TABLE settings; Type: COMMENT; Schema: moneyjinn; Owner: moneyjinn_owner
@@ -1321,24 +1475,24 @@ COMMENT ON TABLE moneyjinn.settings IS 'mst';
 --
 
 CREATE VIEW moneyjinn.vw_capitalsources WITH (security_invoker='true') AS
- SELECT mcs.mau_userid,
-    mar.mau_userid AS mar_mau_userid,
-    mcs.mag_groupid,
-    mcs.capitalsourceid,
-    mcs.type,
-    mcs.state,
-    mcs.accountnumber,
-    mcs.bankcode,
-    mcs.comment,
-    mcs.validtil,
-    mcs.validfrom,
-    mcs.att_group_use,
-    mcs.import_allowed,
-    mar.validfrom AS maf_validfrom,
-    mar.validtil AS maf_validtil
-   FROM moneyjinn.capitalsources mcs,
-    moneyjinn.access_relation mar
-  WHERE (mcs.mag_groupid = mar.mag_groupid);
+SELECT mcs.mau_userid
+     , mar.mau_userid AS mar_mau_userid
+     , mcs.mag_groupid
+     , mcs.capitalsourceid
+     , mcs.type
+     , mcs.state
+     , mcs.accountnumber
+     , mcs.bankcode
+     , mcs.comment
+     , mcs.validtil
+     , mcs.validfrom
+     , mcs.att_group_use
+     , mcs.import_allowed
+     , mar.validfrom  AS maf_validfrom
+     , mar.validtil   AS maf_validtil
+  FROM moneyjinn.capitalsources mcs
+     , moneyjinn.access_relation mar
+ WHERE (mcs.mag_groupid = mar.mag_groupid);
 
 
 ALTER VIEW moneyjinn.vw_capitalsources OWNER TO postgres;
@@ -1348,24 +1502,24 @@ ALTER VIEW moneyjinn.vw_capitalsources OWNER TO postgres;
 --
 
 CREATE VIEW moneyjinn.vw_contractpartners WITH (security_invoker='true') AS
- SELECT mcp.mau_userid,
-    mar.mau_userid AS mar_mau_userid,
-    mcp.mag_groupid,
-    mcp.contractpartnerid,
-    mcp.name,
-    mcp.street,
-    mcp.postcode,
-    mcp.town,
-    mcp.country,
-    mcp.validfrom,
-    mcp.validtil,
-    mcp.mmf_comment,
-    mcp.mpa_postingaccountid,
-    mar.validfrom AS maf_validfrom,
-    mar.validtil AS maf_validtil
-   FROM moneyjinn.contractpartners mcp,
-    moneyjinn.access_relation mar
-  WHERE (mcp.mag_groupid = mar.mag_groupid);
+SELECT mcp.mau_userid
+     , mar.mau_userid AS mar_mau_userid
+     , mcp.mag_groupid
+     , mcp.contractpartnerid
+     , mcp.name
+     , mcp.street
+     , mcp.postcode
+     , mcp.town
+     , mcp.country
+     , mcp.validfrom
+     , mcp.validtil
+     , mcp.mmf_comment
+     , mcp.mpa_postingaccountid
+     , mar.validfrom  AS maf_validfrom
+     , mar.validtil   AS maf_validtil
+  FROM moneyjinn.contractpartners mcp
+     , moneyjinn.access_relation mar
+ WHERE (mcp.mag_groupid = mar.mag_groupid);
 
 
 ALTER VIEW moneyjinn.vw_contractpartners OWNER TO postgres;
@@ -1375,24 +1529,24 @@ ALTER VIEW moneyjinn.vw_contractpartners OWNER TO postgres;
 --
 
 CREATE VIEW moneyjinn.vw_etf WITH (security_invoker='true') AS
- SELECT met.mau_userid,
-    mar.mau_userid AS mar_mau_userid,
-    met.mag_groupid,
-    met.etfid,
-    met.isin,
-    met.name,
-    met.wkn,
-    met.ticker,
-    met.chart_url,
-    met.trans_cost_abs,
-    met.trans_cost_rel,
-    met.trans_cost_max,
-    met.part_tax_exempt,
-    mar.validfrom AS maf_validfrom,
-    mar.validtil AS maf_validtil
-   FROM moneyjinn.etf met,
-    moneyjinn.access_relation mar
-  WHERE (met.mag_groupid = mar.mag_groupid);
+SELECT met.mau_userid
+     , mar.mau_userid AS mar_mau_userid
+     , met.mag_groupid
+     , met.etfid
+     , met.isin
+     , met.name
+     , met.wkn
+     , met.ticker
+     , met.chart_url
+     , met.trans_cost_abs
+     , met.trans_cost_rel
+     , met.trans_cost_max
+     , met.part_tax_exempt
+     , mar.validfrom  AS maf_validfrom
+     , mar.validtil   AS maf_validtil
+  FROM moneyjinn.etf met
+     , moneyjinn.access_relation mar
+ WHERE (met.mag_groupid = mar.mag_groupid);
 
 
 ALTER VIEW moneyjinn.vw_etf OWNER TO postgres;
@@ -1402,21 +1556,22 @@ ALTER VIEW moneyjinn.vw_etf OWNER TO postgres;
 --
 
 CREATE VIEW moneyjinn.vw_moneyflows WITH (security_invoker='true') AS
- SELECT mmf.mau_userid,
-    mar.mau_userid AS mar_mau_userid,
-    mmf.mag_groupid,
-    mmf.moneyflowid,
-    mmf.bookingdate,
-    mmf.invoicedate,
-    mmf.amount,
-    mmf.mcs_capitalsourceid,
-    mmf.mcp_contractpartnerid,
-    mmf.comment,
-    mmf.mpa_postingaccountid,
-    mmf.private
-   FROM moneyjinn.moneyflows mmf,
-    moneyjinn.access_relation mar
-  WHERE ((mmf.bookingdate >= mar.validfrom) AND (mmf.bookingdate <= mar.validtil) AND (mmf.mag_groupid = mar.mag_groupid));
+SELECT mmf.mau_userid
+     , mar.mau_userid AS mar_mau_userid
+     , mmf.mag_groupid
+     , mmf.moneyflowid
+     , mmf.bookingdate
+     , mmf.invoicedate
+     , mmf.amount
+     , mmf.mcs_capitalsourceid
+     , mmf.mcp_contractpartnerid
+     , mmf.comment
+     , mmf.mpa_postingaccountid
+     , mmf.private
+  FROM moneyjinn.moneyflows mmf
+     , moneyjinn.access_relation mar
+ WHERE ((mmf.bookingdate >= mar.validfrom) AND (mmf.bookingdate <= mar.validtil) AND
+        (mmf.mag_groupid = mar.mag_groupid));
 
 
 ALTER VIEW moneyjinn.vw_moneyflows OWNER TO postgres;
@@ -1426,17 +1581,20 @@ ALTER VIEW moneyjinn.vw_moneyflows OWNER TO postgres;
 --
 
 CREATE VIEW moneyjinn.vw_monthlysettlements WITH (security_invoker='true') AS
- SELECT mms.mau_userid,
-    mar.mau_userid AS mar_mau_userid,
-    mms.mag_groupid,
-    mms.monthlysettlementid,
-    mms.mcs_capitalsourceid,
-    mms.month,
-    mms.year,
-    mms.amount
-   FROM moneyjinn.monthlysettlements mms,
-    moneyjinn.access_relation mar
-  WHERE (((((concat(mms.year, '-', lpad((mms.month)::text, 2, '0'::text), '-01'))::date + '1 mon'::interval) - '1 day'::interval) >= mar.validfrom) AND ((((concat(mms.year, '-', lpad((mms.month)::text, 2, '0'::text), '-01'))::date + '1 mon'::interval) - '1 day'::interval) <= mar.validtil) AND (mms.mag_groupid = mar.mag_groupid));
+SELECT mms.mau_userid
+     , mar.mau_userid AS mar_mau_userid
+     , mms.mag_groupid
+     , mms.monthlysettlementid
+     , mms.mcs_capitalsourceid
+     , mms.month
+     , mms.year
+     , mms.amount
+  FROM moneyjinn.monthlysettlements mms
+     , moneyjinn.access_relation mar
+ WHERE (((((CONCAT(mms.year, '-', LPAD((mms.month)::TEXT, 2, '0'::TEXT), '-01'))::DATE + '1 mon'::INTERVAL) -
+          '1 day'::INTERVAL) >= mar.validfrom) AND
+        ((((CONCAT(mms.year, '-', LPAD((mms.month)::TEXT, 2, '0'::TEXT), '-01'))::DATE + '1 mon'::INTERVAL) -
+          '1 day'::INTERVAL) <= mar.validtil) AND (mms.mag_groupid = mar.mag_groupid));
 
 
 ALTER VIEW moneyjinn.vw_monthlysettlements OWNER TO postgres;
@@ -1445,43 +1603,45 @@ ALTER VIEW moneyjinn.vw_monthlysettlements OWNER TO postgres;
 -- Name: account_movements; Type: TABLE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-CREATE TABLE moneyjinn_hbci.account_movements (
-    id bigint NOT NULL,
-    creation_time timestamp without time zone NOT NULL,
-    my_iban character varying(34) DEFAULT NULL::character varying,
-    my_bic character varying(11) DEFAULT NULL::character varying,
-    my_accountnumber bigint NOT NULL,
-    my_bankcode integer NOT NULL,
-    booking_date date NOT NULL,
-    value_date date NOT NULL,
-    invoice_timestamp timestamp without time zone,
-    other_iban character varying(34) DEFAULT NULL::character varying,
-    other_bic character varying(11) DEFAULT NULL::character varying,
-    other_accountnumber bigint,
-    other_bankcode integer,
-    other_name character varying(54) DEFAULT NULL::character varying,
-    charge_value numeric(15,2) DEFAULT NULL::numeric,
-    charge_currency character varying(3) DEFAULT NULL::character varying,
-    original_value numeric(15,2) DEFAULT NULL::numeric,
-    original_currency character varying(3) DEFAULT NULL::character varying,
-    movement_value numeric(15,2) NOT NULL,
-    movement_currency character varying(3) NOT NULL,
-    movement_reason text,
-    movement_type_code integer NOT NULL,
-    movement_type_text character varying(31) DEFAULT NULL::character varying,
-    customer_reference character varying(16) NOT NULL,
-    bank_reference character varying(16) DEFAULT NULL::character varying,
-    cancellation integer NOT NULL,
-    additional_information character varying(512) DEFAULT NULL::character varying,
-    additional_key integer,
-    prima_nota character varying(16) DEFAULT NULL::character varying,
-    balance_date date NOT NULL,
-    balance_value numeric(15,2) NOT NULL,
-    balance_currency character varying(3) NOT NULL
+CREATE TABLE moneyjinn_hbci.account_movements
+(
+    id                     BIGINT                      NOT NULL,
+    creation_time          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    my_iban                CHARACTER VARYING(34)  DEFAULT NULL::CHARACTER VARYING,
+    my_bic                 CHARACTER VARYING(11)  DEFAULT NULL::CHARACTER VARYING,
+    my_accountnumber       BIGINT                      NOT NULL,
+    my_bankcode            INTEGER                     NOT NULL,
+    booking_date           DATE                        NOT NULL,
+    value_date             DATE                        NOT NULL,
+    invoice_timestamp      TIMESTAMP WITHOUT TIME ZONE,
+    other_iban             CHARACTER VARYING(34)  DEFAULT NULL::CHARACTER VARYING,
+    other_bic              CHARACTER VARYING(11)  DEFAULT NULL::CHARACTER VARYING,
+    other_accountnumber    BIGINT,
+    other_bankcode         INTEGER,
+    other_name             CHARACTER VARYING(54)  DEFAULT NULL::CHARACTER VARYING,
+    charge_value           NUMERIC(15, 2)         DEFAULT NULL::NUMERIC,
+    charge_currency        CHARACTER VARYING(3)   DEFAULT NULL::CHARACTER VARYING,
+    original_value         NUMERIC(15, 2)         DEFAULT NULL::NUMERIC,
+    original_currency      CHARACTER VARYING(3)   DEFAULT NULL::CHARACTER VARYING,
+    movement_value         NUMERIC(15, 2)              NOT NULL,
+    movement_currency      CHARACTER VARYING(3)        NOT NULL,
+    movement_reason        TEXT,
+    movement_type_code     INTEGER                     NOT NULL,
+    movement_type_text     CHARACTER VARYING(31)  DEFAULT NULL::CHARACTER VARYING,
+    customer_reference     CHARACTER VARYING(16)       NOT NULL,
+    bank_reference         CHARACTER VARYING(16)  DEFAULT NULL::CHARACTER VARYING,
+    cancellation           INTEGER                     NOT NULL,
+    additional_information CHARACTER VARYING(512) DEFAULT NULL::CHARACTER VARYING,
+    additional_key         INTEGER,
+    prima_nota             CHARACTER VARYING(16)  DEFAULT NULL::CHARACTER VARYING,
+    balance_date           DATE                        NOT NULL,
+    balance_value          NUMERIC(15, 2)              NOT NULL,
+    balance_currency       CHARACTER VARYING(3)        NOT NULL
 );
 
 
-ALTER TABLE moneyjinn_hbci.account_movements OWNER TO moneyjinn_hbci_owner;
+ALTER TABLE moneyjinn_hbci.account_movements
+    OWNER TO moneyjinn_hbci_owner;
 
 --
 -- Name: account_movements_id_seq; Type: SEQUENCE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
@@ -1508,22 +1668,24 @@ ALTER SEQUENCE moneyjinn_hbci.account_movements_id_seq OWNED BY moneyjinn_hbci.a
 -- Name: balance_daily; Type: TABLE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-CREATE TABLE moneyjinn_hbci.balance_daily (
-    id bigint NOT NULL,
-    my_iban character varying(34) NOT NULL,
-    my_bic character varying(11) NOT NULL,
-    my_accountnumber bigint NOT NULL,
-    my_bankcode integer NOT NULL,
-    balance_date date NOT NULL,
-    last_transaction_date timestamp without time zone NOT NULL,
-    balance_available_value numeric(10,2) NOT NULL,
-    line_of_credit_value numeric(10,2) NOT NULL,
-    balance_currency character varying(3) NOT NULL,
-    last_balance_update timestamp without time zone NOT NULL
+CREATE TABLE moneyjinn_hbci.balance_daily
+(
+    id                      BIGINT                      NOT NULL,
+    my_iban                 CHARACTER VARYING(34)       NOT NULL,
+    my_bic                  CHARACTER VARYING(11)       NOT NULL,
+    my_accountnumber        BIGINT                      NOT NULL,
+    my_bankcode             INTEGER                     NOT NULL,
+    balance_date            DATE                        NOT NULL,
+    last_transaction_date   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    balance_available_value NUMERIC(10, 2)              NOT NULL,
+    line_of_credit_value    NUMERIC(10, 2)              NOT NULL,
+    balance_currency        CHARACTER VARYING(3)        NOT NULL,
+    last_balance_update     TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
 
-ALTER TABLE moneyjinn_hbci.balance_daily OWNER TO moneyjinn_hbci_owner;
+ALTER TABLE moneyjinn_hbci.balance_daily
+    OWNER TO moneyjinn_hbci_owner;
 
 --
 -- Name: balance_daily_id_seq; Type: SEQUENCE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
@@ -1550,20 +1712,22 @@ ALTER SEQUENCE moneyjinn_hbci.balance_daily_id_seq OWNED BY moneyjinn_hbci.balan
 -- Name: balance_monthly; Type: TABLE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-CREATE TABLE moneyjinn_hbci.balance_monthly (
-    id bigint NOT NULL,
-    my_iban character varying(34) NOT NULL,
-    my_bic character varying(11) NOT NULL,
-    my_accountnumber bigint NOT NULL,
-    my_bankcode integer NOT NULL,
-    balance_year smallint NOT NULL,
-    balance_month smallint NOT NULL,
-    balance_value numeric(10,2) NOT NULL,
-    balance_currency character varying(3) NOT NULL
+CREATE TABLE moneyjinn_hbci.balance_monthly
+(
+    id               BIGINT                NOT NULL,
+    my_iban          CHARACTER VARYING(34) NOT NULL,
+    my_bic           CHARACTER VARYING(11) NOT NULL,
+    my_accountnumber BIGINT                NOT NULL,
+    my_bankcode      INTEGER               NOT NULL,
+    balance_year     SMALLINT              NOT NULL,
+    balance_month    SMALLINT              NOT NULL,
+    balance_value    NUMERIC(10, 2)        NOT NULL,
+    balance_currency CHARACTER VARYING(3)  NOT NULL
 );
 
 
-ALTER TABLE moneyjinn_hbci.balance_monthly OWNER TO moneyjinn_hbci_owner;
+ALTER TABLE moneyjinn_hbci.balance_monthly
+    OWNER TO moneyjinn_hbci_owner;
 
 --
 -- Name: balance_monthly_id_seq; Type: SEQUENCE; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
@@ -1590,161 +1754,184 @@ ALTER SEQUENCE moneyjinn_hbci.balance_monthly_id_seq OWNED BY moneyjinn_hbci.bal
 -- Name: access_groups groupid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.access_groups ALTER COLUMN groupid SET DEFAULT nextval('moneyjinn.access_groups_groupid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.access_groups
+    ALTER COLUMN groupid SET DEFAULT NEXTVAL('moneyjinn.access_groups_groupid_seq'::regclass);
 
 
 --
 -- Name: access_users userid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.access_users ALTER COLUMN userid SET DEFAULT nextval('moneyjinn.access_users_userid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.access_users
+    ALTER COLUMN userid SET DEFAULT NEXTVAL('moneyjinn.access_users_userid_seq'::regclass);
 
 
 --
 -- Name: capitalsources capitalsourceid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.capitalsources ALTER COLUMN capitalsourceid SET DEFAULT nextval('moneyjinn.capitalsources_capitalsourceid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.capitalsources
+    ALTER COLUMN capitalsourceid SET DEFAULT NEXTVAL('moneyjinn.capitalsources_capitalsourceid_seq'::regclass);
 
 
 --
 -- Name: cmp_data_formats formatid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.cmp_data_formats ALTER COLUMN formatid SET DEFAULT nextval('moneyjinn.cmp_data_formats_formatid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.cmp_data_formats
+    ALTER COLUMN formatid SET DEFAULT NEXTVAL('moneyjinn.cmp_data_formats_formatid_seq'::regclass);
 
 
 --
 -- Name: contractpartneraccounts contractpartneraccountid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.contractpartneraccounts ALTER COLUMN contractpartneraccountid SET DEFAULT nextval('moneyjinn.contractpartneraccounts_contractpartneraccountid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.contractpartneraccounts
+    ALTER COLUMN contractpartneraccountid SET DEFAULT NEXTVAL('moneyjinn.contractpartneraccounts_contractpartneraccountid_seq'::regclass);
 
 
 --
 -- Name: contractpartnermatchings contractpartnermatchingid; Type: DEFAULT; Schema: moneyjinn; Owner: admin
 --
 
-ALTER TABLE ONLY moneyjinn.contractpartnermatchings ALTER COLUMN contractpartnermatchingid SET DEFAULT nextval('moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.contractpartnermatchings
+    ALTER COLUMN contractpartnermatchingid SET DEFAULT NEXTVAL('moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq'::regclass);
 
 
 --
 -- Name: contractpartners contractpartnerid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.contractpartners ALTER COLUMN contractpartnerid SET DEFAULT nextval('moneyjinn.contractpartners_contractpartnerid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.contractpartners
+    ALTER COLUMN contractpartnerid SET DEFAULT NEXTVAL('moneyjinn.contractpartners_contractpartnerid_seq'::regclass);
 
 
 --
 -- Name: etf etfid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.etf ALTER COLUMN etfid SET DEFAULT nextval('moneyjinn.etf_etfid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.etf
+    ALTER COLUMN etfid SET DEFAULT NEXTVAL('moneyjinn.etf_etfid_seq'::regclass);
 
 
 --
 -- Name: etfflows etfflowid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.etfflows ALTER COLUMN etfflowid SET DEFAULT nextval('moneyjinn.etfflows_etfflowid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.etfflows
+    ALTER COLUMN etfflowid SET DEFAULT NEXTVAL('moneyjinn.etfflows_etfflowid_seq'::regclass);
 
 
 --
 -- Name: etfpreliminarylumpsum etfpreliminarylumpsumid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum ALTER COLUMN etfpreliminarylumpsumid SET DEFAULT nextval('moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
+    ALTER COLUMN etfpreliminarylumpsumid SET DEFAULT NEXTVAL('moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq'::regclass);
 
 
 --
 -- Name: imp_data dataid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.imp_data ALTER COLUMN dataid SET DEFAULT nextval('moneyjinn.imp_data_dataid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.imp_data
+    ALTER COLUMN dataid SET DEFAULT NEXTVAL('moneyjinn.imp_data_dataid_seq'::regclass);
 
 
 --
 -- Name: impmoneyflowreceipts impmoneyflowreceiptid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts ALTER COLUMN impmoneyflowreceiptid SET DEFAULT nextval('moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
+    ALTER COLUMN impmoneyflowreceiptid SET DEFAULT NEXTVAL('moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq'::regclass);
 
 
 --
 -- Name: impmoneyflows impmoneyflowid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.impmoneyflows ALTER COLUMN impmoneyflowid SET DEFAULT nextval('moneyjinn.impmoneyflows_impmoneyflowid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.impmoneyflows
+    ALTER COLUMN impmoneyflowid SET DEFAULT NEXTVAL('moneyjinn.impmoneyflows_impmoneyflowid_seq'::regclass);
 
 
 --
 -- Name: impmonthlysettlements impmonthlysettlementid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.impmonthlysettlements ALTER COLUMN impmonthlysettlementid SET DEFAULT nextval('moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.impmonthlysettlements
+    ALTER COLUMN impmonthlysettlementid SET DEFAULT NEXTVAL('moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq'::regclass);
 
 
 --
 -- Name: moneyflowreceipts moneyflowreceiptid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.moneyflowreceipts ALTER COLUMN moneyflowreceiptid SET DEFAULT nextval('moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.moneyflowreceipts
+    ALTER COLUMN moneyflowreceiptid SET DEFAULT NEXTVAL('moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq'::regclass);
 
 
 --
 -- Name: moneyflows moneyflowid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.moneyflows ALTER COLUMN moneyflowid SET DEFAULT nextval('moneyjinn.moneyflows_moneyflowid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.moneyflows
+    ALTER COLUMN moneyflowid SET DEFAULT NEXTVAL('moneyjinn.moneyflows_moneyflowid_seq'::regclass);
 
 
 --
 -- Name: moneyflowsplitentries moneyflowsplitentryid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.moneyflowsplitentries ALTER COLUMN moneyflowsplitentryid SET DEFAULT nextval('moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
+    ALTER COLUMN moneyflowsplitentryid SET DEFAULT NEXTVAL('moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq'::regclass);
 
 
 --
 -- Name: monthlysettlements monthlysettlementid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.monthlysettlements ALTER COLUMN monthlysettlementid SET DEFAULT nextval('moneyjinn.monthlysettlements_monthlysettlementid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.monthlysettlements
+    ALTER COLUMN monthlysettlementid SET DEFAULT NEXTVAL('moneyjinn.monthlysettlements_monthlysettlementid_seq'::regclass);
 
 
 --
 -- Name: postingaccounts postingaccountid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.postingaccounts ALTER COLUMN postingaccountid SET DEFAULT nextval('moneyjinn.postingaccounts_postingaccountid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.postingaccounts
+    ALTER COLUMN postingaccountid SET DEFAULT NEXTVAL('moneyjinn.postingaccounts_postingaccountid_seq'::regclass);
 
 
 --
 -- Name: predefmoneyflows predefmoneyflowid; Type: DEFAULT; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-ALTER TABLE ONLY moneyjinn.predefmoneyflows ALTER COLUMN predefmoneyflowid SET DEFAULT nextval('moneyjinn.predefmoneyflows_predefmoneyflowid_seq'::regclass);
+ALTER TABLE ONLY moneyjinn.predefmoneyflows
+    ALTER COLUMN predefmoneyflowid SET DEFAULT NEXTVAL('moneyjinn.predefmoneyflows_predefmoneyflowid_seq'::regclass);
 
 
 --
 -- Name: account_movements id; Type: DEFAULT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-ALTER TABLE ONLY moneyjinn_hbci.account_movements ALTER COLUMN id SET DEFAULT nextval('moneyjinn_hbci.account_movements_id_seq'::regclass);
+ALTER TABLE ONLY moneyjinn_hbci.account_movements
+    ALTER COLUMN id SET DEFAULT NEXTVAL('moneyjinn_hbci.account_movements_id_seq'::regclass);
 
 
 --
 -- Name: balance_daily id; Type: DEFAULT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-ALTER TABLE ONLY moneyjinn_hbci.balance_daily ALTER COLUMN id SET DEFAULT nextval('moneyjinn_hbci.balance_daily_id_seq'::regclass);
+ALTER TABLE ONLY moneyjinn_hbci.balance_daily
+    ALTER COLUMN id SET DEFAULT NEXTVAL('moneyjinn_hbci.balance_daily_id_seq'::regclass);
 
 
 --
 -- Name: balance_monthly id; Type: DEFAULT; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-ALTER TABLE ONLY moneyjinn_hbci.balance_monthly ALTER COLUMN id SET DEFAULT nextval('moneyjinn_hbci.balance_monthly_id_seq'::regclass);
+ALTER TABLE ONLY moneyjinn_hbci.balance_monthly
+    ALTER COLUMN id SET DEFAULT NEXTVAL('moneyjinn_hbci.balance_monthly_id_seq'::regclass);
 
 
 --
@@ -2080,7 +2267,9 @@ ALTER TABLE ONLY moneyjinn_hbci.balance_monthly
 --
 
 ALTER TABLE ONLY moneyjinn_hbci.account_movements
-    ADD CONSTRAINT hbci_i_03 UNIQUE (my_iban, my_bic, my_accountnumber, my_bankcode, booking_date, value_date, movement_value, movement_currency, movement_type_code, customer_reference, cancellation, balance_date, balance_value, balance_currency);
+    ADD CONSTRAINT hbci_i_03 UNIQUE (my_iban, my_bic, my_accountnumber, my_bankcode, booking_date, value_date,
+                                     movement_value, movement_currency, movement_type_code, customer_reference,
+                                     cancellation, balance_date, balance_value, balance_currency);
 
 
 --
@@ -2312,21 +2501,33 @@ CREATE INDEX mse_mpa_pk ON moneyjinn.moneyflowsplitentries USING btree (mpa_post
 -- Name: impbalance mib_trg_01; Type: TRIGGER; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TRIGGER mib_trg_01 BEFORE UPDATE ON moneyjinn.impbalance FOR EACH ROW EXECUTE FUNCTION moneyjinn.upd_changedate();
+CREATE TRIGGER mib_trg_01
+    BEFORE UPDATE
+    ON moneyjinn.impbalance
+    FOR EACH ROW
+EXECUTE FUNCTION moneyjinn.upd_changedate();
 
 
 --
 -- Name: impbalance mib_trg_02; Type: TRIGGER; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TRIGGER mib_trg_02 BEFORE UPDATE ON moneyjinn.impbalance FOR EACH ROW EXECUTE FUNCTION moneyjinn.upd_changedate();
+CREATE TRIGGER mib_trg_02
+    BEFORE UPDATE
+    ON moneyjinn.impbalance
+    FOR EACH ROW
+EXECUTE FUNCTION moneyjinn.upd_changedate();
 
 
 --
 -- Name: predefmoneyflows mpm_trg_01; Type: TRIGGER; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-CREATE TRIGGER mpm_trg_01 BEFORE UPDATE ON moneyjinn.predefmoneyflows FOR EACH ROW EXECUTE FUNCTION moneyjinn.upd_createdate();
+CREATE TRIGGER mpm_trg_01
+    BEFORE UPDATE
+    ON moneyjinn.predefmoneyflows
+    FOR EACH ROW
+EXECUTE FUNCTION moneyjinn.upd_createdate();
 
 
 --
@@ -2334,7 +2535,7 @@ CREATE TRIGGER mpm_trg_01 BEFORE UPDATE ON moneyjinn.predefmoneyflows FOR EACH R
 --
 
 ALTER TABLE ONLY moneyjinn.access_relation
-    ADD CONSTRAINT mar_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups(groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mar_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups (groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2342,7 +2543,7 @@ ALTER TABLE ONLY moneyjinn.access_relation
 --
 
 ALTER TABLE ONLY moneyjinn.access_relation
-    ADD CONSTRAINT mar_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mar_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users (userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2350,7 +2551,7 @@ ALTER TABLE ONLY moneyjinn.access_relation
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartneraccounts
-    ADD CONSTRAINT mca_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mca_mcp_pk_01 FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners (contractpartnerid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2358,7 +2559,7 @@ ALTER TABLE ONLY moneyjinn.contractpartneraccounts
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartnermatchings
-    ADD CONSTRAINT mcm_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE CASCADE;
+    ADD CONSTRAINT mcm_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners (contractpartnerid) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
@@ -2366,7 +2567,7 @@ ALTER TABLE ONLY moneyjinn.contractpartnermatchings
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartnermatchings
-    ADD CONSTRAINT mcm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts(postingaccountid) ON DELETE CASCADE;
+    ADD CONSTRAINT mcm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts (postingaccountid) ON DELETE CASCADE;
 
 
 --
@@ -2374,7 +2575,7 @@ ALTER TABLE ONLY moneyjinn.contractpartnermatchings
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartners
-    ADD CONSTRAINT mcp_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups(groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mcp_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups (groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2382,7 +2583,7 @@ ALTER TABLE ONLY moneyjinn.contractpartners
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartners
-    ADD CONSTRAINT mcp_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mcp_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users (userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2390,7 +2591,7 @@ ALTER TABLE ONLY moneyjinn.contractpartners
 --
 
 ALTER TABLE ONLY moneyjinn.contractpartners
-    ADD CONSTRAINT mcp_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts(postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mcp_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts (postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2398,7 +2599,7 @@ ALTER TABLE ONLY moneyjinn.contractpartners
 --
 
 ALTER TABLE ONLY moneyjinn.capitalsources
-    ADD CONSTRAINT mcs_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups(groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mcs_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups (groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2406,7 +2607,7 @@ ALTER TABLE ONLY moneyjinn.capitalsources
 --
 
 ALTER TABLE ONLY moneyjinn.capitalsources
-    ADD CONSTRAINT mcs_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mcs_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users (userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2414,7 +2615,7 @@ ALTER TABLE ONLY moneyjinn.capitalsources
 --
 
 ALTER TABLE ONLY moneyjinn.etfflows
-    ADD CONSTRAINT mef_met_pk FOREIGN KEY (met_etfid) REFERENCES moneyjinn.etf(etfid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mef_met_pk FOREIGN KEY (met_etfid) REFERENCES moneyjinn.etf (etfid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2422,7 +2623,7 @@ ALTER TABLE ONLY moneyjinn.etfflows
 --
 
 ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
-    ADD CONSTRAINT mep_met_pk FOREIGN KEY (met_etfid) REFERENCES moneyjinn.etf(etfid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mep_met_pk FOREIGN KEY (met_etfid) REFERENCES moneyjinn.etf (etfid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2430,7 +2631,7 @@ ALTER TABLE ONLY moneyjinn.etfpreliminarylumpsum
 --
 
 ALTER TABLE ONLY moneyjinn.etf
-    ADD CONSTRAINT met_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups(groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT met_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups (groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2438,7 +2639,7 @@ ALTER TABLE ONLY moneyjinn.etf
 --
 
 ALTER TABLE ONLY moneyjinn.etf
-    ADD CONSTRAINT met_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT met_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users (userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2446,7 +2647,7 @@ ALTER TABLE ONLY moneyjinn.etf
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflows
-    ADD CONSTRAINT mim_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources(capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mim_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources (capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2454,7 +2655,7 @@ ALTER TABLE ONLY moneyjinn.impmoneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
-    ADD CONSTRAINT mir_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups(groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mir_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups (groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2462,7 +2663,7 @@ ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
 --
 
 ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
-    ADD CONSTRAINT mir_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mir_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users (userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2470,7 +2671,7 @@ ALTER TABLE ONLY moneyjinn.impmoneyflowreceipts
 --
 
 ALTER TABLE ONLY moneyjinn.impmonthlysettlements
-    ADD CONSTRAINT mis_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources(capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mis_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources (capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2478,7 +2679,7 @@ ALTER TABLE ONLY moneyjinn.impmonthlysettlements
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
-    ADD CONSTRAINT mmf_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups(groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mmf_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups (groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2486,7 +2687,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
-    ADD CONSTRAINT mmf_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mmf_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users (userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2494,7 +2695,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
-    ADD CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners (contractpartnerid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2502,7 +2703,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
-    ADD CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources(capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources (capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2510,7 +2711,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflows
-    ADD CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts(postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts (postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2518,7 +2719,7 @@ ALTER TABLE ONLY moneyjinn.moneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements
-    ADD CONSTRAINT mms_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups(groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mms_mag_pk FOREIGN KEY (mag_groupid) REFERENCES moneyjinn.access_groups (groupid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2526,7 +2727,7 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements
-    ADD CONSTRAINT mms_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mms_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users (userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2534,7 +2735,7 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements
 --
 
 ALTER TABLE ONLY moneyjinn.monthlysettlements
-    ADD CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources(capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources (capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2542,7 +2743,7 @@ ALTER TABLE ONLY moneyjinn.monthlysettlements
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows
-    ADD CONSTRAINT mpm_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mpm_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users (userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2550,7 +2751,7 @@ ALTER TABLE ONLY moneyjinn.predefmoneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows
-    ADD CONSTRAINT mpm_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners(contractpartnerid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mpm_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES moneyjinn.contractpartners (contractpartnerid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2558,7 +2759,7 @@ ALTER TABLE ONLY moneyjinn.predefmoneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows
-    ADD CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources(capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES moneyjinn.capitalsources (capitalsourceid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2566,7 +2767,7 @@ ALTER TABLE ONLY moneyjinn.predefmoneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.predefmoneyflows
-    ADD CONSTRAINT mpm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts(postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mpm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts (postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2574,7 +2775,7 @@ ALTER TABLE ONLY moneyjinn.predefmoneyflows
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowreceipts
-    ADD CONSTRAINT mrp_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyjinn.moneyflows(moneyflowid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mrp_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyjinn.moneyflows (moneyflowid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2582,7 +2783,7 @@ ALTER TABLE ONLY moneyjinn.moneyflowreceipts
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
-    ADD CONSTRAINT mse_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyjinn.moneyflows(moneyflowid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mse_mmf_pk FOREIGN KEY (mmf_moneyflowid) REFERENCES moneyjinn.moneyflows (moneyflowid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2590,7 +2791,7 @@ ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
 --
 
 ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
-    ADD CONSTRAINT mse_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts(postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mse_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES moneyjinn.postingaccounts (postingaccountid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2598,7 +2799,7 @@ ALTER TABLE ONLY moneyjinn.moneyflowsplitentries
 --
 
 ALTER TABLE ONLY moneyjinn.settings
-    ADD CONSTRAINT mst_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users(userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT mst_mau_pk FOREIGN KEY (mau_userid) REFERENCES moneyjinn.access_users (userid) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
@@ -2621,77 +2822,77 @@ GRANT USAGE ON SCHEMA moneyjinn_hbci TO moneyjinn_hbci_app;
 -- Name: TABLE access_groups; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.access_groups TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.access_groups TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE access_groups_groupid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.access_groups_groupid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.access_groups_groupid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE access_relation; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.access_relation TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.access_relation TO moneyjinn_app;
 
 
 --
 -- Name: TABLE access_users; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.access_users TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.access_users TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE access_users_userid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.access_users_userid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.access_users_userid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE capitalsources; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.capitalsources TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.capitalsources TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE capitalsources_capitalsourceid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.capitalsources_capitalsourceid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.capitalsources_capitalsourceid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE cmp_data_formats; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.cmp_data_formats TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.cmp_data_formats TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE cmp_data_formats_formatid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.cmp_data_formats_formatid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.cmp_data_formats_formatid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE contractpartneraccounts; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.contractpartneraccounts TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.contractpartneraccounts TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE contractpartneraccounts_contractpartneraccountid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.contractpartneraccounts_contractpartneraccountid_seq TO moneyjinn_app;
 
 
 --
@@ -2699,14 +2900,14 @@ GRANT SELECT,USAGE ON SEQUENCE moneyjinn.contractpartneraccounts_contractpartner
 --
 
 GRANT ALL ON TABLE moneyjinn.contractpartnermatchings TO moneyjinn_owner;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.contractpartnermatchings TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.contractpartnermatchings TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE contractpartnermatchings_contractpartnermatchingid_seq; Type: ACL; Schema: moneyjinn; Owner: admin
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq TO moneyjinn_app;
 GRANT ALL ON SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatchingid_seq TO moneyjinn_owner;
 
 
@@ -2714,308 +2915,308 @@ GRANT ALL ON SEQUENCE moneyjinn.contractpartnermatchings_contractpartnermatching
 -- Name: TABLE contractpartners; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.contractpartners TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.contractpartners TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE contractpartners_contractpartnerid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.contractpartners_contractpartnerid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE etf; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.etf TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.etf TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE etf_etfid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.etf_etfid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.etf_etfid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE etfflows; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.etfflows TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.etfflows TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE etfflows_etfflowid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.etfflows_etfflowid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.etfflows_etfflowid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE etfpreliminarylumpsum; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.etfpreliminarylumpsum TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.etfpreliminarylumpsum TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE etfpreliminarylumpsum_etfpreliminarylumpsumid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.etfpreliminarylumpsum_etfpreliminarylumpsumid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE etfvalues; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.etfvalues TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.etfvalues TO moneyjinn_app;
 
 
 --
 -- Name: TABLE imp_data; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.imp_data TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.imp_data TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE imp_data_dataid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.imp_data_dataid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.imp_data_dataid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE imp_mapping_partner; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.imp_mapping_partner TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.imp_mapping_partner TO moneyjinn_app;
 
 
 --
 -- Name: TABLE imp_mapping_source; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.imp_mapping_source TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.imp_mapping_source TO moneyjinn_app;
 
 
 --
 -- Name: TABLE impbalance; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.impbalance TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.impbalance TO moneyjinn_app;
 
 
 --
 -- Name: TABLE impmoneyflowreceipts; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.impmoneyflowreceipts TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.impmoneyflowreceipts TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE impmoneyflowreceipts_impmoneyflowreceiptid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.impmoneyflowreceipts_impmoneyflowreceiptid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE impmoneyflows; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.impmoneyflows TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.impmoneyflows TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE impmoneyflows_impmoneyflowid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.impmoneyflows_impmoneyflowid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.impmoneyflows_impmoneyflowid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE impmonthlysettlements; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.impmonthlysettlements TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.impmonthlysettlements TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE impmonthlysettlements_impmonthlysettlementid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.impmonthlysettlements_impmonthlysettlementid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE moneyflowreceipts; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.moneyflowreceipts TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.moneyflowreceipts TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE moneyflowreceipts_moneyflowreceiptid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.moneyflowreceipts_moneyflowreceiptid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE moneyflows; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.moneyflows TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.moneyflows TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE moneyflows_moneyflowid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.moneyflows_moneyflowid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.moneyflows_moneyflowid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE moneyflowsplitentries; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.moneyflowsplitentries TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.moneyflowsplitentries TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE moneyflowsplitentries_moneyflowsplitentryid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.moneyflowsplitentries_moneyflowsplitentryid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE monthlysettlements; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.monthlysettlements TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.monthlysettlements TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE monthlysettlements_monthlysettlementid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.monthlysettlements_monthlysettlementid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.monthlysettlements_monthlysettlementid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE postingaccounts; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.postingaccounts TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.postingaccounts TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE postingaccounts_postingaccountid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.postingaccounts_postingaccountid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.postingaccounts_postingaccountid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE predefmoneyflows; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.predefmoneyflows TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.predefmoneyflows TO moneyjinn_app;
 
 
 --
 -- Name: SEQUENCE predefmoneyflows_predefmoneyflowid_seq; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn.predefmoneyflows_predefmoneyflowid_seq TO moneyjinn_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn.predefmoneyflows_predefmoneyflowid_seq TO moneyjinn_app;
 
 
 --
 -- Name: TABLE settings; Type: ACL; Schema: moneyjinn; Owner: moneyjinn_owner
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.settings TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.settings TO moneyjinn_app;
 
 
 --
 -- Name: TABLE vw_capitalsources; Type: ACL; Schema: moneyjinn; Owner: postgres
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_capitalsources TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.vw_capitalsources TO moneyjinn_app;
 
 
 --
 -- Name: TABLE vw_contractpartners; Type: ACL; Schema: moneyjinn; Owner: postgres
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_contractpartners TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.vw_contractpartners TO moneyjinn_app;
 
 
 --
 -- Name: TABLE vw_etf; Type: ACL; Schema: moneyjinn; Owner: postgres
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_etf TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.vw_etf TO moneyjinn_app;
 
 
 --
 -- Name: TABLE vw_moneyflows; Type: ACL; Schema: moneyjinn; Owner: postgres
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_moneyflows TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.vw_moneyflows TO moneyjinn_app;
 
 
 --
 -- Name: TABLE vw_monthlysettlements; Type: ACL; Schema: moneyjinn; Owner: postgres
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE moneyjinn.vw_monthlysettlements TO moneyjinn_app;
+GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE moneyjinn.vw_monthlysettlements TO moneyjinn_app;
 
 
 --
 -- Name: TABLE account_movements; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-GRANT SELECT,INSERT,UPDATE ON TABLE moneyjinn_hbci.account_movements TO moneyjinn_hbci_app;
+GRANT SELECT, INSERT, UPDATE ON TABLE moneyjinn_hbci.account_movements TO moneyjinn_hbci_app;
 
 
 --
 -- Name: SEQUENCE account_movements_id_seq; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.account_movements_id_seq TO moneyjinn_hbci_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn_hbci.account_movements_id_seq TO moneyjinn_hbci_app;
 
 
 --
 -- Name: TABLE balance_daily; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-GRANT SELECT,INSERT,UPDATE ON TABLE moneyjinn_hbci.balance_daily TO moneyjinn_hbci_app;
+GRANT SELECT, INSERT, UPDATE ON TABLE moneyjinn_hbci.balance_daily TO moneyjinn_hbci_app;
 
 
 --
 -- Name: SEQUENCE balance_daily_id_seq; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_daily_id_seq TO moneyjinn_hbci_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn_hbci.balance_daily_id_seq TO moneyjinn_hbci_app;
 
 
 --
 -- Name: TABLE balance_monthly; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-GRANT SELECT,INSERT,UPDATE ON TABLE moneyjinn_hbci.balance_monthly TO moneyjinn_hbci_app;
+GRANT SELECT, INSERT, UPDATE ON TABLE moneyjinn_hbci.balance_monthly TO moneyjinn_hbci_app;
 
 
 --
 -- Name: SEQUENCE balance_monthly_id_seq; Type: ACL; Schema: moneyjinn_hbci; Owner: moneyjinn_hbci_owner
 --
 
-GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjinn_hbci_app;
+GRANT SELECT, USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjinn_hbci_app;
 
 
 --
@@ -3024,16 +3225,326 @@ GRANT SELECT,USAGE ON SEQUENCE moneyjinn_hbci.balance_monthly_id_seq TO moneyjin
 
 \unrestrict 8cY39vRMe6z45IMBQOre5a2qYt3sZV4WSn5KBxmEkweBiPHUjcozAoVLN6rq6m2
 
-SELECT pg_catalog.set_config('search_path', '', false);
-INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (2, 'Sparda Bank', 'Buchungstag', 'Wertstellungstag', 'Verwendungszweck', NULL, '/^"Buchungstag";"Wertstellungstag";"Verwendungszweck"/', ';', 1, NULL, NULL, 4, 3, 'DD.MM.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (3, 'Postbank Online', 'Buchungstag', 'Wert', 'Umsatzart', NULL, '/^Buchungstag;Wert;Umsatzart/', ';', 2, NULL, 4, 12, 5, 'd.M.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (4, 'XML camt.052.001.03', NULL, NULL, NULL, NULL, 'camt', '', 0, NULL, NULL, 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (5, 'Sparkasse', 'Buchungstag', 'Wertstellung', 'Zahlungsgegner', NULL, '/^"Buchungstag";"Wertstellung";"Zahlungsgegner"/', ';', 1, NULL, 3, 7, 6, 'DD.MM.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (6, 'Volksbank', 'Buchungstag', 'Valuta', 'Auftraggeber/Zahlungsempfänger', NULL, '', ';', 1, NULL, 4, 12, 9, 'DD.MM.YYYY', ',', NULL, NULL, NULL, NULL, 13, 'S');
-INSERT INTO moneyjinn.cmp_data_formats (formatid, name, start_trigger_0, start_trigger_1, start_trigger_2, end_trigger_0, startline, delimiter, pos_date, pos_invoicedate, pos_partner, pos_amount, pos_comment, fmt_date, fmt_amount_decimal, fmt_amount_thousand, pos_partner_alt, pos_partner_alt_pos_key, pos_partner_alt_keyword, pos_credit_debit_indicator, credit_indicator) VALUES (7, 'Postbank Kreditkarte', 'Belegdatum', 'Eingangstag', 'Verwendungszweck', 'Saldo:', '', ';', 2, 1, NULL, 7, 3, 'd.M.YYYY', ',', '.', NULL, NULL, NULL, NULL, NULL);
-SELECT pg_catalog.setval('moneyjinn.cmp_data_formats_formatid_seq', 7, true);
-INSERT INTO moneyjinn.access_users (name,password,role,change_password) VALUES ('admin','$2a$10$DeePZ05m1PYHOK0lii2crOsPaCiaaDkd5lJWiAm2eiXTKua5lF9dW','ADMIN',1);
-INSERT INTO moneyjinn.access_groups (name) VALUES ('admingroup');
-UPDATE moneyjinn.access_users SET userid=0 WHERE name='admin';
-UPDATE moneyjinn.access_groups SET groupid=0 WHERE name='admingroup';
-INSERT INTO moneyjinn.access_relation (mau_userid,mag_groupid,validfrom,validtil) VALUES (0,0,'2000-01-01','2999-12-31');
+SELECT pg_catalog.set_config('search_path', '', FALSE);
+INSERT
+  INTO moneyjinn.cmp_data_formats
+      ( formatid
+      , name
+      , start_trigger_0
+      , start_trigger_1
+      , start_trigger_2
+      , end_trigger_0
+      , startline
+      , delimiter
+      , pos_date
+      , pos_invoicedate
+      , pos_partner
+      , pos_amount
+      , pos_comment
+      , fmt_date
+      , fmt_amount_decimal
+      , fmt_amount_thousand
+      , pos_partner_alt
+      , pos_partner_alt_pos_key
+      , pos_partner_alt_keyword
+      , pos_credit_debit_indicator
+      , credit_indicator
+      )
+VALUES
+    ( 2
+    , 'Sparda Bank'
+    , 'Buchungstag'
+    , 'Wertstellungstag'
+    , 'Verwendungszweck'
+    , NULL
+    , '/^"Buchungstag";"Wertstellungstag";"Verwendungszweck"/'
+    , ';'
+    , 1
+    , NULL
+    , NULL
+    , 4
+    , 3
+    , 'DD.MM.YYYY'
+    , ','
+    , '.'
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    );
+INSERT
+  INTO moneyjinn.cmp_data_formats
+      ( formatid
+      , name
+      , start_trigger_0
+      , start_trigger_1
+      , start_trigger_2
+      , end_trigger_0
+      , startline
+      , delimiter
+      , pos_date
+      , pos_invoicedate
+      , pos_partner
+      , pos_amount
+      , pos_comment
+      , fmt_date
+      , fmt_amount_decimal
+      , fmt_amount_thousand
+      , pos_partner_alt
+      , pos_partner_alt_pos_key
+      , pos_partner_alt_keyword
+      , pos_credit_debit_indicator
+      , credit_indicator
+      )
+VALUES
+    ( 3
+    , 'Postbank Online'
+    , 'Buchungstag'
+    , 'Wert'
+    , 'Umsatzart'
+    , NULL
+    , '/^Buchungstag;Wert;Umsatzart/'
+    , ';'
+    , 2
+    , NULL
+    , 4
+    , 12
+    , 5
+    , 'd.M.YYYY'
+    , ','
+    , '.'
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    );
+INSERT
+  INTO moneyjinn.cmp_data_formats
+      ( formatid
+      , name
+      , start_trigger_0
+      , start_trigger_1
+      , start_trigger_2
+      , end_trigger_0
+      , startline
+      , delimiter
+      , pos_date
+      , pos_invoicedate
+      , pos_partner
+      , pos_amount
+      , pos_comment
+      , fmt_date
+      , fmt_amount_decimal
+      , fmt_amount_thousand
+      , pos_partner_alt
+      , pos_partner_alt_pos_key
+      , pos_partner_alt_keyword
+      , pos_credit_debit_indicator
+      , credit_indicator
+      )
+VALUES
+    ( 4
+    , 'XML camt.052.001.03'
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    , 'camt'
+    , ''
+    , 0
+    , NULL
+    , NULL
+    , 0
+    , NULL
+    , ''
+    , ''
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    );
+INSERT
+  INTO moneyjinn.cmp_data_formats
+      ( formatid
+      , name
+      , start_trigger_0
+      , start_trigger_1
+      , start_trigger_2
+      , end_trigger_0
+      , startline
+      , delimiter
+      , pos_date
+      , pos_invoicedate
+      , pos_partner
+      , pos_amount
+      , pos_comment
+      , fmt_date
+      , fmt_amount_decimal
+      , fmt_amount_thousand
+      , pos_partner_alt
+      , pos_partner_alt_pos_key
+      , pos_partner_alt_keyword
+      , pos_credit_debit_indicator
+      , credit_indicator
+      )
+VALUES
+    ( 5
+    , 'Sparkasse'
+    , 'Buchungstag'
+    , 'Wertstellung'
+    , 'Zahlungsgegner'
+    , NULL
+    , '/^"Buchungstag";"Wertstellung";"Zahlungsgegner"/'
+    , ';'
+    , 1
+    , NULL
+    , 3
+    , 7
+    , 6
+    , 'DD.MM.YYYY'
+    , ','
+    , '.'
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    );
+INSERT
+  INTO moneyjinn.cmp_data_formats
+      ( formatid
+      , name
+      , start_trigger_0
+      , start_trigger_1
+      , start_trigger_2
+      , end_trigger_0
+      , startline
+      , delimiter
+      , pos_date
+      , pos_invoicedate
+      , pos_partner
+      , pos_amount
+      , pos_comment
+      , fmt_date
+      , fmt_amount_decimal
+      , fmt_amount_thousand
+      , pos_partner_alt
+      , pos_partner_alt_pos_key
+      , pos_partner_alt_keyword
+      , pos_credit_debit_indicator
+      , credit_indicator
+      )
+VALUES
+    ( 6
+    , 'Volksbank'
+    , 'Buchungstag'
+    , 'Valuta'
+    , 'Auftraggeber/Zahlungsempfänger'
+    , NULL
+    , ''
+    , ';'
+    , 1
+    , NULL
+    , 4
+    , 12
+    , 9
+    , 'DD.MM.YYYY'
+    , ','
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    , 13
+    , 'S'
+    );
+INSERT
+  INTO moneyjinn.cmp_data_formats
+      ( formatid
+      , name
+      , start_trigger_0
+      , start_trigger_1
+      , start_trigger_2
+      , end_trigger_0
+      , startline
+      , delimiter
+      , pos_date
+      , pos_invoicedate
+      , pos_partner
+      , pos_amount
+      , pos_comment
+      , fmt_date
+      , fmt_amount_decimal
+      , fmt_amount_thousand
+      , pos_partner_alt
+      , pos_partner_alt_pos_key
+      , pos_partner_alt_keyword
+      , pos_credit_debit_indicator
+      , credit_indicator
+      )
+VALUES
+    ( 7
+    , 'Postbank Kreditkarte'
+    , 'Belegdatum'
+    , 'Eingangstag'
+    , 'Verwendungszweck'
+    , 'Saldo:'
+    , ''
+    , ';'
+    , 2
+    , 1
+    , NULL
+    , 7
+    , 3
+    , 'd.M.YYYY'
+    , ','
+    , '.'
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    , NULL
+    );
+SELECT pg_catalog.setval('moneyjinn.cmp_data_formats_formatid_seq', 7, TRUE);
+INSERT
+  INTO moneyjinn.access_users
+      ( name
+      , password
+      , role
+      , change_password
+      )
+VALUES
+    ( 'admin'
+    , '$2a$10$DeePZ05m1PYHOK0lii2crOsPaCiaaDkd5lJWiAm2eiXTKua5lF9dW'
+    , 'ADMIN'
+    , 1
+    );
+INSERT
+  INTO moneyjinn.access_groups
+      (name
+      )
+VALUES
+    ('admingroup'
+    );
+UPDATE moneyjinn.access_users
+   SET userid=0
+ WHERE name = 'admin';
+UPDATE moneyjinn.access_groups
+   SET groupid=0
+ WHERE name = 'admingroup';
+INSERT
+  INTO moneyjinn.access_relation
+      ( mau_userid
+      , mag_groupid
+      , validfrom
+      , validtil
+      )
+VALUES
+    ( 0
+    , 0
+    , '2000-01-01'
+    , '2999-12-31'
+    );

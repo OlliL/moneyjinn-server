@@ -3,6 +3,8 @@ package org.laladev.moneyjinn.server.controller.predefmoneyflow;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.PreDefMoneyflow;
 import org.laladev.moneyjinn.model.PreDefMoneyflowID;
@@ -158,6 +160,71 @@ class CreatePreDefMoneyflowTest extends AbstractWebUserControllerTest {
                 .build();
         transport.setPostingaccountid(PostingAccountTransportBuilder.NON_EXISTING_ID);
         this.testError(transport, ErrorCode.POSTING_ACCOUNT_NOT_SPECIFIED);
+    }
+
+    @Test
+    void test_createPreDefMoneyflow_favoriteTrue_validData_Success() throws Exception {
+        final CreatePreDefMoneyflowRequest request = new CreatePreDefMoneyflowRequest();
+        final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
+                .build();
+        transport.setIsFavorite(1);
+        transport.setFavoriteAbbreviation("FAV");
+        transport.setFavoriteColor("#123456");
+        request.setPreDefMoneyflowTransport(transport);
+        final CreatePreDefMoneyflowResponse response = super.callUsecaseExpect200(request,
+                CreatePreDefMoneyflowResponse.class);
+        final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
+        final PreDefMoneyflowID preDefMoneyflowId = new PreDefMoneyflowID(PreDefMoneyflowTransportBuilder.NEXT_ID);
+        final PreDefMoneyflow preDefMoneyflow = this.preDefMoneyflowService.getPreDefMoneyflowById(userId,
+                preDefMoneyflowId);
+        Assertions.assertEquals(PreDefMoneyflowTransportBuilder.NEXT_ID, preDefMoneyflow.getId().getId());
+        Assertions.assertEquals(PreDefMoneyflowTransportBuilder.NEWPRE_DEF_MONEYFLOW_COMMENT,
+                preDefMoneyflow.getComment());
+        Assertions.assertEquals(PreDefMoneyflowTransportBuilder.NEXT_ID, response.getPreDefMoneyflowId());
+        Assertions.assertTrue(preDefMoneyflow.isFavorite());
+        Assertions.assertEquals("FAV", preDefMoneyflow.getFavoriteAbbreviation());
+        Assertions.assertEquals("#123456", preDefMoneyflow.getFavoriteColor());
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    void test_createPreDefMoneyflow_favoriteTrue_nullAbbreviation_Error(final String abbreviation) throws Exception {
+        final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
+                .build();
+        transport.setIsFavorite(1);
+        transport.setFavoriteAbbreviation(abbreviation);
+        transport.setFavoriteColor("#123456");
+        this.testError(transport, ErrorCode.ABBREVIATION_INVALID);
+    }
+
+    @Test
+    void test_createPreDefMoneyflow_favoriteTrue_tooLongAbbreviation_Error() throws Exception {
+        final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
+                .build();
+        transport.setIsFavorite(1);
+        transport.setFavoriteAbbreviation("FAVS");
+        transport.setFavoriteColor("#123456");
+        this.testError(transport, ErrorCode.ABBREVIATION_INVALID);
+    }
+
+    @Test
+    void test_createPreDefMoneyflow_favoriteTrue_nullFavoriteColor_Error() throws Exception {
+        final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
+                .build();
+        transport.setIsFavorite(1);
+        transport.setFavoriteAbbreviation("FAV");
+        transport.setFavoriteColor(null);
+        this.testError(transport, ErrorCode.COLOR_INVALID);
+    }
+
+    @Test
+    void test_createPreDefMoneyflow_favoriteTrue_invalidFavoriteColor_Error() throws Exception {
+        final PreDefMoneyflowTransport transport = new PreDefMoneyflowTransportBuilder().forNewPreDefMoneyflow()
+                .build();
+        transport.setIsFavorite(1);
+        transport.setFavoriteAbbreviation("FAV");
+        transport.setFavoriteColor("123456"); // Missing '#'
+        this.testError(transport, ErrorCode.COLOR_INVALID);
     }
 
     @Test

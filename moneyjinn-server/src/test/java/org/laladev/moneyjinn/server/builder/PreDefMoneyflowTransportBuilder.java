@@ -65,6 +65,9 @@ public class PreDefMoneyflowTransportBuilder extends PreDefMoneyflowTransport {
         super.setOnceAMonth(null);
         super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT2_ID);
         super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT2_NAME);
+        super.setIsFavorite(1);
+        super.setFavoriteAbbreviation("ABC");
+        super.setFavoriteColor("#ff0000");
         return this;
     }
 
@@ -100,6 +103,9 @@ public class PreDefMoneyflowTransportBuilder extends PreDefMoneyflowTransport {
         transport.setOnceAMonth(super.getOnceAMonth());
         transport.setPostingaccountid(super.getPostingaccountid());
         transport.setPostingaccountname(super.getPostingaccountname());
+        transport.setIsFavorite(super.getIsFavorite());
+        transport.setFavoriteColor(super.getFavoriteColor());
+        transport.setFavoriteAbbreviation(super.getFavoriteAbbreviation());
         return transport;
     }
 }

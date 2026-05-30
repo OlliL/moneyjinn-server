@@ -229,7 +229,7 @@ CREATE TABLE predefmoneyflows (
     mpa_postingaccountid integer NOT NULL,
     is_favorite smallint DEFAULT 0 NOT NULL,
     favorite_color character(7),
-    favorite_abbreviation character(2)
+    favorite_abbreviation character(3)
 );
 CREATE TABLE settings (
     mau_userid integer NOT NULL,

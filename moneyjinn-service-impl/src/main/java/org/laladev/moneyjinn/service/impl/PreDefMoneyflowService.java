@@ -54,6 +54,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -102,6 +103,7 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
         this.validateComment(preDefMoneyflow, addResult);
         this.validateAmount(preDefMoneyflow, addResult);
         this.validatePostingAccount(preDefMoneyflow, addResult);
+        this.validateFavorite(preDefMoneyflow, addResult);
 
         return validationResult;
     }
@@ -165,6 +167,20 @@ public class PreDefMoneyflowService extends AbstractService implements IPreDefMo
     private void validateComment(final PreDefMoneyflow preDefMoneyflow, final Consumer<ErrorCode> addResult) {
         if (preDefMoneyflow.getComment() == null || preDefMoneyflow.getComment().isBlank()) {
             addResult.accept(ErrorCode.COMMENT_IS_NOT_SET);
+        }
+    }
+
+    private void validateFavorite(final PreDefMoneyflow preDefMoneyflow, final Consumer<ErrorCode> addResult) {
+        if (preDefMoneyflow.isFavorite()) {
+            final String abbreviation = preDefMoneyflow.getFavoriteAbbreviation();
+            if (abbreviation == null || abbreviation.isEmpty() || abbreviation.length() > 3) {
+                addResult.accept(ErrorCode.ABBREVIATION_INVALID);
+            }
+
+            final String favoriteColor = preDefMoneyflow.getFavoriteColor();
+            if (favoriteColor == null || !Pattern.matches("^#([A-Fa-f0-9]{6})$", favoriteColor)) {
+                addResult.accept(ErrorCode.COLOR_INVALID);
+            }
         }
     }
 
