@@ -171,4 +171,9 @@ public class ContractpartnerMatchingService implements IContractpartnerMatchingS
         }
     }
 
+    @Override
+    public void setLastUsedDate(@NonNull final UserID userId,
+                                @NonNull final ContractpartnerMatchingID contractpartnerMatchingId) {
+        this.contractpartnerMatchingDao.setLastUsed(contractpartnerMatchingId.getId());
+    }
 }

@@ -45,6 +45,8 @@ public interface IContractpartnerAccountDaoMapper {
 
     void updateContractpartnerAccount(ContractpartnerAccountData contractpartnerAccountData);
 
+    void setLastUsed(@Param("id") Long id);
+
     void deleteContractpartnerAccount(@Param("id") Long id);
 
     void deleteContractpartnerAccounts(@Param("contractpartnerId") Long contractpartnerId);

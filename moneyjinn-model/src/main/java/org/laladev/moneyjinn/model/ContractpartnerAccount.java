@@ -32,6 +32,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serial;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -43,4 +44,5 @@ public class ContractpartnerAccount extends AbstractEntity<ContractpartnerAccoun
     private static final long serialVersionUID = 1L;
     private Contractpartner contractpartner;
     private BankAccount bankAccount;
+    private LocalDate lastUsed;
 }

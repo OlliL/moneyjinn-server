@@ -43,7 +43,8 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class AbstractMoneyflow<I extends AbstractEntityID<?>> extends AbstractEntity<I>
-        implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser, IHasGroup {
+        implements IHasCapitalsource, IHasContractpartner, IHasPostingAccount, IHasUser, IHasGroup,
+        IHasContractpartnerMatching {
     @Serial
     private static final long serialVersionUID = 1L;
     private User user;
@@ -56,6 +57,7 @@ public class AbstractMoneyflow<I extends AbstractEntityID<?>> extends AbstractEn
     private String comment;
     private boolean privat;
     private PostingAccount postingAccount;
+    private ContractpartnerMatching contractpartnerMatching;
 
     public boolean isVisible(final UserID userId) {
         return !this.privat || this.user.getId().equals(userId);

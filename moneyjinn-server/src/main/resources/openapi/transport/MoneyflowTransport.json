@@ -58,6 +58,10 @@
     },
     "postingaccountname": {
       "type": "string"
+    },
+    "contractpartnerMatchingId": {
+      "type": "integer",
+      "format": "int64"
     }
   }
 }

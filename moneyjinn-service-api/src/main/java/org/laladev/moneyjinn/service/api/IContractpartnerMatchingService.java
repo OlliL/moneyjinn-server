@@ -119,4 +119,11 @@ public interface IContractpartnerMatchingService {
      */
     void deleteContractpartnerMatchingById(UserID userId, ContractpartnerMatchingID contractpartnerMatchingId);
 
+    /**
+     * Updates the "lastUsed" Date information for a {@link ContractpartnerMatching}. It is
+     * meant to be called whenever a moneyflow gets created based on a
+     * {@link ContractpartnerMatching}.
+     *
+     */
+    void setLastUsedDate(UserID userId, ContractpartnerMatchingID contractpartnerMatchingId);
 }

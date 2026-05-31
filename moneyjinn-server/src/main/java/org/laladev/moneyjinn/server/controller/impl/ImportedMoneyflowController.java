@@ -30,6 +30,7 @@ import org.laladev.moneyjinn.core.error.ErrorCode;
 import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
+import org.laladev.moneyjinn.model.ContractpartnerAccountID;
 import org.laladev.moneyjinn.model.access.AccessRelation;
 import org.laladev.moneyjinn.model.access.Group;
 import org.laladev.moneyjinn.model.access.User;
@@ -59,7 +60,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,6 +73,7 @@ public class ImportedMoneyflowController extends AbstractController implements I
     private final ICapitalsourceService capitalsourceService;
     private final IContractpartnerService contractpartnerService;
     private final IContractpartnerAccountService contractpartnerAccountService;
+    private final IContractpartnerMatchingService contractpartnerMatchingService;
     private final IMoneyflowService moneyflowService;
     private final IImportedMoneyflowService importedMoneyflowService;
     private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
@@ -294,14 +295,23 @@ public class ImportedMoneyflowController extends AbstractController implements I
          * Capitalsource 1 will be created here automatically.
          */
         if (importedMoneyflow.getBankAccount() != null) {
-            final ContractpartnerAccount contractpartnerAccount = new ContractpartnerAccount();
-            contractpartnerAccount.setBankAccount(importedMoneyflow.getBankAccount());
-            contractpartnerAccount.setContractpartner(importedMoneyflow.getContractpartner());
-            final List<ContractpartnerAccount> contractpartnerAccounts = this.contractpartnerAccountService
-                    .getAllContractpartnerByAccounts(userId,
-                            Collections.singletonList(importedMoneyflow.getBankAccount()));
-            if (contractpartnerAccounts == null || contractpartnerAccounts.isEmpty()) {
-                this.contractpartnerAccountService.createContractpartnerAccount(userId, contractpartnerAccount);
+            final ContractpartnerAccount contractpartnerAccount = this.contractpartnerAccountService
+                    .getContractpartnerByAccount(userId, importedMoneyflow.getBankAccount());
+            final ContractpartnerAccountID contractpartnerAccountId;
+            if (contractpartnerAccount == null) {
+                final ContractpartnerAccount contractpartnerAccountNew = new ContractpartnerAccount();
+                contractpartnerAccountNew.setBankAccount(importedMoneyflow.getBankAccount());
+                contractpartnerAccountNew.setContractpartner(importedMoneyflow.getContractpartner());
+                contractpartnerAccountId = this.contractpartnerAccountService.createContractpartnerAccount(userId,
+                        contractpartnerAccountNew);
+            } else {
+                contractpartnerAccountId = contractpartnerAccount.getId();
+            }
+            this.contractpartnerAccountService.setLastUsedDate(userId, contractpartnerAccountId);
+
+            if (importedMoneyflow.getContractpartnerMatching() != null) {
+                this.contractpartnerMatchingService.setLastUsedDate(userId,
+                        importedMoneyflow.getContractpartnerMatching().getId());
             }
             // if the IBAN/BIC of the booking matches one of our own capitalsource which
             // must not be imported (because it has no HBCI access for example), create a

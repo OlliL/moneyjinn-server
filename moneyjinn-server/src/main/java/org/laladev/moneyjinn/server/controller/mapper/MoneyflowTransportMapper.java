@@ -36,7 +36,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = {CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
-        PostingAccountIdMapper.class, MoneyflowIdMapper.class, BooleanToIntegerMapper.class, UserIdMapper.class})
+        PostingAccountIdMapper.class, MoneyflowIdMapper.class, ContractpartnerMatchingIdMapper.class,
+        BooleanToIntegerMapper.class, UserIdMapper.class})
 public interface MoneyflowTransportMapper extends IMapstructMapper<Moneyflow, MoneyflowTransport> {
     @Override
     @InheritInverseConfiguration
@@ -55,5 +56,6 @@ public interface MoneyflowTransportMapper extends IMapstructMapper<Moneyflow, Mo
     @Mapping(target = "postingaccountid", source = "postingAccount.id")
     @Mapping(target = "postingaccountname", source = "postingAccount.name")
     @Mapping(target = "userid", source = "user.id")
+    @Mapping(target = "contractpartnerMatchingId", source = "contractpartnerMatching.id")
     MoneyflowTransport mapAToB(Moneyflow importedMoneyflow);
 }

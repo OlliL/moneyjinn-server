@@ -89,6 +89,7 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
         super.setComment("TEST1");
         super.setContractpartnerid(ContractpartnerTransportBuilder.CONTRACTPARTNER1_ID);
         super.setContractpartnername(ContractpartnerTransportBuilder.CONTRACTPARTNER1_NAME);
+        super.setContractpartnerMatchingId(1L);
         return this;
     }
 
@@ -118,6 +119,7 @@ public class CompareDataDatasetTransportBuilder extends CompareDataDatasetTransp
         transport.setMoneyflowComment(super.getMoneyflowComment());
         transport.setPostingAccountId(super.getPostingAccountId());
         transport.setPostingAccountName(super.getPostingAccountName());
+        transport.setContractpartnerMatchingId(super.getContractpartnerMatchingId());
         return transport;
     }
 }

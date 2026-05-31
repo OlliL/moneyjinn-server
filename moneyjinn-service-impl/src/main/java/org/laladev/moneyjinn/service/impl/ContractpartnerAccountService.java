@@ -235,6 +235,16 @@ public class ContractpartnerAccountService extends AbstractService implements IC
         return this.mapContractpartnerAccountDataList(userId, contractpartnerAccountData);
     }
 
+    @Override
+    public void setLastUsedDate(@NonNull final UserID userId,
+                                @NonNull final ContractpartnerAccountID contractpartnerAccountId) {
+        final ContractpartnerAccount contractpartnerAccount = this.getContractpartnerAccountById(userId,
+                contractpartnerAccountId);
+        this.contractpartnerAccountDao.setLastUsed(contractpartnerAccountId.getId());
+        this.evictContractpartnerAccountCache(userId, contractpartnerAccountId,
+                contractpartnerAccount.getContractpartner().getId());
+    }
+
     private void evictContractpartnerAccountCache(final UserID userId,
                                                   final ContractpartnerAccountID contractpartnerAccountIDd,
                                                   final ContractpartnerID contractpartnerId) {

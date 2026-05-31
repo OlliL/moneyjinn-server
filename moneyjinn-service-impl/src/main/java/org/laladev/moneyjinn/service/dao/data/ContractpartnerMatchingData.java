@@ -28,6 +28,8 @@ package org.laladev.moneyjinn.service.dao.data;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class ContractpartnerMatchingData {
     private Long id;
@@ -35,4 +37,5 @@ public class ContractpartnerMatchingData {
     private String matchingText;
     private String mmfComment;
     private Long mpaPostingAccountId;
+    private LocalDate lastUsed;
 }

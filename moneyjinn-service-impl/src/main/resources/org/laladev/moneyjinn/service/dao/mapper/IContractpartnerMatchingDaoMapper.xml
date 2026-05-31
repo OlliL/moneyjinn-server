@@ -8,6 +8,7 @@
         ,mcm.mcp_contractpartnerid      AS mcpContractpartnerId
         ,mcm.mmf_comment                AS mmfComment
         ,mcm.mpa_postingaccountid       AS mpaPostingAccountId
+        ,last_used                      AS lastUsed
     ]]></sql>
 
     <select id="getContractpartnerMatchingBySearchString"
@@ -66,12 +67,14 @@
               , matching_text
               , mmf_comment
               , mpa_postingaccountid
+              , last_used
               )
         VALUES
             ( #{mcpContractpartnerId}
             , #{matchingText}
             , #{mmfComment}
             , #{mpaPostingAccountId}
+            , #{lastUsed}
             )
     </insert>
 
@@ -82,6 +85,12 @@
              , matching_text         = #{matchingText}
              , mmf_comment           = #{mmfComment}
              , mpa_postingaccountid  = #{mpaPostingAccountId}
+         WHERE contractpartnermatchingid = #{id}
+    </update>
+
+    <update id="setLastUsed">
+        UPDATE contractpartnermatchings
+           SET last_used = NOW()
          WHERE contractpartnermatchingid = #{id}
     </update>
 

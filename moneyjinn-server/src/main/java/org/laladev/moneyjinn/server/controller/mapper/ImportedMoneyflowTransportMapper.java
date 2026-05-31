@@ -36,7 +36,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = MapStructConfig.class, uses = {CapitalsourceIdMapper.class, ContractpartnerIdMapper.class,
-        PostingAccountIdMapper.class, ImportedMoneyflowIdMapper.class, BooleanToIntegerMapper.class,
+        PostingAccountIdMapper.class, ImportedMoneyflowIdMapper.class, ContractpartnerMatchingIdMapper.class,
+        BooleanToIntegerMapper.class,
         UserIdMapper.class})
 public interface ImportedMoneyflowTransportMapper
         extends IMapstructMapper<ImportedMoneyflow, ImportedMoneyflowTransport> {
@@ -62,5 +63,6 @@ public interface ImportedMoneyflowTransportMapper
     @Mapping(target = "accountNumberCapitalsource", ignore = true)
     @Mapping(target = "bankCodeCapitalsource", ignore = true)
     @Mapping(target = "externalid", source = "externalId")
+    @Mapping(target = "contractpartnerMatchingId", source = "contractpartnerMatching.id")
     ImportedMoneyflowTransport mapAToB(ImportedMoneyflow importedMoneyflow);
 }

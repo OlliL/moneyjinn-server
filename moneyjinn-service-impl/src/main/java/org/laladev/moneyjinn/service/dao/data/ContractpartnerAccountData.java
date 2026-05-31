@@ -28,10 +28,13 @@ package org.laladev.moneyjinn.service.dao.data;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class ContractpartnerAccountData {
     private Long id;
     private Long mcpContractpartnerId;
     private String accountNumber;
     private String bankCode;
+    private LocalDate lastUsed;
 }

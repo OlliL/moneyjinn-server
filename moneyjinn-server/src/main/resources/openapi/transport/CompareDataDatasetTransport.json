@@ -41,6 +41,10 @@
     "postingAccountId": {
       "type": "integer",
       "format": "int64"
+    },
+    "contractpartnerMatchingId": {
+      "type": "integer",
+      "format": "int64"
     }
   }
 }

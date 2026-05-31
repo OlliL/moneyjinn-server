@@ -29,6 +29,10 @@
     "postingAccountId": {
       "type": "integer",
       "format": "int64"
+    },
+    "lastUsed": {
+      "type": "string",
+      "format": "date"
     }
   }
 }

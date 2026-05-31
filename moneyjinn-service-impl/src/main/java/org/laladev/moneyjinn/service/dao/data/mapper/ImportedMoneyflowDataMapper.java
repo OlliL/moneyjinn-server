@@ -38,6 +38,7 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapStructConfig.class, uses = {CapitalsourceIdMapper.class, ImportedMoneyflowStatusMapper.class,
         ImportedMoneyflowIdMapper.class})
 public interface ImportedMoneyflowDataMapper extends IMapstructMapper<ImportedMoneyflow, ImportedMoneyflowData> {
+    @Mapping(target = "contractpartnerMatching", ignore = true)
     @Override
     @Mapping(target = "bookingDate", source = "bookingdate")
     @Mapping(target = "invoiceDate", source = "invoicedate")
