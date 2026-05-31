@@ -137,4 +137,13 @@ public interface IContractpartnerAccountService {
      * @return List of all found {@link ContractpartnerAccount}
      */
     List<ContractpartnerAccount> getAllContractpartnerByAccounts(UserID userId, List<BankAccount> bankAccounts);
+
+    /**
+     * Updates the "lastUsed" Date information for a {@link ContractpartnerAccount}. It is
+     * meant to be called whenever a moneyflow gets created based on a
+     * {@link ContractpartnerAccount}.
+     *
+     */
+    void setLastUsedDate(UserID userId, ContractpartnerAccountID contractpartnerAccountId);
+
 }

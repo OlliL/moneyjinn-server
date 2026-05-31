@@ -32,6 +32,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serial;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -45,4 +46,5 @@ public class ContractpartnerMatching extends AbstractEntity<ContractpartnerMatch
     private String matchingText;
     private String moneyflowComment;
     private PostingAccount postingAccount;
+    private LocalDate lastUsed;
 }

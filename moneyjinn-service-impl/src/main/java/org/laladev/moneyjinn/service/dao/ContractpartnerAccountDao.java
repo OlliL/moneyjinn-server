@@ -62,6 +62,10 @@ public class ContractpartnerAccountDao {
         this.mapper.updateContractpartnerAccount(contractpartnerAccountData);
     }
 
+    public void setLastUsed(final Long id) {
+        this.mapper.setLastUsed(id);
+    }
+
     public void deleteContractpartnerAccount(final Long contractpartnerAccountId) {
         this.mapper.deleteContractpartnerAccount(contractpartnerAccountId);
     }

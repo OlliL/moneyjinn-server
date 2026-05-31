@@ -7,6 +7,7 @@
         ,mcp_contractpartnerid      AS mcpContractpartnerId
         ,accountnumber              AS accountNumber
         ,bankcode                   AS bankCode
+        ,last_used                  AS lastUsed
     ]]></sql>
 
     <select id="getContractpartnerAccountByBankAccount"
@@ -57,11 +58,13 @@
               ( mcp_contractpartnerid
               , accountnumber
               , bankcode
+              , last_used
               )
         VALUES
             ( #{mcpContractpartnerId}
             , #{accountNumber}
             , #{bankCode}
+            , #{lastUsed}
             )
     </insert>
 
@@ -71,6 +74,12 @@
            SET mcp_contractpartnerid = #{mcpContractpartnerId}
              , accountnumber         = #{accountNumber}
              , bankcode              = #{bankCode}
+         WHERE contractpartneraccountid = #{id}
+    </update>
+
+    <update id="setLastUsed">
+        UPDATE contractpartneraccounts
+           SET last_used = NOW()
          WHERE contractpartneraccountid = #{id}
     </update>
 

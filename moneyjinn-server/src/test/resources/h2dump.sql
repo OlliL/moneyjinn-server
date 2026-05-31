@@ -56,14 +56,16 @@ CREATE TABLE contractpartneraccounts (
     contractpartneraccountid bigserial NOT NULL,
     mcp_contractpartnerid integer NOT NULL,
     accountnumber character varying(34) NOT NULL,
-    bankcode character varying(11) DEFAULT NULL::character varying
+    bankcode character varying(11) DEFAULT NULL::character varying,
+    last_used date
 );
 CREATE TABLE contractpartnermatchings (
     contractpartnermatchingid bigserial NOT NULL,
     mcp_contractpartnerid integer NOT NULL,
     matching_text character varying(50) NOT NULL,
     mmf_comment character varying(100),
-    mpa_postingaccountid integer
+    mpa_postingaccountid integer,
+    last_used date
 );
 CREATE TABLE contractpartners (
     contractpartnerid bigserial NOT NULL,

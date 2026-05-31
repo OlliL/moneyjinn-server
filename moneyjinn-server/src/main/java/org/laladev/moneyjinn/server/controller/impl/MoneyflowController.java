@@ -73,6 +73,7 @@ public class MoneyflowController extends AbstractController implements Moneyflow
     private final IPreDefMoneyflowService preDefMoneyflowService;
     private final ICapitalsourceService capitalsourceService;
     private final IContractpartnerService contractpartnerService;
+    private final IContractpartnerMatchingService contractpartnerMatchingService;
     private final IMoneyflowService moneyflowService;
     private final IMoneyflowSplitEntryService moneyflowSplitEntryService;
     private final IMoneyflowReceiptService moneyflowReceiptService;
@@ -265,6 +266,11 @@ public class MoneyflowController extends AbstractController implements Moneyflow
         if (!moneyflowSplitEntries.isEmpty()) {
             moneyflowSplitEntries.forEach(mse -> mse.setMoneyflowId(moneyflowId));
             this.moneyflowSplitEntryService.createMoneyflowSplitEntries(userId, moneyflowSplitEntries);
+        }
+
+        if (moneyflow.getContractpartnerMatching() != null) {
+            this.contractpartnerMatchingService.setLastUsedDate(userId,
+                    moneyflow.getContractpartnerMatching().getId());
         }
 
         if (saveAsPreDefMoneyflow) {

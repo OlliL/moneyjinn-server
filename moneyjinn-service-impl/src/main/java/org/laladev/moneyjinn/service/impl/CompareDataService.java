@@ -334,7 +334,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
                         entry.getEntryDetails().getTransactionDetails().getRemittanceInformation().getUnstructured()));
                 compareDataDatasets.add(data);
             }
-        } catch (final Exception e) {
+        } catch (final Exception _) {
             throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
         }
         return compareDataDatasets;
@@ -374,7 +374,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
                     compareDataDatasets.add(this.mapCsvFileMainPart(userId, compareDataFormat, cmpDataRaw));
                 }
             }
-        } catch (final IOException | CsvException e) {
+        } catch (final IOException | CsvException _) {
             throw new BusinessException(WRONG_FILE_FORMAT_TEXT, ErrorCode.WRONG_FILE_FORMAT);
         }
         return compareDataDatasets;
@@ -435,6 +435,7 @@ public class CompareDataService extends AbstractService implements ICompareDataS
                 data.setContractpartner(contractpartnerMatching.getContractpartner());
                 data.setMoneyflowComment(contractpartnerMatching.getMoneyflowComment());
                 data.setPostingAccount(contractpartnerMatching.getPostingAccount());
+                data.setContractpartnerMatching(contractpartnerMatching);
             }
         }
 

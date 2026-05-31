@@ -27,6 +27,7 @@
 package org.laladev.moneyjinn.server.controller.mapper;
 
 import org.laladev.moneyjinn.converter.ContractpartnerIdMapper;
+import org.laladev.moneyjinn.converter.ContractpartnerMatchingIdMapper;
 import org.laladev.moneyjinn.converter.IMapstructMapper;
 import org.laladev.moneyjinn.converter.PostingAccountIdMapper;
 import org.laladev.moneyjinn.converter.config.MapStructConfig;
@@ -36,7 +37,8 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class, uses = {ContractpartnerIdMapper.class, PostingAccountIdMapper.class})
+@Mapper(config = MapStructConfig.class,
+        uses = {ContractpartnerIdMapper.class, PostingAccountIdMapper.class, ContractpartnerMatchingIdMapper.class})
 public interface CompareDataDatasetTransportMapper
         extends IMapstructMapper<CompareDataDataset, CompareDataDatasetTransport> {
     @Override
@@ -50,5 +52,6 @@ public interface CompareDataDatasetTransportMapper
     @Mapping(target = "contractpartnername", source = "contractpartner.name")
     @Mapping(target = "postingAccountId", source = "postingAccount.id")
     @Mapping(target = "postingAccountName", source = "postingAccount.name")
+    @Mapping(target = "contractpartnerMatchingId", source = "contractpartnerMatching.id")
     CompareDataDatasetTransport mapAToB(CompareDataDataset dataset);
 }

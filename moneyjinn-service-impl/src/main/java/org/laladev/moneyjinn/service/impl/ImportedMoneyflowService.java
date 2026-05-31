@@ -76,6 +76,7 @@ public class ImportedMoneyflowService extends AbstractService implements IImport
                     importedMoneyflow.setContractpartner(contractpartnerMatching.getContractpartner());
                     importedMoneyflow.setComment(contractpartnerMatching.getMoneyflowComment());
                     importedMoneyflow.setPostingAccount(contractpartnerMatching.getPostingAccount());
+                    importedMoneyflow.setContractpartnerMatching(contractpartnerMatching);
                 }
             }
 

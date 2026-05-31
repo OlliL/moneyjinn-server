@@ -69,6 +69,10 @@ public class ContractpartnerMatchingDao {
         this.mapper.updateContractpartnerMatching(contractpartnerMatchingData);
     }
 
+    public void setLastUsed(final Long id) {
+        this.mapper.setLastUsed(id);
+    }
+
     public void deleteContractpartnerMatching(final Long contractpartnerMatchingId) {
         this.mapper.deleteContractpartnerMatching(contractpartnerMatchingId);
     }

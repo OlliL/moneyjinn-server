@@ -83,6 +83,7 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
         super.setComment("mmf-comment");
         super.setPostingaccountid(PostingAccountTransportBuilder.POSTING_ACCOUNT3_ID);
         super.setPostingaccountname(PostingAccountTransportBuilder.POSTING_ACCOUNT3_NAME);
+        super.setContractpartnerMatchingId(3L);
         return this;
     }
 
@@ -123,6 +124,7 @@ public class ImportedMoneyflowTransportBuilder extends ImportedMoneyflowTranspor
         transport.setContractpartnername(super.getContractpartnername());
         transport.setPostingaccountid(super.getPostingaccountid());
         transport.setPostingaccountname(super.getPostingaccountname());
+        transport.setContractpartnerMatchingId(super.getContractpartnerMatchingId());
         return transport;
     }
 }

@@ -48,5 +48,7 @@ public interface IContractpartnerMatchingDaoMapper {
 
     void updateContractpartnerMatching(ContractpartnerMatchingData contractpartnerMatchingData);
 
+    void setLastUsed(@Param("id") Long id);
+
     void deleteContractpartnerMatching(@Param("id") Long id);
 }

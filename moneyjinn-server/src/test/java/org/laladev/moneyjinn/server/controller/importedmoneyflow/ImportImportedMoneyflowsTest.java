@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.laladev.moneyjinn.core.error.ErrorCode;
+import org.laladev.moneyjinn.model.BankAccount;
 import org.laladev.moneyjinn.model.Contractpartner;
 import org.laladev.moneyjinn.model.ContractpartnerAccount;
 import org.laladev.moneyjinn.model.ContractpartnerID;
@@ -114,6 +115,11 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
                 capitalsourceIds, null);
         Assertions.assertNotNull(importedMoneyflows);
         Assertions.assertEquals(sizeBeforeDelete, importedMoneyflows.size());
+
+        final var account = this.contractpartnerAccountService.getContractpartnerByAccount(userId,
+                new BankAccount(transport.getAccountNumber(), transport.getBankCode()));
+
+        Assertions.assertEquals(LocalDate.now(), account.getLastUsed());
     }
 
     @Test
@@ -134,7 +140,7 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
     }
 
     @Test
-    void test_NonprivateMoneyflow_Successfull() throws Exception {
+    void test_NonPrivateMoneyflow_Successfull() throws Exception {
         final UserID userId = new UserID(UserTransportBuilder.USER1_ID);
         final ImportImportedMoneyflowRequest request = new ImportImportedMoneyflowRequest();
         final ImportedMoneyflowTransport transport = new ImportedMoneyflowTransportBuilder()
@@ -220,6 +226,7 @@ class ImportImportedMoneyflowsTest extends AbstractWebUserControllerTest {
                 contractpartnerAccountsAfterInsert.getFirst().getBankAccount().getAccountNumber());
         Assertions.assertEquals(transport.getBankCode(),
                 contractpartnerAccountsAfterInsert.getFirst().getBankAccount().getBankCode());
+        Assertions.assertEquals(LocalDate.now(), contractpartnerAccountsAfterInsert.getFirst().getLastUsed());
     }
 
     @Test
