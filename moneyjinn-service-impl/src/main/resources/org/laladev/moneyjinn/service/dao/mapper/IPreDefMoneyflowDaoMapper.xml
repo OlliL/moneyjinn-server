@@ -15,7 +15,7 @@
         ,mpa_postingaccountid   AS mpaPostingAccountId
         ,is_favorite            AS isFavorite
         ,favorite_color         AS favoriteColor
-        ,favorite_abbreviation  AS favoriteAbbreviation
+        ,RTRIM(favorite_abbreviation)  AS favoriteAbbreviation
     ]]></sql>
 
     <select id="getPreDefMoneyflowById" parameterType="java.lang.Long"
