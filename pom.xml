@@ -29,7 +29,7 @@
     <properties>
         <moneyjinn-sepa-camt.version>1.0.2</moneyjinn-sepa-camt.version>
 
-        <spring.boot.version>4.1.0-RC1</spring.boot.version>
+        <spring.boot.version>4.1.0</spring.boot.version>
         <mybatis.version>3.5.19</mybatis.version>
         <mybatis-spring.version>4.0.0</mybatis-spring.version>
         <commons.io.version>2.22.0</commons.io.version>
