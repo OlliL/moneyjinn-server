@@ -55,7 +55,7 @@
         <maven-dependency-plugin.version>3.11.0</maven-dependency-plugin.version>
         <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <coveralls-maven-plugin.version>5.1.0</coveralls-maven-plugin.version>
         <pitest-maven.version>1.25.5</pitest-maven.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
@@ -316,18 +316,19 @@
                     <!-- jakarta.annotation.Generated annotation not working because retention is set to SOURCE -->
                     <excludes>
                         <!-- Mapstruct generated mapper -->
-                        <exclude>org/laladev/moneyjinn/converter/*Impl.class</exclude>
-                        <exclude>org/laladev/moneyjinn/converter/fixes/*Impl.class</exclude>
-                        <exclude>org/laladev/moneyjinn/converter/javatypes/*Impl.class</exclude>
-                        <exclude>org/laladev/moneyjinn/server/controller/mapper/*Impl.class</exclude>
-                        <exclude>org/laladev/moneyjinn/service/dao/data/mapper/*Impl.class</exclude>
+                        <exclude>**/org/laladev/moneyjinn/converter/*Impl*.class</exclude>
+                        <exclude>**/org/laladev/moneyjinn/converter/fixes/*Impl*.class</exclude>
+                        <exclude>**/org/laladev/moneyjinn/converter/javatypes/*Impl*.class</exclude>
+                        <exclude>**/org/laladev/moneyjinn/server/controller/mapper/*Impl*.class</exclude>
+                        <exclude>**/org/laladev/moneyjinn/service/dao/data/mapper/*Impl*.class</exclude>
+
                         <!-- OpenAPI generated code -->
-                        <exclude>org/laladev/moneyjinn/server/model/*</exclude>
-                        <exclude>org/laladev/moneyjinn/server/controller/api/*</exclude>
+                        <exclude>**/org/laladev/moneyjinn/server/model/**/*</exclude>
+                        <exclude>**/org/laladev/moneyjinn/server/controller/api/**/*</exclude>
                         <!-- Complete HBCI module -->
-                        <exclude>org/laladev/moneyjinn/hbci/**/*</exclude>
+                        <exclude>**/org/laladev/moneyjinn/hbci/**/*</exclude>
                         <!-- Main class -->
-                        <exclude>org/laladev/moneyjinn/server/main/MoneyjinnServer.class</exclude>
+                        <exclude>**/org/laladev/moneyjinn/server/main/MoneyjinnServer.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
