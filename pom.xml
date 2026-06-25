@@ -39,9 +39,9 @@
         <lombok.version>1.18.46</lombok.version>
         <mapstruct.version>1.7.0.Beta1</mapstruct.version>
         <opencsv.version>5.12.0</opencsv.version>
-        <swagger.version>2.2.50</swagger.version>
+        <swagger.version>2.2.52</swagger.version>
         <postgresql.version>42.7.11</postgresql.version>
-        <openapi-generator.version>7.22.0</openapi-generator.version>
+        <openapi-generator.version>7.23.0</openapi-generator.version>
 
         <!--for hbci-batch only-->
         <hbci4j-core.version>4.1.8</hbci4j-core.version>
@@ -57,7 +57,7 @@
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <coveralls-maven-plugin.version>5.1.0</coveralls-maven-plugin.version>
-        <pitest-maven.version>1.25.3</pitest-maven.version>
+        <pitest-maven.version>1.25.5</pitest-maven.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
 
         <!-- Test Scope -->
