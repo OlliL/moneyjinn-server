@@ -44,7 +44,7 @@
         <openapi-generator.version>7.23.0</openapi-generator.version>
 
         <!--for hbci-batch only-->
-        <hbci4j-core.version>4.1.8</hbci4j-core.version>
+        <hbci4j-core.version>4.1.11</hbci4j-core.version>
 
         <!-- Maven Plugins -->
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
